@@ -17,6 +17,8 @@ namespace SeymourBot
         {     
             var program = new Program();
             var bot = program.RunBotAsync();
+
+
             bot.Wait();
         }
 
@@ -72,7 +74,7 @@ namespace SeymourBot
             {
                 var context = new SocketCommandContext(_client, message);
 
-                if (Models.BlacklistUser.BlackListedUser.Contains(context.Message.Author)) return;
+                if (Models.BlacklistUserStorage.BlackListedUser.Contains(context.Message.Author)) return;
                 var result = await _commands.ExecuteAsync(context, argPos, _services);
             }
         }

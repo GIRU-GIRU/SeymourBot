@@ -51,6 +51,13 @@ namespace SeymourBot.Modules
 
         }
 
+        [Command("forums")]
+        private async Task InfoForums()
+        {
+            await Context.Channel.SendMessageAsync("https://mordhau.com/forum/");
+        }
+
+
         [Command("avatar")]
         private async Task PullAvatar(IGuildUser user)
         {
