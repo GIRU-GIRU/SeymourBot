@@ -15,7 +15,7 @@ namespace SeymourBot.Storage
         public DisciplineEventEnum DiscipinaryEventType { get; set; }
         public ulong ModeratorID { get; set; }
         public DateTime DateInserted { get; set; }
-        public DateTime? DateToRemove { get; set; }
+        public DateTime DateToRemove { get; set; }
         public string Reason { get; set; }
     }
 }

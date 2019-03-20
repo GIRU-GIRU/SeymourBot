@@ -12,7 +12,5 @@ namespace SeymourBot.Storage.User
         MuteEvent,
         LimitedUserEvent,
         WarnEvent,
-
     }
-
 }

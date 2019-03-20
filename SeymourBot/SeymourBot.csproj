@@ -6,13 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BlankDB\**" />
+    <EmbeddedResource Remove="BlankDB\**" />
+    <None Remove="BlankDB\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Discord.Net" Version="2.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Storage\Tournament\" />
+    <Folder Include="DataAccess\Storage\Tournament\" />
   </ItemGroup>
 
 </Project>

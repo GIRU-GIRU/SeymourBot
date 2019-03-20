@@ -6,7 +6,8 @@ using Discord.Commands;
 using Discord.WebSocket;
 using System.Threading.Tasks;
 using SeymourBot.Attributes;
-
+using System.Linq;
+using SeymourBot.DataAccess.StorageManager;
 
 namespace SeymourBot.Modules
 {
@@ -75,8 +76,56 @@ namespace SeymourBot.Modules
             embed.WithImageUrl(avatarURL);
 
             await Context.Channel.SendMessageAsync("", false, embed.Build());
+        }
 
 
+
+
+
+
+
+
+
+        [Command("NewCommand")]
+        private async Task StoreInfoCommand([Remainder]string UserInput)
+        {
+            try
+            {
+
+                string[] splitInput = UserInput.Split(' ');
+                string commandName = splitInput[0];
+                string commandContent = String.Join(' ', splitInput.Skip(0));
+
+                InformationStorageManager infoManager = new InformationStorageManager();
+
+                await infoManager.StoreInfoCommandAsync(commandName, commandContent);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        [Command("c")]
+        [Alias("i", "info")]
+        private async Task PostInfoCommand(string cmdName)
+        {
+            try
+            {
+                InformationStorageManager infoManager = new InformationStorageManager();
+
+
+                string commandContent = await infoManager.GetInfoCommand(cmdName);
+                await Context.Channel.SendMessageAsync(commandContent);
+
+            }
+            catch (Exception ex)
+            {
+                await Context.Channel.SendMessageAsync("u fucked up bitch " + ex.Message);
+            }
         }
     }
 }
