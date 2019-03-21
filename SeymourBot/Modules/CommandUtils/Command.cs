@@ -10,9 +10,7 @@ namespace SeymourBot.Modules.CommandUtils
     {
 
         public readonly string CommandName;
-
         public readonly string CommandContent;
-
         public readonly bool Error;
 
         public Command(string userInput)

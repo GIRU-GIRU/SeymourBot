@@ -6,6 +6,8 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Threading.Tasks;
+using SeymourBot.Logging;
+using SeymourBot.Exceptions;
 
 namespace SeymourBot
 {
@@ -18,19 +20,16 @@ namespace SeymourBot
             var program = new Program();
             var bot = program.RunBotAsync();
 
-
             bot.Wait();
         }
-
 
         public DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
+        private SocketGuild guild;
 
         public async Task RunBotAsync()
         {
-
-            var test = cfgManager.GetProperty(PropertyItem.BotToken);
             DiscordSocketConfig botConfig = new DiscordSocketConfig()
             {
                 MessageCacheSize = cfgManager.GetIntegerProperty(PropertyItem.MessageCacheSize)
@@ -48,7 +47,9 @@ namespace SeymourBot
                 .AddSingleton(_client)
                 .BuildServiceProvider();
 
-            _client.Log += Log;
+
+            _client.Log += Logger.Log;
+            _commands.CommandExecuted += OnCommandExecutedAsync;
 
             await RegisterCommandAsync();
             await _client.LoginAsync(TokenType.Bot, cfgManager.GetProperty(PropertyItem.BotToken));
@@ -77,13 +78,37 @@ namespace SeymourBot
 
                 //if (!Models.BlacklistUserStorage.BlackListedUser.Contains(context.Message.Author)) return;
                 var result = await _commands.ExecuteAsync(context, argPos, _services);
+
             }
         }
 
-        private Task Log(LogMessage arg)
+
+        public async Task OnCommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
         {
-            Console.WriteLine(arg);
-            return Task.CompletedTask;
+            ITextChannel chnl = null;
+
+            if (!string.IsNullOrEmpty(result.ErrorReason))
+            {
+                 chnl = await context.Guild.GetChannelAsync(558072353733738499) as ITextChannel;
+            }
+   
+            switch (result)
+            {
+                case CommandErrorResult errorResult:
+                    await chnl.SendMessageAsync(errorResult.Reason);
+                    break;
+
+                default:
+                    if (!string.IsNullOrEmpty(result.ErrorReason))
+                    {
+                      await chnl.SendMessageAsync($"```{context.Message.Content}``` threw a {result.ErrorReason}");
+                    }
+                    break;
+            }
         }
+
+
+
+
     }
 }

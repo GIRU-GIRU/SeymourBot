@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeymourBot.Storage.Information;
+using SeymourBot.Storage.Information.Tables;
 using System;
 using System.Collections.Generic;
 using System.Text;
