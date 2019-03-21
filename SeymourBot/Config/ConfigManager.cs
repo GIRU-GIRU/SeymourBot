@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeymourBot.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -15,8 +16,9 @@ namespace SeymourBot.Config
     /// </summary>
     public class ConfigManager
     {
-        private Config config;
-        private const string autoSavePath = "Config";
+        private Config configuration;
+        private Config userSettings;
+        private const string autoSavePath = @"Config\";
 
         public ConfigManager()
         {
@@ -28,38 +30,60 @@ namespace SeymourBot.Config
         /// </summary>
         public void Refresh()
         {
-            config = LoadConfig();
-            //if the config file cannot be found, load the default values.
-            if (config == null)
+            configuration = new Config();
+            configuration.Name = ConfigInitializer.ConfigurationName;
+            configuration = LoadConfig();
+            if (configuration == null)
             {
-                config = new Config();
-                config.Init();
+                configuration = ConfigInitializer.InitConfiguration();
+                SaveConfig();
+                ExceptionManager.ThrowException("0201");
+            }
+
+            userSettings = new Config();
+            userSettings.Name = ConfigInitializer.SettingsName;
+            userSettings = LoadSettings();
+            if (userSettings == null)
+            {
+                userSettings = ConfigInitializer.InitSettings();
+                SaveSettings();
+                ExceptionManager.ThrowException("0202");
             }
         }
 
         public string GetProperty(PropertyItem item)
         {
-            return config.Get(item);
+            return configuration.Get(item);
         }
 
         public void SetProperty(PropertyItem item, string value)
         {
-            config.Set(item, value);
+            configuration.Set(item, value);
         }
 
         public void SaveConfig()
         {
-            FileIO.SaveNoDialog<Config>(config, "Settings");
+            FileIO.SaveXML<Config>(configuration, BuildPath(configuration));
         }
 
         private Config LoadConfig()
         {
-            return FileIO.LoadNoDialog<Config>("Settings");
+            return FileIO.LoadXML<Config>(BuildPath(configuration));
+        }
+
+        public void SaveSettings()
+        {
+            FileIO.SaveJSON<Config>(userSettings, BuildPath(userSettings));
+        }
+
+        private Config LoadSettings()
+        {
+            return FileIO.LoadJSON<Config>(BuildPath(userSettings));
         }
 
         public bool GetBooleanProperty(PropertyItem item)
         {
-            string temp = config.Get(item);
+            string temp = configuration.Get(item);
             bool result;
             if (bool.TryParse(temp, out result))
             {
@@ -70,13 +94,18 @@ namespace SeymourBot.Config
 
         public int GetIntegerProperty(PropertyItem item)
         {
-            string temp = config.Get(item);
+            string temp = configuration.Get(item);
             int result;
             if (int.TryParse(temp, out result))
             {
                 return result;
             }
             else return 0;
+        }
+
+        private string BuildPath(Config config)
+        {
+            return autoSavePath + config.Name;
         }
 
     }

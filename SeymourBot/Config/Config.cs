@@ -12,34 +12,15 @@ namespace SeymourBot.Config
     public class Config
     {
         private List<Property> properties;
+        private string name;
 
         public Config()
         {
             properties = new List<Property>();
         }
 
-        /// <summary>
-        /// Creates a new config with default values.
-        /// </summary>
-        public void Init()
-        {
-            properties = new List<Property>();
-            Property property;
-
-            foreach (var item in ConfigItems.DefaultConfigItems)
-            {
-                property = new Property
-                {
-                    Item = item.Key,
-                    Value = item.Value
-                };
-                properties.Add(property);
-            }
-        }
-
-
-
         public List<Property> Properties { get => properties; set => properties = value; }
+        public string Name { get => name; set => name = value; }
 
         public string Get(PropertyItem item)
         {
@@ -54,6 +35,67 @@ namespace SeymourBot.Config
         public List<Property> GetAllProperties()
         {
             return properties;
+        }
+    }
+
+    public static class ConfigInitializer
+    {
+        private readonly static IDictionary<PropertyItem, string> DefaultConfiguration = new Dictionary<PropertyItem, string>()
+        {
+            {PropertyItem.BotToken, ""},
+            {PropertyItem.MessageCacheSize, ""},
+            {PropertyItem.AuditChannel, ""},
+            {PropertyItem.Mordhau_General, ""},
+            {PropertyItem.CommandPrefix, ""}
+        };
+
+        public readonly static string ConfigurationName = "Configuration";
+
+        private readonly static IDictionary<PropertyItem, string> DefaultSettings = new Dictionary<PropertyItem, string>()
+        {
+
+        };
+
+        public readonly static string SettingsName = "UserSettings";
+
+        public static Config InitConfiguration()
+        {
+            Config config = new Config();
+            Property property;
+
+            foreach (var item in DefaultConfiguration)
+            {
+                property = new Property
+                {
+                    Item = item.Key,
+                    Value = item.Value
+                };
+                config.Properties.Add(property);
+            }
+
+            config.Name = ConfigurationName;
+
+            return config;
+        }
+
+        public static Config InitSettings()
+        {
+            Config config = new Config();
+            Property property;
+
+            foreach (var item in DefaultSettings)
+            {
+                property = new Property
+                {
+                    Item = item.Key,
+                    Value = item.Value
+                };
+                config.Properties.Add(property);
+            }
+
+            config.Name = SettingsName;
+
+            return config;
         }
     }
 }

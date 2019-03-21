@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace SeymourBot.Storage.Information
+namespace SeymourBot.Storage.Information.Tables
 {
     class InfoCommandTable
     {

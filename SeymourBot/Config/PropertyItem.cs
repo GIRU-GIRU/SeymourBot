@@ -13,19 +13,14 @@ namespace SeymourBot.Config
     public enum PropertyItem
     {
         None,
+        //sensible properties for the bot Configuration
         BotToken,
         MessageCacheSize,
         AuditChannel,
         Mordhau_General,
-        CommandPrefix
+        CommandPrefix,
+
+        //non-sensible user settings
+
     }
-
-    public static class ConfigItems
-    {
-        public readonly static IDictionary<PropertyItem, string> DefaultConfigItems = new Dictionary<PropertyItem, string>()
-        {
-
-        };
-    }
-
 }

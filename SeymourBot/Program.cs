@@ -14,7 +14,7 @@ namespace SeymourBot
         private static ConfigManager cfgManager = new ConfigManager();
 
         static void Main(string[] args)
-        {     
+        {
             var program = new Program();
             var bot = program.RunBotAsync();
 
@@ -68,13 +68,13 @@ namespace SeymourBot
             var message = arg as SocketUserMessage;
             if (message.Author.IsBot) return;
 
-           // _ = Task.Run(() => _onMessage.MessageContainsAsync(arg));
+            // _ = Task.Run(() => _onMessage.MessageContainsAsync(arg));
             int argPos = 0;
             if (message.HasStringPrefix(cfgManager.GetProperty(PropertyItem.CommandPrefix), ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
             {
                 var context = new SocketCommandContext(_client, message);
 
-                
+
                 //if (!Models.BlacklistUserStorage.BlackListedUser.Contains(context.Message.Author)) return;
                 var result = await _commands.ExecuteAsync(context, argPos, _services);
             }

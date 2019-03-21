@@ -1,4 +1,6 @@
 ﻿
+using Newtonsoft.Json;
+using SeymourBot.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,40 +14,101 @@ namespace SeymourBot.Config
 {
     public class FileIO
     {
-        public static T LoadNoDialog<T>(string path)
+        public static T LoadXML<T>(string path)
         {
             T result = default(T);
-            if (path != null)
+            try
             {
-                path = path + ".xml";
-                if (File.Exists(path)) {
-                    using (var stream = File.Open(path, FileMode.OpenOrCreate))
+                if (path != null)
+                {
+                    path = path + ".xml";
+                    if (File.Exists(path))
                     {
-                        var serializer = new XmlSerializer(typeof(T));
-                        try
+                        using (var stream = File.Open(path, FileMode.OpenOrCreate))
                         {
+                            var serializer = new XmlSerializer(typeof(T));
                             result = (T)serializer.Deserialize(stream);
-                        }
-                        catch (InvalidCastException)
-                        {
-                            Console.WriteLine("LoadNoDialog InvalidCastException");
                         }
                     }
                 }
+
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("0301", ex, path);
             }
             return result;
         }
 
-        public static void SaveNoDialog<T>(T target, string path)
+        public static void SaveXML<T>(T target, string path)
         {
-            if (path != null)
+            try
             {
-                path = path + ".xml";
-                using (var stream = File.Create(path))
+                if (path != null)
                 {
-                    var serializer = new XmlSerializer(typeof(T));
-                    serializer.Serialize(stream, target);
+                    path = path + ".xml";
+                    using (var stream = File.Create(path))
+                    {
+                        var serializer = new XmlSerializer(typeof(T));
+                        serializer.Serialize(stream, target);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("0302", ex, path);
+            }
+        }
+
+        public static T LoadJSON<T>(string path)
+        {
+            T result = default(T);
+            try
+            {
+
+                if (path != null)
+                {
+                    path = path + ".json";
+                    if (File.Exists(path))
+                    {
+                        result = JsonConvert.DeserializeObject<T>(File.ReadAllText(path));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("0303", ex, path);
+            }
+            return result;
+        }
+
+        public static void SaveJSON<T>(T target, string path)
+        {
+            try
+            {
+                if (path != null)
+                {
+                    path = path + ".json";
+                    using (var stream = File.Create(path))
+                    {
+                        SerializeToStream(stream, target);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("0304", ex, path);
+            }
+        }
+
+        private static void SerializeToStream(Stream stream, object target)
+        {
+            var serializer = new JsonSerializer();
+
+            using (var sw = new StreamWriter(stream))
+            using (var jsonTextWriter = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(jsonTextWriter, target);
             }
         }
     }

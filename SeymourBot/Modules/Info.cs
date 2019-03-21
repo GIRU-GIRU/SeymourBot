@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using SeymourBot.Attributes;
 using System.Linq;
 using SeymourBot.DataAccess.StorageManager;
+using SeymourBot.Modules.CommandUtils;
+using SeymourBot.Exceptions;
 
 namespace SeymourBot.Modules
 {
@@ -78,48 +80,61 @@ namespace SeymourBot.Modules
             await Context.Channel.SendMessageAsync("", false, embed.Build());
         }
 
-
-
-
-
-
-
-
-
         [Command("NewCommand")]
-        private async Task StoreInfoCommand([Remainder]string UserInput)
+        private async Task StoreInfoCommandTest([Remainder]string UserInput)
         {
             try
             {
 
-                string[] splitInput = UserInput.Split(' ');
-                string commandName = splitInput[0];
-                string commandContent = String.Join(' ', splitInput.Skip(0));
-
-                InformationStorageManager infoManager = new InformationStorageManager();
-
-                await infoManager.StoreInfoCommandAsync(commandName, commandContent);
-
+                Command command = new Command(UserInput);
+                if (!command.Error)
+                {
+                    InformationStorageManager infoManager = new InformationStorageManager();
+                    await infoManager.StoreInfoCommandAsync(command);
+                }
             }
             catch (Exception)
             {
-
                 throw;
+            }
+
+        }
+
+        [Command("InfoList")]
+        private async Task ListInfoCommandsTest()
+        {
+            try
+            {
+                InformationStorageManager infoManager = new InformationStorageManager();
+                List<string> commands = await infoManager.GetInfoCommands();
+                var embed = new EmbedBuilder();
+                embed.WithTitle("Avaliable Information Commands");
+                foreach (var element in commands)
+                {
+                    embed.AddField("!info", element, true);
+                }
+                await Context.Channel.SendMessageAsync("", false, embed.Build());
+            }
+            catch (Exception ex)
+            {
+                await Context.Channel.SendMessageAsync("u fucked up bitch " + ex.Message);
             }
 
         }
 
         [Command("c")]
         [Alias("i", "info")]
-        private async Task PostInfoCommand(string cmdName)
+        private async Task PostInfoCommandTest(string cmdName)
         {
             try
             {
-                InformationStorageManager infoManager = new InformationStorageManager();
-
-
-                string commandContent = await infoManager.GetInfoCommand(cmdName);
-                await Context.Channel.SendMessageAsync(commandContent);
+                Command command = new Command(cmdName);
+                if (!command.Error)
+                {
+                    InformationStorageManager infoManager = new InformationStorageManager();
+                    string commandContent = await infoManager.GetInfoCommand(command);
+                    await Context.Channel.SendMessageAsync(commandContent);
+                }
 
             }
             catch (Exception ex)
