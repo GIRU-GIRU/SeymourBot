@@ -29,7 +29,13 @@ namespace SeymourBot.Exceptions
             {"0401", "Error Parsing Command"},
 
             //05 Info command exceptions
-            {"0501", "Error in Info Command"}
+            {"0501", "Error in Info Command"},
+
+            //06 Storage Exception
+            {"0601", "Error creating new info command" },
+            {"0602", "Error getting info command" },
+            {"0603", "Error getting info command list" },
+            {"0604", "Error getting timed events" },
         };
     }
 }

@@ -24,8 +24,7 @@ namespace SeymourBot.Modules
                 Command command = new Command(UserInput);
                 if (!command.Error)
                 {
-                    InformationStorageManager infoManager = new InformationStorageManager();
-                    await infoManager.StoreInfoCommandAsync(command);
+                    await StorageManager.StoreInfoCommandAsync(command);
                 }
             }
             catch (Exception)
@@ -40,8 +39,7 @@ namespace SeymourBot.Modules
         {
             try
             {
-                InformationStorageManager infoManager = new InformationStorageManager();
-                List<string> commands = await infoManager.GetInfoCommands();
+                List<string> commands = await StorageManager.GetInfoCommands();
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Avaliable Information Commands");
                 foreach (var element in commands)
@@ -66,8 +64,7 @@ namespace SeymourBot.Modules
                 Command command = new Command(cmdName);
                 if (!command.Error)
                 {
-                    InformationStorageManager infoManager = new InformationStorageManager();
-                    string commandContent = await infoManager.GetInfoCommand(command);
+                    string commandContent = await StorageManager.GetInfoCommand(command);
                     await Context.Channel.SendMessageAsync(commandContent);
                 }
 
@@ -77,11 +74,6 @@ namespace SeymourBot.Modules
             {
                 return new CommandErrorResult(CommandError.Unsuccessful, ex.Message);
             }
-
-
-
-
-
         }
     }
 }

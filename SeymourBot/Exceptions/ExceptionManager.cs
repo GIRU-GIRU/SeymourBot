@@ -9,7 +9,7 @@ namespace SeymourBot.Exceptions
         public static void HandleException(string code, Exception ex)
         {
             string message = GetMessage(code);
-            //send a message in the chat
+            HandleExceptionHelper(ex, message);
         }
 
         public static void HandleException(string code, Exception ex, params string[] extraParameters)
@@ -19,12 +19,19 @@ namespace SeymourBot.Exceptions
             {
                 message = message + " " + extraParameter;
             }
-            //send a message in the chat
+            HandleExceptionHelper(ex, message);
         }
 
-        public static void ThrowException(string code)
+        private static void HandleExceptionHelper(Exception ex, string message)
         {
-            throw new Exception(GetMessage(code));
+            if (ex.GetType() == typeof(SeymourException))
+            {
+                throw ex;
+            }
+            else
+            {
+                throw new SeymourException(message + " Caused by " + ex.Message);
+            }
         }
 
         private static string GetMessage(string code)

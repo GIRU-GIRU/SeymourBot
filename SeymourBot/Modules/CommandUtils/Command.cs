@@ -11,6 +11,7 @@ namespace SeymourBot.Modules.CommandUtils
 
         public readonly string CommandName;
         public readonly string CommandContent;
+        public readonly string[] CommandParameters;
         public readonly bool Error;
 
         public Command(string userInput)
@@ -21,6 +22,7 @@ namespace SeymourBot.Modules.CommandUtils
                 string[] splitInput = userInput.Split(' ');
                 CommandName = splitInput[0];
                 CommandContent = String.Join(' ', splitInput.Skip(0));
+                CommandParameters = CommandContent.Split(' ');
             }
             catch (Exception e)
             {

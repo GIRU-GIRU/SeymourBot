@@ -1,5 +1,7 @@
 ﻿using SeymourBot.DataAccess.Storage.Information;
+using SeymourBot.Exceptions;
 using SeymourBot.Modules.CommandUtils;
+using SeymourBot.Storage;
 using SeymourBot.Storage.Information;
 using SeymourBot.Storage.Information.Tables;
 using SeymourBot.Storage.User;
@@ -11,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace SeymourBot.DataAccess.StorageManager
 {
-    class InformationStorageManager
+    static class StorageManager
     {
-        public async Task StoreInfoCommandAsync(Command command)
+        public static async Task StoreInfoCommandAsync(Command command)
         {
             try
             {
@@ -35,32 +37,30 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                throw ex;
+                ExceptionManager.HandleException("0601", ex);
             }
         }
 
-        public async Task<string> GetInfoCommand(Command command)
+        public static async Task<string> GetInfoCommand(Command command)
         {
             try
             {
                 using (InfoCommandContext db = new InfoCommandContext())
                 {
-
                     return db.InfoCommandTable.Where(x =>
                                                        x.CommandName.ToLower() == command.CommandName.ToLower())
                                                           .FirstOrDefault()
                                                               .CommandName;
-
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                ExceptionManager.HandleException("0602", ex);
                 throw;
             }
         }
 
-        public async Task<List<string>> GetInfoCommands()
+        public static async Task<List<string>> GetInfoCommands()
         {
             List<string> result = new List<string>();
             try
@@ -74,14 +74,35 @@ namespace SeymourBot.DataAccess.StorageManager
                     return result;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                ExceptionManager.HandleException("0603", ex);
                 throw;
             }
         }
 
-        private int GenerateCommandID(string commandName)
+        public static async Task<List<UserDisciplinaryEventStorage>> GetTimedEvents()
+        {
+            List<UserDisciplinaryEventStorage> result = new List<UserDisciplinaryEventStorage>();
+            try
+            {
+                using (UserContext db = new UserContext())
+                {
+                    foreach (var element in db.UserDisciplinaryEventStorageTable)
+                    {
+                        result.Add(element);
+                    }
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("0604", ex);
+                throw;
+            }
+        }
+
+        private static int GenerateCommandID(string commandName)
         {
             int id = 1;
             using (InfoCommandContext db = new InfoCommandContext())
