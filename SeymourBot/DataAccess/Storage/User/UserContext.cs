@@ -21,7 +21,8 @@ namespace SeymourBot.Storage.User
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=SeymourUserDB.db");
+            string dbPath = @"F:\SeymourV2\SeymourBot\SeymourBot\Database\SeymourUserDB.db";
+            optionsBuilder.UseSqlite($"Data Source={dbPath}");
             optionsBuilder.EnableSensitiveDataLogging(true);
         }
     }

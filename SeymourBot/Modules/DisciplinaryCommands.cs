@@ -1,4 +1,6 @@
 ﻿using Discord.Commands;
+using Discord.WebSocket;
+using SeymourBot.DiscordUtilities;
 using SeymourBot.Modules.CommandUtils;
 using System;
 using System.Collections.Generic;
@@ -10,19 +12,18 @@ namespace SeymourBot.Modules
     class DisciplinaryCommands : ModuleBase<SocketCommandContext>
     {
         [Command("Mute")]
-        private async Task TempMuteCommandTest([Remainder]string UserInput)
+        [RequireBotPermission(Discord.GuildPermission.ManageRoles)]
+        private async Task TempMuteCommandTest(SocketGuildUser user)
         {
             try
             {
-                Command command = new Command(UserInput);
-                if (!command.Error && command.CommandParameters.Length >= 2)
-                {
+                var role = DiscordObject.GrabRole(MordhauRoleEnum.Muted, Context);
 
-                }
+                await user.AddRoleAsync(role);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
         }

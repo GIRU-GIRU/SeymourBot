@@ -20,7 +20,9 @@ namespace SeymourBot.Config
         Mordhau_General,
         CommandPrefix,
 
+
         //non-sensible user settings
+        MordhauGuild,
 
     }
 }

@@ -36,6 +36,9 @@ namespace SeymourBot.Exceptions
             {"0602", "Error getting info command" },
             {"0603", "Error getting info command list" },
             {"0604", "Error getting timed events" },
+
+            //07 Discord Object exceptions
+            {"0701", "Error getting role from Discord" }
         };
     }
 }

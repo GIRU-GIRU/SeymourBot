@@ -8,12 +8,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using SeymourBot.Logging;
 using SeymourBot.Exceptions;
+using SeymourBot.DiscordUtilities;
 
 namespace SeymourBot
 {
     class Program
     {
-        private static ConfigManager cfgManager = new ConfigManager();
 
         static void Main(string[] args)
         {
@@ -26,13 +26,13 @@ namespace SeymourBot
         public DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
-        private SocketGuild guild;
-
+        private BotInitialization _botInitialization;
+        
         public async Task RunBotAsync()
         {
             DiscordSocketConfig botConfig = new DiscordSocketConfig()
             {
-                MessageCacheSize = cfgManager.GetIntegerProperty(PropertyItem.MessageCacheSize)
+                MessageCacheSize = ConfigManager.GetIntegerProperty(PropertyItem.MessageCacheSize)
             };
 
             _client = new DiscordSocketClient(botConfig);
@@ -46,13 +46,16 @@ namespace SeymourBot
                 .AddSingleton(_commands)
                 .AddSingleton(_client)
                 .BuildServiceProvider();
-
-
+            
             _client.Log += Logger.Log;
             _commands.CommandExecuted += OnCommandExecutedAsync;
 
+            
+            _botInitialization = new BotInitialization(_client);
+            _client.Ready += _botInitialization.BotReadyEvent();
+
             await RegisterCommandAsync();
-            await _client.LoginAsync(TokenType.Bot, cfgManager.GetProperty(PropertyItem.BotToken));
+            await _client.LoginAsync(TokenType.Bot, ConfigManager.GetProperty(PropertyItem.BotToken));
             await _client.StartAsync();
 
             await Task.Delay(-1);
@@ -71,7 +74,7 @@ namespace SeymourBot
 
             // _ = Task.Run(() => _onMessage.MessageContainsAsync(arg));
             int argPos = 0;
-            if (message.HasStringPrefix(cfgManager.GetProperty(PropertyItem.CommandPrefix), ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
+            if (message.HasStringPrefix(ConfigManager.GetProperty(PropertyItem.CommandPrefix), ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
             {
                 var context = new SocketCommandContext(_client, message);
 
