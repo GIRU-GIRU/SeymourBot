@@ -1,4 +1,5 @@
-﻿using Discord.WebSocket;
+﻿using Discord;
+using Discord.WebSocket;
 using SeymourBot.Config;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,18 @@ namespace SeymourBot.DiscordUtilities
 
         public BotInitialization(DiscordSocketClient client)
         {
-            client = _client;
+            _client = client;
         }
 
-        internal Func<Task> BotReadyEvent()
+        public async Task BotReadyEvent()
         {
 
-            ulong mordhauGuildID = ConfigManager.GetUlongProperty(PropertyItem.MordhauGuild);
+            //ulong mordhauGuildID = ConfigManager.GetUlongProperty(PropertyItem.MordhauGuild);
 
-            return null;
+            var guild = _client.GetGuild(390097689750011906);
+            var chnl = _client.GetChannel(443742330303021066) as ITextChannel;
+
+            await chnl.SendMessageAsync("test");
             // the poo
         }
     }

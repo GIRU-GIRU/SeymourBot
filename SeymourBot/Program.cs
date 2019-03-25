@@ -50,15 +50,20 @@ namespace SeymourBot
             _client.Log += Logger.Log;
             _commands.CommandExecuted += OnCommandExecutedAsync;
 
-            
-            _botInitialization = new BotInitialization(_client);
-            _client.Ready += _botInitialization.BotReadyEvent();
+                
+            _client.Ready += BotReadyEvent;
 
             await RegisterCommandAsync();
             await _client.LoginAsync(TokenType.Bot, ConfigManager.GetProperty(PropertyItem.BotToken));
             await _client.StartAsync();
 
             await Task.Delay(-1);
+        }
+
+        private async Task BotReadyEvent()
+        {
+            _botInitialization = new BotInitialization(_client);
+            await _botInitialization.BotReadyEvent();
         }
 
         public async Task RegisterCommandAsync()
@@ -104,14 +109,10 @@ namespace SeymourBot
                 default:
                     if (!string.IsNullOrEmpty(result.ErrorReason))
                     {
-                      await chnl.SendMessageAsync($"```{context.Message.Content}``` threw a {result.ErrorReason}");
+                      await chnl.SendMessageAsync($" \"{context.Message.Content}\" threw a ```{result.ErrorReason}```");
                     }
                     break;
             }
         }
-
-
-
-
     }
 }
