@@ -27,7 +27,7 @@ namespace SeymourBot
         private CommandService _commands;
         private IServiceProvider _services;
         private BotInitialization _botInitialization;
-        
+
         public async Task RunBotAsync()
         {
             DiscordSocketConfig botConfig = new DiscordSocketConfig()
@@ -46,13 +46,13 @@ namespace SeymourBot
                 .AddSingleton(_commands)
                 .AddSingleton(_client)
                 .BuildServiceProvider();
-            
+
             _client.Log += Logger.Log;
             _commands.CommandExecuted += OnCommandExecutedAsync;
 
-            
+
             _botInitialization = new BotInitialization(_client);
-            _client.Ready += _botInitialization.BotReadyEvent();
+            //_client.Ready += _botInitialization.BotReadyEvent();
 
             await RegisterCommandAsync();
             await _client.LoginAsync(TokenType.Bot, ConfigManager.GetProperty(PropertyItem.BotToken));
@@ -92,9 +92,9 @@ namespace SeymourBot
 
             if (!string.IsNullOrEmpty(result.ErrorReason))
             {
-                 chnl = await context.Guild.GetChannelAsync(558072353733738499) as ITextChannel;
+                chnl = await context.Guild.GetChannelAsync(558072353733738499) as ITextChannel;
             }
-   
+
             switch (result)
             {
                 case CommandErrorResult errorResult:
@@ -104,7 +104,7 @@ namespace SeymourBot
                 default:
                     if (!string.IsNullOrEmpty(result.ErrorReason))
                     {
-                      await chnl.SendMessageAsync($"```{context.Message.Content}``` threw a {result.ErrorReason}");
+                        await chnl.SendMessageAsync($"```{context.Message.Content}``` threw a {result.ErrorReason}");
                     }
                     break;
             }

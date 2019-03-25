@@ -2,6 +2,8 @@
 using Discord.WebSocket;
 using SeymourBot.DiscordUtilities;
 using SeymourBot.Modules.CommandUtils;
+using SeymourBot.Storage;
+using SeymourBot.TimedEvent;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +22,15 @@ namespace SeymourBot.Modules
                 var role = DiscordObject.GrabRole(MordhauRoleEnum.Muted, Context);
 
                 await user.AddRoleAsync(role);
+                UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
+                {
+                    DateInserted = DateTime.Now,
+                    DateToRemove = DateTime.Now.AddMinutes(5),
+                    DiscipinaryEventType = Storage.User.DisciplineEventEnum.MuteEvent,
+                    DisciplineEventID = (ulong)DateTime.Now.Millisecond,
+                    //ModeratorID = Context.Client.
+                };
+                //TimedEventManager.CreateEvent();
             }
             catch (Exception ex)
             {

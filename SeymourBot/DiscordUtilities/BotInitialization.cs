@@ -15,14 +15,12 @@ namespace SeymourBot.DiscordUtilities
         {
             client = _client;
         }
-
+        /*
         internal Func<Task> BotReadyEvent()
         {
+            ulong mordhauGuildID = ConfigManager.GetUlongUserSetting(PropertyItem.MordhauGuild);
 
-            ulong mordhauGuildID = ConfigManager.GetUlongProperty(PropertyItem.MordhauGuild);
-
-            return null;
-            // the poo
         }
+        */
     }
 }

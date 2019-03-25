@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SeymourBot.Storage.Information;
 using SeymourBot.Storage.Information.Tables;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SeymourBot.DataAccess.Storage.Information
 {
@@ -15,7 +11,7 @@ namespace SeymourBot.DataAccess.Storage.Information
         {
             // optionsBuilder.UseSqlite("Data Source=SeymourInfoDB.db");
 
-            string dbPath = @"F:\SeymourV2\SeymourBot\SeymourBot\Database\";
+            string dbPath = @"C:\Users\Monty\Documents\programming\Github Repos\SeymourBot\SeymourBot\Database\";
             optionsBuilder.UseSqlite($"Data Source={dbPath}SeymourInfoDB.db");
 
             

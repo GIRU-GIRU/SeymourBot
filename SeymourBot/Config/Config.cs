@@ -53,7 +53,13 @@ namespace SeymourBot.Config
 
         private readonly static IDictionary<PropertyItem, string> DefaultSettings = new Dictionary<PropertyItem, string>()
         {
-
+            {PropertyItem.MordhauGuild, ""},
+            {PropertyItem.Role_Muted, ""},
+            {PropertyItem.Role_LimitedUser, ""},
+            {PropertyItem.Role_ContentCreator, ""},
+            {PropertyItem.Role_Private, ""},
+            {PropertyItem.Role_Moderator, ""},
+            {PropertyItem.Role_Developer, ""}
         };
 
         public readonly static string SettingsName = "UserSettings";

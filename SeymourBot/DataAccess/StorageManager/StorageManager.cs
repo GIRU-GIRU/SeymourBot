@@ -60,6 +60,22 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
+        public static async Task StoreTimedEvent(UserDisciplinaryEventStorage newEvent)
+        {
+            try
+            {
+                using (UserContext db = new UserContext())
+                {
+                    await db.UserDisciplinaryEventStorageTable.AddAsync(newEvent);
+                    await db.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("0605", ex);
+            }
+        }
+
         public static async Task<List<string>> GetInfoCommands()
         {
             List<string> result = new List<string>();
