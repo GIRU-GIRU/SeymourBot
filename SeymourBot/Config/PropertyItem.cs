@@ -13,22 +13,21 @@ namespace SeymourBot.Config
     public enum PropertyItem
     {
         None,
+
         //sensible properties for the bot Configuration
         BotToken,
         MessageCacheSize,
-        AuditChannel,
-        Mordhau_General,
         CommandPrefix,
 
-
         //non-sensible user settings
-        MordhauGuild,
+        Guild_Mordhau,
         Role_Muted,
         Role_LimitedUser,
         Role_ContentCreator,
         Role_Private,
         Role_Moderator,
-        Role_Developer
-
+        Role_Developer,
+        Channel_Main,
+        Channel_Logging
     }
 }

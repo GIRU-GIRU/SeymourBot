@@ -60,12 +60,19 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        public static async Task StoreTimedEvent(UserDisciplinaryEventStorage newEvent)
+        public static async Task StoreTimedEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
         {
             try
             {
                 using (UserContext db = new UserContext())
                 {
+                    if (db.UserStorageTable.FindAsync(newUser.UserID) == null)
+                    {
+                        //if the user id cannot be found, create it
+                        //var oldUser = db.UserStorageTable.Where(x => x.UserName == newUser.UserName); no need to link with the name
+
+                        await db.UserStorageTable.AddAsync(newUser);
+                    }
                     await db.UserDisciplinaryEventStorageTable.AddAsync(newEvent);
                     await db.SaveChangesAsync();
                 }

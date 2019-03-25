@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SeymourBot.Modules
 {
-    class DisciplinaryCommands : ModuleBase<SocketCommandContext>
+    public class DisciplinaryCommands : ModuleBase<SocketCommandContext>
     {
         [Command("Mute")]
         [RequireBotPermission(Discord.GuildPermission.ManageRoles)]
@@ -28,15 +28,21 @@ namespace SeymourBot.Modules
                     DateToRemove = DateTime.Now.AddMinutes(5),
                     DiscipinaryEventType = Storage.User.DisciplineEventEnum.MuteEvent,
                     DisciplineEventID = (ulong)DateTime.Now.Millisecond,
-                    //ModeratorID = Context.Client.
+                    ModeratorID = Context.Message.Author.Id,
+                    Reason = "TEST",
+                    UserID = user.Id
                 };
-                //TimedEventManager.CreateEvent();
+                UserStorage newUser = new UserStorage()
+                {
+                    UserID = user.Id,
+                    UserName = user.Username
+                };
+                TimedEventManager.CreateEvent(newEvent, newUser);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-
         }
     }
 }

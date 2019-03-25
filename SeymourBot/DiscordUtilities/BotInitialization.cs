@@ -20,14 +20,10 @@ namespace SeymourBot.DiscordUtilities
         public async Task BotReadyEvent()
 
         {
-          //  ulong mordhauGuildID = ConfigManager.GetUlongUserSetting(PropertyItem.MordhauGuild);
-
-            var guild = _client.GetGuild(390097689750011906);
-            var chnl = _client.GetChannel(443742330303021066) as ITextChannel;
-
-            await chnl.SendMessageAsync("test");
+            var guild = _client.GetGuild(ConfigManager.GetUlongUserSetting(PropertyItem.Guild_Mordhau));
+            var chnl = _client.GetChannel(ConfigManager.GetUlongUserSetting(PropertyItem.Channel_Main)) as ITextChannel;
+            await chnl.SendMessageAsync("Test startup message");
             // the poo
         }
-  
     }
 }

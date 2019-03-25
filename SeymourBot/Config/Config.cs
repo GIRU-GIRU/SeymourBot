@@ -44,8 +44,6 @@ namespace SeymourBot.Config
         {
             {PropertyItem.BotToken, ""},
             {PropertyItem.MessageCacheSize, ""},
-            {PropertyItem.AuditChannel, ""},
-            {PropertyItem.Mordhau_General, ""},
             {PropertyItem.CommandPrefix, ""}
         };
 
@@ -53,13 +51,15 @@ namespace SeymourBot.Config
 
         private readonly static IDictionary<PropertyItem, string> DefaultSettings = new Dictionary<PropertyItem, string>()
         {
-            {PropertyItem.MordhauGuild, ""},
+            {PropertyItem.Guild_Mordhau, ""},
             {PropertyItem.Role_Muted, ""},
             {PropertyItem.Role_LimitedUser, ""},
             {PropertyItem.Role_ContentCreator, ""},
             {PropertyItem.Role_Private, ""},
             {PropertyItem.Role_Moderator, ""},
-            {PropertyItem.Role_Developer, ""}
+            {PropertyItem.Role_Developer, ""},
+            {PropertyItem.Channel_Logging, ""},
+            {PropertyItem.Channel_Main, ""}
         };
 
         public readonly static string SettingsName = "UserSettings";

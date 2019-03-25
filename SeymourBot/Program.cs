@@ -97,7 +97,7 @@ namespace SeymourBot
 
             if (!string.IsNullOrEmpty(result.ErrorReason))
             {
-                chnl = await context.Guild.GetChannelAsync(558072353733738499) as ITextChannel;
+                chnl = await context.Guild.GetChannelAsync(ConfigManager.GetUlongUserSetting(PropertyItem.Channel_Logging)) as ITextChannel;
             }
 
             switch (result)

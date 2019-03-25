@@ -16,6 +16,7 @@ namespace SeymourBot.TimedEvent
 
         static TimedEventManager()
         {
+            timer = new Timer();
             timer.AutoReset = true;
             timer.Interval = 60000; //tick every minute
             timer.Elapsed += Timer_Elapsed;
@@ -37,9 +38,13 @@ namespace SeymourBot.TimedEvent
             }
         }
 
-        public async static void CreateEvent(UserDisciplinaryEventStorage newEvent)
+        public async static void CreateEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
         {
-            await StorageManager.StoreTimedEvent(newEvent);
+            var activeEvent = new ActiveTimedEvent();
+            activeEvent.DisciplinaryEvent = newEvent.DiscipinaryEventType;
+            activeEvent.TimeToTrigger = newEvent.DateToRemove.Subtract(newEvent.DateInserted).Minutes;
+            activeEvents.Add(activeEvent);
+            await StorageManager.StoreTimedEvent(newEvent, newUser);
         }
 
         private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
