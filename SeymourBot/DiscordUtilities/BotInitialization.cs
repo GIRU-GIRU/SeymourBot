@@ -18,9 +18,9 @@ namespace SeymourBot.DiscordUtilities
         }
 
         public async Task BotReadyEvent()
-        {
 
-            //ulong mordhauGuildID = ConfigManager.GetUlongProperty(PropertyItem.MordhauGuild);
+        {
+          //  ulong mordhauGuildID = ConfigManager.GetUlongUserSetting(PropertyItem.MordhauGuild);
 
             var guild = _client.GetGuild(390097689750011906);
             var chnl = _client.GetChannel(443742330303021066) as ITextChannel;
@@ -28,5 +28,6 @@ namespace SeymourBot.DiscordUtilities
             await chnl.SendMessageAsync("test");
             // the poo
         }
+  
     }
 }

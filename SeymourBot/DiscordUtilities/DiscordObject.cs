@@ -15,7 +15,7 @@ namespace SeymourBot.DiscordUtilities
         {
             try
             {
-              return context.Guild.GetRole(ConfigManager.GetUlongProperty(Property.FromString(role.ToString())));
+                return context.Guild.GetRole(ConfigManager.GetUlongUserSetting(Property.FromMordhauRole(role)));
             }
             catch (Exception ex)
             {

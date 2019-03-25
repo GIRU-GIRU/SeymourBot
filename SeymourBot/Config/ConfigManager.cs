@@ -103,9 +103,9 @@ namespace SeymourBot.Config
             else return 0;
         }
 
-        public static ulong GetUlongProperty(PropertyItem item)
+        public static ulong GetUlongUserSetting(PropertyItem item)
         {
-            string temp = configuration.Get(item);
+            string temp = userSettings.Get(item);
             ulong result;
             if (ulong.TryParse(temp, out result))
             {

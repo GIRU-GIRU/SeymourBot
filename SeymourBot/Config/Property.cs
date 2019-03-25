@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeymourBot.DiscordUtilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +29,7 @@ namespace SeymourBot.Config
         /// Generate a list of properties with their default values
         /// </summary>
         /// <returns>A complete list of properties</returns>
-       
+
         public static PropertyItem FromString(string name)
         {
             PropertyItem result;
@@ -40,6 +41,11 @@ namespace SeymourBot.Config
             {
                 return PropertyItem.None;
             }
+        }
+
+        public static PropertyItem FromMordhauRole(MordhauRoleEnum mordhauRole)
+        {
+            return Property.FromString("Role_" + mordhauRole.ToString());
         }
     }
 }

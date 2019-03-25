@@ -23,6 +23,12 @@ namespace SeymourBot.Config
 
         //non-sensible user settings
         MordhauGuild,
+        Role_Muted,
+        Role_LimitedUser,
+        Role_ContentCreator,
+        Role_Private,
+        Role_Moderator,
+        Role_Developer
 
     }
 }
