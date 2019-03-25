@@ -1,4 +1,6 @@
-﻿using SeymourBot.DataAccess.StorageManager;
+﻿using SeymourBot.Config;
+using SeymourBot.DataAccess.StorageManager;
+using SeymourBot.DiscordUtilities;
 using SeymourBot.Storage;
 using System;
 using System.Collections.Generic;
@@ -11,8 +13,6 @@ namespace SeymourBot.TimedEvent
     {
         private static List<ActiveTimedEvent> activeEvents;
         private static Timer timer;
-
-        public static event EventHandler<ActiveTimedEvent> OnEventElapsed;
 
         static TimedEventManager()
         {
@@ -29,21 +29,15 @@ namespace SeymourBot.TimedEvent
             activeEvents = new List<ActiveTimedEvent>();
             DateTime currentTime = DateTime.Now;
             var dbTimedEvents = await StorageManager.GetTimedEvents();
-            ActiveTimedEvent activeEvent;
             foreach (var timedEvent in dbTimedEvents)
             {
-                activeEvent = new ActiveTimedEvent();
-                activeEvent.DisciplinaryEvent = timedEvent.DiscipinaryEventType;
-                activeEvent.TimeToTrigger = currentTime.Subtract(timedEvent.DateToRemove).Minutes;
+                activeEvents.Add(BuildActiveTimedEvent(timedEvent));
             }
         }
 
         public async static void CreateEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
         {
-            var activeEvent = new ActiveTimedEvent();
-            activeEvent.DisciplinaryEvent = newEvent.DiscipinaryEventType;
-            activeEvent.TimeToTrigger = newEvent.DateToRemove.Subtract(newEvent.DateInserted).Minutes;
-            activeEvents.Add(activeEvent);
+            activeEvents.Add(BuildActiveTimedEvent(newEvent));
             await StorageManager.StoreTimedEvent(newEvent, newUser);
         }
 
@@ -53,8 +47,29 @@ namespace SeymourBot.TimedEvent
             {
                 if (--activeEvent.TimeToTrigger <= 0)
                 {
-                    OnEventElapsed.Invoke(null, activeEvent);
+                    HandleEventElapsed(activeEvent);
                 }
+            }
+        }
+
+        private static ActiveTimedEvent BuildActiveTimedEvent(UserDisciplinaryEventStorage eventStorage)
+        {
+            var activeEvent = new ActiveTimedEvent();
+            activeEvent.DisciplinaryEvent = eventStorage.DiscipinaryEventType;
+            activeEvent.TimeToTrigger = eventStorage.DateToRemove.Subtract(eventStorage.DateInserted).Minutes;
+            activeEvent.UserId = eventStorage.UserID;
+            return activeEvent;
+        }
+
+        private static async void HandleEventElapsed(ActiveTimedEvent activeEvent)
+        {
+            switch (activeEvent.DisciplinaryEvent)
+            {
+                case Storage.User.DisciplineEventEnum.MuteEvent:
+                    await DiscordContext.RemoveRole(activeEvent.UserId, ConfigManager.GetUlongUserSetting(PropertyItem.Role_Muted));
+                    break;
+                default:
+                    break;
             }
         }
     }

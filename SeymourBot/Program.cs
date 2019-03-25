@@ -26,7 +26,6 @@ namespace SeymourBot
         public DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
-        private BotInitialization _botInitialization;
 
         public async Task RunBotAsync()
         {
@@ -62,8 +61,8 @@ namespace SeymourBot
 
         private async Task BotReadyEvent()
         {
-            _botInitialization = new BotInitialization(_client);
-            await _botInitialization.BotReadyEvent();
+            DiscordContext.InitContext(_client);
+            await DiscordContext.BotReadyEvent();
         }
 
         public async Task RegisterCommandAsync()
@@ -110,8 +109,6 @@ namespace SeymourBot
                     if (!string.IsNullOrEmpty(result.ErrorReason))
                     {
                         await chnl.SendMessageAsync($" \"{context.Message.Content}\" threw a ```{result.ErrorReason}```");
-
-
                     }
                     break;
             }
