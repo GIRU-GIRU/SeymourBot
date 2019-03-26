@@ -1,6 +1,7 @@
 ﻿using SeymourBot.Config;
 using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.DiscordUtilities;
+using SeymourBot.Exceptions;
 using SeymourBot.Storage;
 using System;
 using System.Collections.Generic;
@@ -65,14 +66,22 @@ namespace SeymourBot.TimedEvent
 
         private static async void HandleEventElapsed(ActiveTimedEvent activeEvent)
         {
-            switch (activeEvent.DisciplinaryEvent)
+            try
             {
-                case Storage.User.DisciplineEventEnum.MuteEvent:
-                    await DiscordContext.RemoveRole(activeEvent.UserId, ConfigManager.GetUlongUserSetting(PropertyItem.Role_Muted));
-                    await StorageManager.ArchiveTimedEvent(activeEvent.DisciplinaryEventId);
-                    break;
-                default:
-                    break;
+                switch (activeEvent.DisciplinaryEvent)
+                {
+                    case Storage.User.DisciplineEventEnum.MuteEvent:
+                        activeEvents.Remove(activeEvent);
+                        await DiscordContext.RemoveRole(activeEvent.UserId, ConfigManager.GetUlongUserSetting(PropertyItem.Role_Muted));
+                        await StorageManager.ArchiveTimedEvent(activeEvent.DisciplinaryEventId);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.LogException(ex);
             }
         }
     }

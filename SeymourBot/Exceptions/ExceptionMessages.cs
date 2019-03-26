@@ -40,7 +40,7 @@ namespace SeymourBot.Exceptions
             {"0606", "Error archiving timed event" },
             {"0607", "Could not find the timed event to archive" },
 
-            //07 Discord Object exceptions
+            //07 DiscordContext exceptions
             {"0701", "Error getting role from Discord" }
         };
     }

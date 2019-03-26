@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeymourBot.DiscordUtilities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,6 +21,11 @@ namespace SeymourBot.Exceptions
                 message = message + " " + extraParameter;
             }
             HandleExceptionHelper(ex, message);
+        }
+
+        public static async void LogException(Exception ex)
+        {
+            await DiscordContext.LogError(ex.Message);
         }
 
         private static void HandleExceptionHelper(Exception ex, string message)

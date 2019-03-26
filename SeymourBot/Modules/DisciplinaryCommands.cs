@@ -19,7 +19,7 @@ namespace SeymourBot.Modules
         {
             try
             {
-                var role = DiscordObject.GrabRole(MordhauRoleEnum.Muted, Context);
+                var role = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
 
                 await user.AddRoleAsync(role);
                 UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()

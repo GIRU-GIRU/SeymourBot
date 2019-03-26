@@ -66,7 +66,8 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (UserContext db = new UserContext())
                 {
-                    if (db.UserStorageTable.FindAsync(newUser.UserID) == null)
+                    var findResult = await db.UserStorageTable.FindAsync(newUser.UserID);
+                    if (findResult == null)
                     {
                         await db.UserStorageTable.AddAsync(newUser);
                     }

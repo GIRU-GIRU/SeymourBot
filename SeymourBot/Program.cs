@@ -102,13 +102,13 @@ namespace SeymourBot
             switch (result)
             {
                 case CommandErrorResult errorResult:
-                    await chnl.SendMessageAsync(errorResult.Reason);
+                    await DiscordContext.LogError(result.ErrorReason);
                     break;
 
                 default:
                     if (!string.IsNullOrEmpty(result.ErrorReason))
                     {
-                        await chnl.SendMessageAsync($" \"{context.Message.Content}\" threw a ```{result.ErrorReason}```");
+                        await DiscordContext.LogError(result.ErrorReason, context.Message.Content);
                     }
                     break;
             }
