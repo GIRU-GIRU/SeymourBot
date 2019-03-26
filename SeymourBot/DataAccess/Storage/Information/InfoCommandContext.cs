@@ -14,7 +14,7 @@ namespace SeymourBot.DataAccess.Storage.Information
             string dbPath = @"C:\Users\Monty\Documents\programming\Github Repos\SeymourBot\SeymourBot\Database\";
             optionsBuilder.UseSqlite($"Data Source={dbPath}SeymourInfoDB.db");
 
-            
+
             optionsBuilder.EnableSensitiveDataLogging(true);
         }
     }

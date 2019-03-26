@@ -37,6 +37,8 @@ namespace SeymourBot.Exceptions
             {"0603", "Error getting info command list" },
             {"0604", "Error getting timed events" },
             {"0605", "Error saving timed event" },
+            {"0606", "Error archiving timed event" },
+            {"0607", "Could not find the timed event to archive" },
 
             //07 Discord Object exceptions
             {"0701", "Error getting role from Discord" }

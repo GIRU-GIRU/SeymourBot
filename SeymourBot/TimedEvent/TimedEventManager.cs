@@ -37,8 +37,10 @@ namespace SeymourBot.TimedEvent
 
         public async static void CreateEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
         {
-            activeEvents.Add(BuildActiveTimedEvent(newEvent));
-            await StorageManager.StoreTimedEvent(newEvent, newUser);
+            var newActiveEvent = BuildActiveTimedEvent(newEvent);
+            activeEvents.Add(newActiveEvent);
+            var id = await StorageManager.StoreTimedEvent(newEvent, newUser);
+            newActiveEvent.DisciplinaryEventId = id;
         }
 
         private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -67,6 +69,7 @@ namespace SeymourBot.TimedEvent
             {
                 case Storage.User.DisciplineEventEnum.MuteEvent:
                     await DiscordContext.RemoveRole(activeEvent.UserId, ConfigManager.GetUlongUserSetting(PropertyItem.Role_Muted));
+                    await StorageManager.ArchiveTimedEvent(activeEvent.DisciplinaryEventId);
                     break;
                 default:
                     break;

@@ -22,7 +22,7 @@ namespace SeymourBot.DataAccess.StorageManager
                 using (InfoCommandContext db = new InfoCommandContext())
                 {
 
-                    int commandID = GenerateCommandID(command.CommandName);
+                    int commandID = GenerateCommandID();
 
                     await db.InfoCommandTable.AddAsync(new InfoCommandTable
                     {
@@ -60,7 +60,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        public static async Task StoreTimedEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
+        public static async Task<ulong> StoreTimedEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
         {
             try
             {
@@ -68,18 +68,55 @@ namespace SeymourBot.DataAccess.StorageManager
                 {
                     if (db.UserStorageTable.FindAsync(newUser.UserID) == null)
                     {
-                        //if the user id cannot be found, create it
-                        //var oldUser = db.UserStorageTable.Where(x => x.UserName == newUser.UserName); no need to link with the name
-
                         await db.UserStorageTable.AddAsync(newUser);
                     }
+                    newEvent.DisciplineEventID = (ulong)GenerateTimedEventID();
                     await db.UserDisciplinaryEventStorageTable.AddAsync(newEvent);
                     await db.SaveChangesAsync();
+                    return newEvent.DisciplineEventID;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionManager.HandleException("0605", ex);
+                throw;
+            }
+        }
+
+        public static async Task ArchiveTimedEvent(ulong eventId)
+        {
+            try
+            {
+                using (UserContext db = new UserContext())
+                {
+                    var eventToArchive = await db.UserDisciplinaryEventStorageTable.FindAsync(eventId);
+                    if (eventToArchive != null)
+                    {
+                        db.UserDisciplinaryEventStorageTable.Remove(eventToArchive);
+                        var archivedEvent = new UserDisciplinaryEventArchive()
+                        {
+                            ArchiveID = (ulong)GenerateAchiveID(),
+                            DateArchived = DateTime.Now,
+                            DateInserted = eventToArchive.DateInserted,
+                            DateToRemove = eventToArchive.DateToRemove,
+                            DisciplineEventID = eventToArchive.DisciplineEventID,
+                            DisciplineType = eventToArchive.DiscipinaryEventType,
+                            ModeratorID = eventToArchive.ModeratorID,
+                            Reason = eventToArchive.Reason,
+                            UserID = eventToArchive.UserID
+                        };
+                        await db.UserDisciplinaryEventArchiveTable.AddAsync(archivedEvent);
+                        await db.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        ExceptionManager.HandleException("0606", new Exception());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("0606", ex);
             }
         }
 
@@ -125,12 +162,32 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        private static int GenerateCommandID(string commandName)
+        private static int GenerateCommandID()
         {
             int id = 1;
             using (InfoCommandContext db = new InfoCommandContext())
             {
                 id = db.InfoCommandTable.Count() + 1;
+            }
+            return id;
+        }
+
+        private static int GenerateTimedEventID()
+        {
+            int id = 1;
+            using (UserContext db = new UserContext())
+            {
+                id = db.UserDisciplinaryEventStorageTable.Count() + 1;
+            }
+            return id;
+        }
+
+        private static int GenerateAchiveID()
+        {
+            int id = 1;
+            using (UserContext db = new UserContext())
+            {
+                id = db.UserDisciplinaryEventArchiveTable.Count() + 1;
             }
             return id;
         }
