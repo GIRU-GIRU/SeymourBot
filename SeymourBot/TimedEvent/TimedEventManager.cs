@@ -28,7 +28,6 @@ namespace SeymourBot.TimedEvent
         private async static void LoadFromDB()
         {
             activeEvents = new List<ActiveTimedEvent>();
-            DateTime currentTime = DateTime.Now;
             var dbTimedEvents = await StorageManager.GetTimedEvents();
             foreach (var timedEvent in dbTimedEvents)
             {
@@ -72,6 +71,7 @@ namespace SeymourBot.TimedEvent
                 {
                     case Storage.User.DisciplineEventEnum.MuteEvent:
                         activeEvents.Remove(activeEvent);
+                        //todo
                         await DiscordContext.RemoveRole(activeEvent.UserId, ConfigManager.GetUlongUserSetting(PropertyItem.Role_Muted));
                         await StorageManager.ArchiveTimedEvent(activeEvent.DisciplinaryEventId);
                         break;

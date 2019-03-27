@@ -15,7 +15,7 @@ namespace SeymourBot.Modules
     {
         [Command("Mute")]
         [RequireBotPermission(Discord.GuildPermission.ManageRoles)]
-        private async Task TempMuteCommandTest(SocketGuildUser user)
+        private async Task TempMuteCommandTest(SocketGuildUser user, int timeToMute = 5, string reason = "No reason given")
         {
             try
             {
@@ -25,11 +25,11 @@ namespace SeymourBot.Modules
                 UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
                 {
                     DateInserted = DateTime.Now,
-                    DateToRemove = DateTime.Now.AddMinutes(5),
+                    DateToRemove = DateTime.Now.AddMinutes(timeToMute),
                     DiscipinaryEventType = Storage.User.DisciplineEventEnum.MuteEvent,
                     DisciplineEventID = (ulong)DateTime.Now.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
-                    Reason = "TEST",
+                    Reason = reason,
                     UserID = user.Id
                 };
                 UserStorage newUser = new UserStorage()
@@ -38,6 +38,8 @@ namespace SeymourBot.Modules
                     UserName = user.Username
                 };
                 TimedEventManager.CreateEvent(newEvent, newUser);
+
+                await Context.Channel.SendMessageAsync($"{Context.Message.Author.Mention} has muted {user.Mention} for {timeToMute} minute(s)");
             }
             catch (Exception ex)
             {

@@ -39,7 +39,7 @@ namespace SeymourBot.Modules
         {
             try
             {
-                List<string> commands = await StorageManager.GetInfoCommands();
+                List<string> commands = StorageManager.GetInfoCommands();
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Avaliable Information Commands");
                 foreach (var element in commands)
@@ -50,7 +50,8 @@ namespace SeymourBot.Modules
             }
             catch (Exception ex)
             {
-                await Context.Channel.SendMessageAsync("u fucked up bitch " + ex.Message);
+                //todo
+                ExceptionManager.HandleException("", ex);
             }
 
         }

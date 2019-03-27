@@ -7,6 +7,7 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using System.Linq;
+using SeymourBot.DiscordUtilities;
 
 namespace SeymourBot.Attributes
 
@@ -20,7 +21,7 @@ namespace SeymourBot.Attributes
 
             var user = context.Message.Author as SocketGuildUser;
 
-            if (user.Roles.Where(x => x.Name.ToLower() == "dev").Any())
+            if (user.Roles.Where(x => x.Name.ToLower() == MordhauRoleEnum.Developer.ToString().ToLower()).Any())
                 return PreconditionResult.FromSuccess();
             else
                 return PreconditionResult.FromError("Invalid roles");
