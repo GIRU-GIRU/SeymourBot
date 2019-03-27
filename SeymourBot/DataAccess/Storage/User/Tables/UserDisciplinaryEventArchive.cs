@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace SeymourBot.Storage
@@ -9,6 +10,7 @@ namespace SeymourBot.Storage
     class UserDisciplinaryEventArchive
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public ulong ArchiveID { get; set; }
         public ulong UserID { get; set; }
         public DisciplineEventEnum DisciplineType { get; set; }

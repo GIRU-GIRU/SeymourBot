@@ -1,4 +1,5 @@
-﻿using SeymourBot.DataAccess.Storage.Information;
+﻿using Microsoft.EntityFrameworkCore;
+using SeymourBot.DataAccess.Storage.Information;
 using SeymourBot.Exceptions;
 using SeymourBot.Modules.CommandUtils;
 using SeymourBot.Storage;
@@ -21,12 +22,8 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (InfoCommandContext db = new InfoCommandContext())
                 {
-
-                    int commandID = GenerateCommandID();
-
                     await db.InfoCommandTable.AddAsync(new InfoCommandTable
                     {
-                        CommandID = commandID,
                         CommandName = command.CommandName,
                         CommandContent = command.CommandContent
                     });
@@ -47,10 +44,12 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (InfoCommandContext db = new InfoCommandContext())
                 {
-                    return db.InfoCommandTable.Where(x =>
+                   var result = await db.InfoCommandTable.Where(x =>
                                                        x.CommandName.ToLower() == command.CommandName.ToLower())
-                                                          .FirstOrDefault()
-                                                              .CommandName;
+                                                          .FirstOrDefaultAsync();
+
+
+                    return result.CommandName;
                 }
             }
             catch (Exception ex)
@@ -71,7 +70,6 @@ namespace SeymourBot.DataAccess.StorageManager
                     {
                         await db.UserStorageTable.AddAsync(newUser);
                     }
-                    newEvent.DisciplineEventID = (ulong)GenerateTimedEventID();
                     await db.UserDisciplinaryEventStorageTable.AddAsync(newEvent);
                     await db.SaveChangesAsync();
                     return newEvent.DisciplineEventID;
@@ -96,7 +94,6 @@ namespace SeymourBot.DataAccess.StorageManager
                         db.UserDisciplinaryEventStorageTable.Remove(eventToArchive);
                         var archivedEvent = new UserDisciplinaryEventArchive()
                         {
-                            ArchiveID = (ulong)GenerateAchiveID(),
                             DateArchived = DateTime.Now,
                             DateInserted = eventToArchive.DateInserted,
                             DateToRemove = eventToArchive.DateToRemove,
@@ -121,7 +118,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        public static async Task<List<string>> GetInfoCommands()
+        public static List<string> GetInfoCommands()
         {
             List<string> result = new List<string>();
             try
@@ -161,36 +158,6 @@ namespace SeymourBot.DataAccess.StorageManager
                 ExceptionManager.HandleException("0604", ex);
                 throw;
             }
-        }
-
-        private static int GenerateCommandID()
-        {
-            int id = 1;
-            using (InfoCommandContext db = new InfoCommandContext())
-            {
-                id = db.InfoCommandTable.Count() + 1;
-            }
-            return id;
-        }
-
-        private static int GenerateTimedEventID()
-        {
-            int id = 1;
-            using (UserContext db = new UserContext())
-            {
-                id = db.UserDisciplinaryEventStorageTable.Count() + 1;
-            }
-            return id;
-        }
-
-        private static int GenerateAchiveID()
-        {
-            int id = 1;
-            using (UserContext db = new UserContext())
-            {
-                id = db.UserDisciplinaryEventArchiveTable.Count() + 1;
-            }
-            return id;
         }
     }
 }
