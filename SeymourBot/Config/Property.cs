@@ -1,4 +1,7 @@
-﻿using SeymourBot.DiscordUtilities;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using SeymourBot.DiscordUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +21,7 @@ namespace SeymourBot.Config
         /// <summary>
         /// The name of the property
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public PropertyItem Item { get => item; set => item = value; }
 
         /// <summary>
