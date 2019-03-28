@@ -17,7 +17,6 @@ namespace SeymourBot.Config
     public static class ConfigManager
     {
         private static Config configuration;
-        private static Config userSettings;
         private const string autoSavePath = @"Config\";
 
         static ConfigManager()
@@ -31,23 +30,12 @@ namespace SeymourBot.Config
         public static void Refresh()
         {
             configuration = new Config();
-            configuration.Name = ConfigInitializer.ConfigurationName;
             configuration = LoadConfig();
             if (configuration == null)
             {
                 configuration = ConfigInitializer.InitConfiguration();
                 SaveConfig();
                 ExceptionManager.HandleException("0201", new Exception());
-            }
-
-            userSettings = new Config();
-            userSettings.Name = ConfigInitializer.SettingsName;
-            userSettings = LoadSettings();
-            if (userSettings == null)
-            {
-                userSettings = ConfigInitializer.InitSettings();
-                SaveSettings();
-                ExceptionManager.HandleException("0202", new Exception());
             }
         }
 
@@ -63,22 +51,12 @@ namespace SeymourBot.Config
 
         public static void SaveConfig()
         {
-            FileIO.SaveXML<Config>(configuration, BuildPath(configuration));
+            FileIO.SaveJSON<Config>(configuration, BuildPath(configuration));
         }
 
         private static Config LoadConfig()
         {
-            return FileIO.LoadXML<Config>(BuildPath(configuration));
-        }
-
-        public static void SaveSettings()
-        {
-            FileIO.SaveJSON<Config>(userSettings, BuildPath(userSettings));
-        }
-
-        private static Config LoadSettings()
-        {
-            return FileIO.LoadJSON<Config>(BuildPath(userSettings));
+            return FileIO.LoadJSON<Config>(BuildPath(configuration));
         }
 
         public static bool GetBooleanProperty(PropertyItem item)
@@ -103,9 +81,9 @@ namespace SeymourBot.Config
             else return 0;
         }
 
-        public static ulong GetUlongUserSetting(PropertyItem item)
+        public static ulong GetUlongProperty(PropertyItem item)
         {
-            string temp = userSettings.Get(item);
+            string temp = configuration.Get(item);
             ulong result;
             if (ulong.TryParse(temp, out result))
             {
@@ -116,7 +94,7 @@ namespace SeymourBot.Config
 
         private static string BuildPath(Config config)
         {
-            return autoSavePath + config.Name;
+            return autoSavePath + "Configuration";
         }
 
     }

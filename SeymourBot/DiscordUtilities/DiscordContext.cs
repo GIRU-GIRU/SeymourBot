@@ -24,7 +24,7 @@ namespace SeymourBot.DiscordUtilities
 
         public static async Task BotReadyEvent()
         {
-            await GetChannel().SendMessageAsync("Test startup message");
+            await GetMainChannel().SendMessageAsync("Test startup message");
         }
 
         public static async Task RemoveRole(ulong userId, ulong roleId)
@@ -36,7 +36,7 @@ namespace SeymourBot.DiscordUtilities
         {
             try
             {
-                return GetGuild().GetRole(ConfigManager.GetUlongUserSetting(Property.FromMordhauRole(role)));
+                return GetGuild().GetRole(ConfigManager.GetUlongProperty(Property.FromMordhauRole(role)));
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace SeymourBot.DiscordUtilities
         /// <returns></returns>
         public static async Task LogError(string message)
         {
-            await GetChannel().SendMessageAsync($" Exception thrown : ```{message}```");
+            await GetLoggingChannel().SendMessageAsync($" Exception thrown : ```{message}```");
         }
 
         /// <summary>
@@ -63,17 +63,22 @@ namespace SeymourBot.DiscordUtilities
         /// <returns></returns>
         public static async Task LogError(string message, string command)
         {
-            await GetChannel().SendMessageAsync($" \"{command}\" threw a Exception : ```{message}```");
+            await GetLoggingChannel().SendMessageAsync($" \"{command}\" threw a Exception : ```{message}```");
         }
 
         private static SocketGuild GetGuild()
         {
-            return _client.GetGuild(ConfigManager.GetUlongUserSetting(PropertyItem.Guild_Mordhau));
+            return _client.GetGuild(ConfigManager.GetUlongProperty(PropertyItem.Guild_Mordhau));
         }
 
-        private static ITextChannel GetChannel()
+        private static ITextChannel GetMainChannel()
         {
-            return _client.GetChannel(ConfigManager.GetUlongUserSetting(PropertyItem.Channel_Main)) as ITextChannel;
+            return _client.GetChannel(ConfigManager.GetUlongProperty(PropertyItem.Channel_Main)) as ITextChannel;
+        }
+
+        private static ITextChannel GetLoggingChannel()
+        {
+            return _client.GetChannel(ConfigManager.GetUlongProperty(PropertyItem.Channel_Logging)) as ITextChannel;
         }
 
     }

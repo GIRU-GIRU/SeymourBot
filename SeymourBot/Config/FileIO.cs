@@ -22,6 +22,7 @@ namespace SeymourBot.Config
                 if (path != null)
                 {
                     path = path + ".xml";
+                    Directory.CreateDirectory(path);
                     if (File.Exists(path))
                     {
                         using (var stream = File.Open(path, FileMode.OpenOrCreate))
@@ -69,6 +70,7 @@ namespace SeymourBot.Config
                 if (path != null)
                 {
                     path = path + ".json";
+                    Directory.CreateDirectory(path.Split('\\')[0]);
                     if (File.Exists(path))
                     {
                         result = JsonConvert.DeserializeObject<T>(File.ReadAllText(path));
@@ -108,6 +110,7 @@ namespace SeymourBot.Config
             using (var sw = new StreamWriter(stream))
             using (var jsonTextWriter = new JsonTextWriter(sw))
             {
+                serializer.Formatting = Formatting.Indented;
                 serializer.Serialize(jsonTextWriter, target);
             }
         }

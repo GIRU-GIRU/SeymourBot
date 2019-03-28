@@ -12,7 +12,6 @@ namespace SeymourBot.Config
     public class Config
     {
         private List<Property> properties;
-        private string name;
 
         public Config()
         {
@@ -20,7 +19,6 @@ namespace SeymourBot.Config
         }
 
         public List<Property> Properties { get => properties; set => properties = value; }
-        public string Name { get => name; set => name = value; }
 
         public string Get(PropertyItem item)
         {
@@ -44,13 +42,7 @@ namespace SeymourBot.Config
         {
             {PropertyItem.BotToken, ""},
             {PropertyItem.MessageCacheSize, ""},
-            {PropertyItem.CommandPrefix, ""}
-        };
-
-        public readonly static string ConfigurationName = "Configuration";
-
-        private readonly static IDictionary<PropertyItem, string> DefaultSettings = new Dictionary<PropertyItem, string>()
-        {
+            {PropertyItem.CommandPrefix, ""},
             {PropertyItem.Guild_Mordhau, ""},
             {PropertyItem.Role_Muted, ""},
             {PropertyItem.Role_LimitedUser, ""},
@@ -61,8 +53,6 @@ namespace SeymourBot.Config
             {PropertyItem.Channel_Logging, ""},
             {PropertyItem.Channel_Main, ""}
         };
-
-        public readonly static string SettingsName = "UserSettings";
 
         public static Config InitConfiguration()
         {
@@ -78,29 +68,6 @@ namespace SeymourBot.Config
                 };
                 config.Properties.Add(property);
             }
-
-            config.Name = ConfigurationName;
-
-            return config;
-        }
-
-        public static Config InitSettings()
-        {
-            Config config = new Config();
-            Property property;
-
-            foreach (var item in DefaultSettings)
-            {
-                property = new Property
-                {
-                    Item = item.Key,
-                    Value = item.Value
-                };
-                config.Properties.Add(property);
-            }
-
-            config.Name = SettingsName;
-
             return config;
         }
     }

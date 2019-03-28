@@ -92,13 +92,6 @@ namespace SeymourBot
 
         public async Task OnCommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
         {
-            ITextChannel chnl = null;
-
-            if (!string.IsNullOrEmpty(result.ErrorReason))
-            {
-                chnl = await context.Guild.GetChannelAsync(ConfigManager.GetUlongUserSetting(PropertyItem.Channel_Logging)) as ITextChannel;
-            }
-
             switch (result)
             {
                 case CommandErrorResult errorResult:
