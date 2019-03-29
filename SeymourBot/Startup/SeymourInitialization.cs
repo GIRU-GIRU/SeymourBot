@@ -2,6 +2,7 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
+using SeymourBot.AutoModeration;
 using SeymourBot.Config;
 using SeymourBot.DiscordUtilities;
 using SeymourBot.Exceptions;
@@ -75,12 +76,12 @@ namespace SeymourBot.Startup
             var message = arg as SocketUserMessage;
             if (message.Author.IsBot) return;
 
-            // _ = Task.Run(() => _onMessage.MessageContainsAsync(arg)); //todo messagecontains checks, 
+            var context = new SocketCommandContext(_client, message);
+
+            _ = Task.Run(() => MessageContentChecker.MessageContainsAsync(context));
             int argPos = 0;
             if (message.HasStringPrefix(ConfigManager.GetProperty(PropertyItem.CommandPrefix), ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
             {
-                var context = new SocketCommandContext(_client, message);
-
                 //todo blacklist check
                 var result = await _commands.ExecuteAsync(context, argPos, _services);
             }
