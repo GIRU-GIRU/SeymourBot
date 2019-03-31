@@ -21,4 +21,19 @@
     <Folder Include="DataAccess\Storage\Tournament\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Ressources\BotDialogs.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BotDialogs.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Ressources\BotDialogs.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BotDialogs.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

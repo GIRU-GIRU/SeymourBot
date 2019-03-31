@@ -3,6 +3,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Config;
 using SeymourBot.Exceptions;
+using SeymourBot.Ressources;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,7 +25,7 @@ namespace SeymourBot.DiscordUtilities
 
         public static async Task BotReadyEvent()
         {
-            await GetMainChannel().SendMessageAsync("Test startup message");
+            await GetMainChannel().SendMessageAsync(BotDialogs.StartupMessage);
         }
 
         public static async Task RemoveRole(ulong userId, ulong roleId)

@@ -50,7 +50,6 @@ namespace SeymourBot.Modules
             }
             catch (Exception ex)
             {
-                //todo
                 ExceptionManager.HandleException("", ex);
             }
 
