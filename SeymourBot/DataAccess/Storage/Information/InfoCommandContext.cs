@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SeymourBot.Config;
 using SeymourBot.Storage.Information.Tables;
 
 namespace SeymourBot.DataAccess.Storage.Information
@@ -9,12 +10,7 @@ namespace SeymourBot.DataAccess.Storage.Information
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // optionsBuilder.UseSqlite("Data Source=SeymourInfoDB.db");
-
-            string dbPath = @"C:\Users\Monty\Documents\programming\Github Repos\SeymourBot\SeymourBot\Database\";
-            optionsBuilder.UseSqlite($"Data Source={dbPath}SeymourInfoDB.db");
-
-
+            optionsBuilder.UseSqlite($"Data Source={ConfigManager.GetSeymourInfoDBPath()}");
             optionsBuilder.EnableSensitiveDataLogging(true);
         }
     }

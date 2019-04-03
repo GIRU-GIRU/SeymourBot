@@ -16,7 +16,7 @@ namespace SeymourBot.Modules
     public class InfoCommands : ModuleBase<SocketCommandContext>
     {
 
-        [Command("NewCommand")]
+        [Command("InfoNew")]
         private async Task StoreInfoCommandTest([Remainder]string UserInput)
         {
             try
@@ -64,7 +64,7 @@ namespace SeymourBot.Modules
                 Command command = new Command(cmdName);
                 if (!command.Error)
                 {
-                    string commandContent = await StorageManager.GetInfoCommand(command);
+                    string commandContent = await StorageManager.GetInfoCommandAsync(command);
                     await Context.Channel.SendMessageAsync(commandContent);
                 }
 

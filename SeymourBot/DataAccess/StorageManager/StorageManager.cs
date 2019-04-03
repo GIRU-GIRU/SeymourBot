@@ -38,15 +38,15 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        public static async Task<string> GetInfoCommand(Command command)
+        public static async Task<string> GetInfoCommandAsync(Command command)
         {
             try
             {
                 using (InfoCommandContext db = new InfoCommandContext())
                 {
-                   var result = await db.InfoCommandTable.Where(x =>
-                                                       x.CommandName.ToLower() == command.CommandName.ToLower())
-                                                          .FirstOrDefaultAsync();
+                    var result = await db.InfoCommandTable.Where(x =>
+                                                        x.CommandName.ToLower() == command.CommandName.ToLower())
+                                                           .FirstOrDefaultAsync();
 
 
                     return result.CommandName;
@@ -59,7 +59,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        public static async Task<ulong> StoreTimedEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
+        public static async Task<ulong> StoreTimedEventAsync(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        public static async Task ArchiveTimedEvent(ulong eventId)
+        public static async Task ArchiveTimedEventAsync(ulong eventId)
         {
             try
             {
@@ -156,6 +156,45 @@ namespace SeymourBot.DataAccess.StorageManager
             catch (Exception ex)
             {
                 ExceptionManager.HandleException("0604", ex);
+                throw;
+            }
+        }
+
+        public static async Task StoreDisciplinaryEventAsync(UserDisciplinaryEventStorage obj)
+        {
+            try
+            {
+                using (UserContext db = new UserContext())
+                {
+                    await db.UserDisciplinaryEventStorageTable.AddAsync(obj);
+                    await db.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("0604", ex); //todo
+                throw;
+            }
+        }
+
+        public static async Task<int> GetRecentWarningsAsync(ulong userID)
+        {
+            try
+            {
+                using (UserContext db = new UserContext())
+                {
+
+                    //todo datetimenow.adddays configurable
+                    int warnCount = await db.UserDisciplinaryEventStorageTable.Where(x => x.DiscipinaryEventType == DisciplinaryEventEnum.WarnEvent)
+                                                                                .Where(x => x.UserID == userID)
+                                                                                    .Where(x => x.DateToRemove <= DateTime.Now.AddDays(14))
+                                                                                        .CountAsync();
+                    return warnCount;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("0604", ex); //todo
                 throw;
             }
         }

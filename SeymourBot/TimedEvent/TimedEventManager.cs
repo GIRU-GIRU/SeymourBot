@@ -39,7 +39,7 @@ namespace SeymourBot.TimedEvent
         {
             var newActiveEvent = BuildActiveTimedEvent(newEvent);
             activeEvents.Add(newActiveEvent);
-            var id = await StorageManager.StoreTimedEvent(newEvent, newUser);
+            var id = await StorageManager.StoreTimedEventAsync(newEvent, newUser);
             newActiveEvent.DisciplinaryEventId = id;
         }
 
@@ -69,11 +69,11 @@ namespace SeymourBot.TimedEvent
             {
                 switch (activeEvent.DisciplinaryEvent)
                 {
-                    case Storage.User.DisciplineEventEnum.MuteEvent:
+                    case Storage.User.DisciplinaryEventEnum.MuteEvent:
                         activeEvents.Remove(activeEvent);
                         //todo
-                        await DiscordContext.RemoveRole(activeEvent.UserId, ConfigManager.GetUlongProperty(PropertyItem.Role_Muted));
-                        await StorageManager.ArchiveTimedEvent(activeEvent.DisciplinaryEventId);
+                        await DiscordContext.RemoveRoleAsync(activeEvent.UserId, ConfigManager.GetUlongProperty(PropertyItem.Role_Muted));
+                        await StorageManager.ArchiveTimedEventAsync(activeEvent.DisciplinaryEventId);
                         break;
                     default:
                         break;
@@ -81,7 +81,7 @@ namespace SeymourBot.TimedEvent
             }
             catch (Exception ex)
             {
-                ExceptionManager.LogException(ex);
+                ExceptionManager.LogExceptionAsync(ex);
             }
         }
     }

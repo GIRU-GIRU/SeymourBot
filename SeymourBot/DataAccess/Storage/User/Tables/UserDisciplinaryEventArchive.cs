@@ -13,7 +13,7 @@ namespace SeymourBot.Storage
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public ulong ArchiveID { get; set; }
         public ulong UserID { get; set; }
-        public DisciplineEventEnum DisciplineType { get; set; }
+        public DisciplinaryEventEnum DisciplineType { get; set; }
         public ulong ModeratorID { get; set; }
         public DateTime DateInserted { get; set; }
         public DateTime DateToRemove { get; set; }

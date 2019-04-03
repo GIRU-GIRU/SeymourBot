@@ -23,12 +23,8 @@ namespace SeymourBot.DiscordUtilities
             _client = client;
         }
 
-        public static async Task BotReadyEvent()
-        {
-            await GetMainChannel().SendMessageAsync(BotDialogs.StartupMessage);
-        }
 
-        public static async Task RemoveRole(ulong userId, ulong roleId)
+        public static async Task RemoveRoleAsync(ulong userId, ulong roleId)
         {
             await GetGuild().GetUser(userId).RemoveRoleAsync(GetGuild().GetRole(roleId));
         }
@@ -62,22 +58,22 @@ namespace SeymourBot.DiscordUtilities
         /// <param name="message">The exception message</param>
         /// <param name="command">The associated command</param>
         /// <returns></returns>
-        public static async Task LogError(string message, string command)
+        public static async Task LogErrorAsync(string message, string command)
         {
             await GetLoggingChannel().SendMessageAsync($" \"{command}\" threw a Exception : ```{message}```");
         }
 
-        private static SocketGuild GetGuild()
+        public static SocketGuild GetGuild()
         {
             return _client.GetGuild(ConfigManager.GetUlongProperty(PropertyItem.Guild_Mordhau));
         }
 
-        private static ITextChannel GetMainChannel()
+        public static ITextChannel GetMainChannel()
         {
             return _client.GetChannel(ConfigManager.GetUlongProperty(PropertyItem.Channel_Main)) as ITextChannel;
         }
 
-        private static ITextChannel GetLoggingChannel()
+        public static ITextChannel GetLoggingChannel()
         {
             return _client.GetChannel(ConfigManager.GetUlongProperty(PropertyItem.Channel_Logging)) as ITextChannel;
         }

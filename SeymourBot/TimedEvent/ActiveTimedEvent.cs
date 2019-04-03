@@ -9,12 +9,12 @@ namespace SeymourBot.TimedEvent
     {
         //in minutes
         private int timeToTrigger;
-        private DisciplineEventEnum disciplinaryEvent;
+        private DisciplinaryEventEnum disciplinaryEvent;
         private ulong userId;
         private ulong disciplinaryEventId;
 
         public int TimeToTrigger { get => timeToTrigger; set => timeToTrigger = value; }
-        public DisciplineEventEnum DisciplinaryEvent { get => disciplinaryEvent; set => disciplinaryEvent = value; }
+        public DisciplinaryEventEnum DisciplinaryEvent { get => disciplinaryEvent; set => disciplinaryEvent = value; }
         public ulong UserId { get => userId; set => userId = value; }
         public ulong DisciplinaryEventId { get => disciplinaryEventId; set => disciplinaryEventId = value; }
     }

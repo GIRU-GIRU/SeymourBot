@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeymourBot.Config;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -32,13 +33,13 @@ namespace SeymourBot.Exceptions
             {"0501", "Error in Info Command"},
 
             //06 Storage Exception
-            {"0601", "Error creating new info command" },
-            {"0602", "Error getting info command" },
-            {"0603", "Error getting info command list" },
-            {"0604", "Error getting timed events" },
-            {"0605", "Error saving timed event" },
-            {"0606", "Error archiving timed event" },
-            {"0607", "Could not find the timed event to archive" },
+            {"0601",  $"Error creating new info command, ensure the DB path is {ConfigManager.GetSeymourUserDBPath()}" },
+            {"0602", $"Error getting info command, ensure the DB path is {ConfigManager.GetSeymourInfoDBPath()}"},
+            {"0603", $"Error getting info command list, ensure the DB path is {ConfigManager.GetSeymourInfoDBPath()}" },
+            {"0604", $"Error getting timed events, ensure the DB path is {ConfigManager.GetSeymourUserDBPath()}" },
+            {"0605", $"Error saving timed event, ensure the DB path is {ConfigManager.GetSeymourUserDBPath()}" },
+            {"0606", $"Error archiving timed event, ensure the DB path is {ConfigManager.GetSeymourUserDBPath()}" },
+            {"0607", $"Could not find the timed event to archive, ensure the DB path is {ConfigManager.GetSeymourUserDBPath()}" },
 
             //07 DiscordContext exceptions
             {"0701", "Error getting role from Discord" },

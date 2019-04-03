@@ -7,6 +7,7 @@ using SeymourBot.Config;
 using SeymourBot.DiscordUtilities;
 using SeymourBot.Exceptions;
 using SeymourBot.Logging;
+using SeymourBot.Resources;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -66,10 +67,14 @@ namespace SeymourBot.Startup
         private async Task BotReadyEvent()
         {
             DiscordContext.InitContext(_client);
-            await DiscordContext.BotReadyEvent();
+            await BotStartupMessage();
         }
 
 
+        public static async Task BotStartupMessage()
+        {
+            await DiscordContext.GetMainChannel().SendMessageAsync(BotDialogs.StartupMessage);
+        }
 
         private async Task HandleCommandAsync(SocketMessage arg)
         {
@@ -96,9 +101,10 @@ namespace SeymourBot.Startup
                     break;
 
                 default:
-                    if (!string.IsNullOrEmpty(result.ErrorReason))
+
+                    if (!string.IsNullOrEmpty(result.ErrorReason) && result.ErrorReason != "Unauthorized")
                     {
-                        await DiscordContext.LogError(result.ErrorReason, context.Message.Content);
+                        await DiscordContext.LogErrorAsync(result.ErrorReason, context.Message.Content);
                     }
                     break;
             }

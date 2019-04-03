@@ -24,7 +24,7 @@ namespace SeymourBot.Attributes
             if (user.Roles.Where(x => x.Name.ToLower() == MordhauRoleEnum.Developer.ToString().ToLower()).Any())
                 return PreconditionResult.FromSuccess();
             else
-                return PreconditionResult.FromError("Invalid roles");
+                return PreconditionResult.FromError("Unauthorized");
         }
     }
 }

@@ -23,7 +23,7 @@ namespace SeymourBot.Exceptions
             HandleExceptionHelper(ex, message);
         }
 
-        public static async void LogException(Exception ex)
+        public static async void LogExceptionAsync(Exception ex)
         {
             await DiscordContext.LogError(ex.Message);
         }

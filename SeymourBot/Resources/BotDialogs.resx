@@ -120,4 +120,10 @@
   <data name="StartupMessage" xml:space="preserve">
     <value>New Startup Message</value>
   </data>
+  <data name="WarnMessageNoReason" xml:space="preserve">
+    <value>has recieved a warning</value>
+  </data>
+  <data name="WarnMessageReason" xml:space="preserve">
+    <value>has recieved a warning for</value>
+  </data>
 </root>

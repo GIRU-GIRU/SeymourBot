@@ -18,7 +18,7 @@ namespace SeymourBot.Modules
         ImageFormat png = ImageFormat.Png;
         [Command("info")]
         [DevOrAdmin]
-        private async Task GetInfo(IGuildUser user = null)
+        private async Task GetInfoAsync(IGuildUser user = null)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace SeymourBot.Modules
                 var embed = new EmbedBuilder();
                 embed.WithTitle($"{user.Username}{userDiscriminator}");
                 embed.AddField("Account Created: ", userCreatedAtString, true);
-                embed.AddField("Joined Melee Slasher: ", userJoinedAtString, true);
+                embed.AddField("Joined Mordhau Guild: ", userJoinedAtString, true);
                 embed.AddField("User ID: ", user.Id, false);
                 embed.AddField("Currently playing ", userActivity, true);
                 embed.AddField("Status: ", userStatus, true);
@@ -53,22 +53,15 @@ namespace SeymourBot.Modules
             }
 
         }
-
-        [Command("forums")]
-        private async Task InfoForums()
-        {
-            await Context.Channel.SendMessageAsync("https://mordhau.com/forum/");
-        }
-
-
+        
         [Command("avatar")]
-        private async Task PullAvatar(IGuildUser user)
+        private async Task PullAvatarAsync(IGuildUser user)
         {
             string avatarURL = user.GetAvatarUrl(ImageFormat.Auto, 1024);
 
             if (avatarURL is null)
             {
-                await Context.Message.Channel.SendMessageAsync($"{user.Mention} does not have a pfp");
+                await Context.Message.Channel.SendMessageAsync($"{user.Mention} does not have a profile picture");
                 return;
             }
             var embed = new EmbedBuilder();

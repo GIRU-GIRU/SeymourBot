@@ -5,7 +5,7 @@ using System.Text;
 namespace SeymourBot.Storage.User
 {
 
-    public enum DisciplineEventEnum
+    public enum DisciplinaryEventEnum
     {
         BanEvent,
         KickEvent,
