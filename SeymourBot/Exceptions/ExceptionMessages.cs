@@ -12,6 +12,9 @@ namespace SeymourBot.Exceptions
     //example : 0201 is affecting 02 (the config system) and represent the 01 exception (configuration not found).
     class ExceptionMessages
     {
+        private static readonly string UserDBPath = ConfigManager.GetSeymourUserDBPath();
+        private static readonly string InfoDBPath = ConfigManager.GetSeymourInfoDBPath();
+
         public readonly static IDictionary<string, string> Messages = new Dictionary<string, string>()
         {
             //01 Program exceptions
@@ -33,13 +36,13 @@ namespace SeymourBot.Exceptions
             {"0501", "Error in Info Command"},
 
             //06 Storage Exception
-            {"0601",  $"Error creating new info command, ensure the DB path is {ConfigManager.GetSeymourUserDBPath()}" },
-            {"0602", $"Error getting info command, ensure the DB path is {ConfigManager.GetSeymourInfoDBPath()}"},
-            {"0603", $"Error getting info command list, ensure the DB path is {ConfigManager.GetSeymourInfoDBPath()}" },
-            {"0604", $"Error getting timed events, ensure the DB path is {ConfigManager.GetSeymourUserDBPath()}" },
-            {"0605", $"Error saving timed event, ensure the DB path is {ConfigManager.GetSeymourUserDBPath()}" },
-            {"0606", $"Error archiving timed event, ensure the DB path is {ConfigManager.GetSeymourUserDBPath()}" },
-            {"0607", $"Could not find the timed event to archive, ensure the DB path is {ConfigManager.GetSeymourUserDBPath()}" },
+            {"0601",  $"Error creating new info command, ensure the DB path is {UserDBPath}" },
+            {"0602", $"Error getting info command, ensure the DB path is {InfoDBPath}"},
+            {"0603", $"Error getting info command list, ensure the DB path is {InfoDBPath}" },
+            {"0604", $"Error getting timed events, ensure the DB path is {UserDBPath}" },
+            {"0605", $"Error saving timed event, ensure the DB path is {UserDBPath}" },
+            {"0606", $"Error archiving timed event, ensure the DB path is {UserDBPath}" },
+            {"0607", $"Could not find the timed event to archive, ensure the DB path is {UserDBPath}" },
 
             //07 DiscordContext exceptions
             {"0701", "Error getting role from Discord" },

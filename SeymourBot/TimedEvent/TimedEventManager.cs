@@ -6,6 +6,7 @@ using SeymourBot.Storage;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace SeymourBot.TimedEvent
@@ -25,7 +26,7 @@ namespace SeymourBot.TimedEvent
             timer.Start();
         }
 
-        private async static void LoadFromDB()
+        private async static Task LoadFromDB()
         {
             activeEvents = new List<ActiveTimedEvent>();
             var dbTimedEvents = await StorageManager.GetTimedEvents();
@@ -35,7 +36,7 @@ namespace SeymourBot.TimedEvent
             }
         }
 
-        public async static void CreateEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
+        public async static Task CreateEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
         {
             var newActiveEvent = BuildActiveTimedEvent(newEvent);
             activeEvents.Add(newActiveEvent);
@@ -63,7 +64,7 @@ namespace SeymourBot.TimedEvent
             return activeEvent;
         }
 
-        private static async void HandleEventElapsed(ActiveTimedEvent activeEvent)
+        private static async Task HandleEventElapsed(ActiveTimedEvent activeEvent)
         {
             try
             {
@@ -73,6 +74,10 @@ namespace SeymourBot.TimedEvent
                         activeEvents.Remove(activeEvent);
                         //todo
                         await DiscordContext.RemoveRoleAsync(activeEvent.UserId, ConfigManager.GetUlongProperty(PropertyItem.Role_Muted));
+                        await StorageManager.ArchiveTimedEventAsync(activeEvent.DisciplinaryEventId);
+                        break;
+                    case Storage.User.DisciplinaryEventEnum.WarnEvent:
+                        activeEvents.Remove(activeEvent);
                         await StorageManager.ArchiveTimedEventAsync(activeEvent.DisciplinaryEventId);
                         break;
                     default:

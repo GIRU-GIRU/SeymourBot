@@ -3,7 +3,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Config;
 using SeymourBot.Exceptions;
-using SeymourBot.Ressources;
+using SeymourBot.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;

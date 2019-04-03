@@ -13,13 +13,13 @@ namespace SeymourBot.Config
     public enum PropertyItem
     {
         None,
-
-        //sensible properties for the bot Configuration
         BotToken,
         MessageCacheSize,
         CommandPrefix,
 
-        //non-sensible user settings
+        MaxWarns,
+        WarnDuration,
+
         Guild_Mordhau,
         Role_Muted,
         Role_LimitedUser,

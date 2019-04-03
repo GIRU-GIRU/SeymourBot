@@ -1,6 +1,7 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Attributes;
+using SeymourBot.Config;
 using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.DiscordUtilities;
 using SeymourBot.Modules.CommandUtils;
@@ -42,7 +43,7 @@ namespace SeymourBot.Modules
                     UserID = user.Id,
                     UserName = user.Username
                 };
-                TimedEventManager.CreateEvent(newEvent, newUser);
+                await TimedEventManager.CreateEvent(newEvent, newUser);
 
                 await Context.Channel.SendMessageAsync($"{Context.Message.Author.Mention} has muted {user.Mention} for {timeToMute} minute(s)");
             }
@@ -69,8 +70,13 @@ namespace SeymourBot.Modules
                     Reason = reason,
                     UserID = user.Id
                 };
+                UserStorage newUser = new UserStorage()
+                {
+                    UserID = user.Id,
+                    UserName = user.Username
+                };
 
-                await StorageManager.StoreDisciplinaryEventAsync(obj);
+                await TimedEventManager.CreateEvent(obj, newUser);
 
                 int warnCount = await StorageManager.GetRecentWarningsAsync(user.Id);
 
@@ -80,7 +86,7 @@ namespace SeymourBot.Modules
                 }
                 else
                 {
-                    await Context.Channel.SendMessageAsync($"🚫 {user.Mention} {BotDialogs.WarnMessageReason} {reason}🚫\n{warnCount}/5 warnings");
+                    await Context.Channel.SendMessageAsync(ResourceUtils.BuildString(BotDialogs.WarnMessageReason, user.Mention, reason, Environment.NewLine, warnCount.ToString(), ConfigManager.GetProperty(PropertyItem.MaxWarns)));
                 }
             }
             catch (Exception ex)
