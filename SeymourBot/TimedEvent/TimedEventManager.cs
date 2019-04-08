@@ -22,7 +22,7 @@ namespace SeymourBot.TimedEvent
             timer.AutoReset = true;
             timer.Interval = 60000; //tick every minute
             timer.Elapsed += Timer_Elapsed;
-            LoadFromDB();
+            _ = LoadFromDB();
             timer.Start();
         }
 
@@ -50,7 +50,7 @@ namespace SeymourBot.TimedEvent
             {
                 if (--activeEvent.TimeToTrigger <= 0)
                 {
-                    HandleEventElapsed(activeEvent);
+                   _ = HandleEventElapsed(activeEvent);
                 }
             }
         }

@@ -39,6 +39,22 @@ namespace SeymourBot.AutoModeration
             //todo warn event
         }
 
+        public static async Task<int> CheckForWarnThreshold(SocketCommandContext context, int warnCount)
+        {
+            try
+            {
+                if (warnCount > 2)//todo
+                {
+                 // TimedEventManager.CreateEvent()
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
 
         private static async Task WarnHelper(SocketCommandContext context, string reason)
         {
@@ -50,14 +66,14 @@ namespace SeymourBot.AutoModeration
                     DateToRemove = DateTime.Now.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)),
                     DiscipinaryEventType = DisciplinaryEventEnum.WarnEvent,
                     DisciplineEventID = (ulong)DateTime.Now.Millisecond,
-                    ModeratorID = 555479209737453589, //todo get bot id
+                    ModeratorID = context.Client.CurrentUser.Id,
                     Reason = "AutoWarn : " + reason,
-                    UserID = context.User.Id
+                    UserID = context.Message.Author.Id
                 };
                 UserStorage newUser = new UserStorage()
                 {
-                    UserID = context.User.Id,
-                    UserName = context.User.Username
+                    UserID = context.Message.Author.Id,
+                    UserName = context.Message.Author.Username
                 };
 
                 await TimedEventManager.CreateEvent(obj, newUser);

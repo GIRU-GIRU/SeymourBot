@@ -50,13 +50,14 @@ namespace SeymourBot.Modules
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("", ex);
+                ExceptionManager.HandleException("", ex); //todo
             }
 
         }
 
         [Command("c")]
         [Alias("i", "info")]
+        [Ratelimit(5, 10, Measure.Minutes)]
         private async Task<RuntimeResult> PostInfoCommandTest(string cmdName)
         {
             try

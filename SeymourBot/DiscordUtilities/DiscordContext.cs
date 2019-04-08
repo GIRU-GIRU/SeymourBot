@@ -42,6 +42,10 @@ namespace SeymourBot.DiscordUtilities
             }
         }
 
+        public static async Task GetEmoji(string emoji)
+        {
+            //todo
+        }
         /// <summary>
         /// Unified logging method
         /// </summary>
