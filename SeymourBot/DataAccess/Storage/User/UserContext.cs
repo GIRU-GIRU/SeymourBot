@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using SeymourBot.Config;
+using SeymourBot.Resources;
 using SeymourBot.Storage.User.Tables;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,8 @@ namespace SeymourBot.Storage.User
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-                optionsBuilder.UseSqlite($"Data Source={ConfigManager.GetSeymourUserDBPath()}");
-                optionsBuilder.EnableSensitiveDataLogging(true);
+            optionsBuilder.UseSqlite($"Data Source={DBPaths.UserDB}");
+            optionsBuilder.EnableSensitiveDataLogging(true);
         }
     }
 }

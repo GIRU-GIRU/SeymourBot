@@ -1,4 +1,5 @@
 ﻿using SeymourBot.Exceptions;
+using SeymourBot.Resources;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -91,17 +92,6 @@ namespace SeymourBot.Config
             }
             else return 0;
         }
-
-        public static string GetSeymourUserDBPath()
-        {
-            return $"..\\..\\..\\\\Database\\SeymourUserDB.db";
-        }
-
-        public static string GetSeymourInfoDBPath()
-        {
-            return $"..\\..\\..\\\\Database\\SeymourInfoDB.db";
-        }
-
         private static string BuildPath(Config config)
         {
             return autoSavePath + "Configuration";

@@ -17,19 +17,18 @@ namespace SeymourBot.AutoModeration
         {
             if (_regexInviteLinkDiscord.Match(context.Message.Content).Success)
             {
-                await AutoModeratorAction.DeleteInviteLinkWarn(context);
+                await AutoModeratorManager.DeleteInviteLinkWarn(context);
             }
 
             foreach (var item in tempBannedWordArray)
             {
                 if (context.Message.Content.ToLower().Contains(item.ToLower()))
                 {
-                    await AutoModeratorAction.DeleteBannedWordWarn(context);
+                    await AutoModeratorManager.DeleteBannedWordWarn(context);
                 }
             }
 
         }
-
 
         private static readonly string[] tempBannedWordArray = new string[]
         {

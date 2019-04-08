@@ -21,5 +21,10 @@ namespace SeymourBot.Resources
             }
             return builder.ToString();
         }
+
+        public static string GetBotDialogByName(string name)
+        {
+            return BotDialogs.ResourceManager.GetString(name);
+        }
     }
 }

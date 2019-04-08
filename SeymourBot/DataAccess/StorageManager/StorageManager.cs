@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SeymourBot.AutoModeration;
+using SeymourBot.DataAccess.Storage.Filter;
+using SeymourBot.DataAccess.Storage.Filter.Tables;
 using SeymourBot.DataAccess.Storage.Information;
 using SeymourBot.Exceptions;
 using SeymourBot.Modules.CommandUtils;
@@ -183,13 +186,61 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (UserContext db = new UserContext())
                 {
-
-                    //todo datetimenow.adddays configurable
                     int warnCount = await db.UserDisciplinaryEventStorageTable.Where(x => x.DiscipinaryEventType == DisciplinaryEventEnum.WarnEvent)
                                                                                 .Where(x => x.UserID == userID)
                                                                                     .Where(x => x.DateToRemove <= DateTime.Now.AddDays(14))
                                                                                         .CountAsync();
                     return warnCount;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("0604", ex); //todo
+                throw;
+            }
+        }
+
+        public static List<ModeratedElement> GetModeratedWords()
+        {
+            try
+            {
+                List<ModeratedElement> result = new List<ModeratedElement>();
+                using (FilterContext db = new FilterContext())
+                {
+                    foreach (FilterTable filter in db.filterTables.Where(x => x.FilterType == FilterTypeEnum.ContainFilter))
+                    {
+                        result.Add(new ModeratedElement()
+                        {
+                            DialogName = filter.FilterName,
+                            Pattern = filter.FilterPattern
+                        });
+                    }
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("0604", ex); //todo
+                throw;
+            }
+        }
+
+        public static List<ModeratedElement> GetModeratedRegex()
+        {
+            try
+            {
+                List<ModeratedElement> result = new List<ModeratedElement>();
+                using (FilterContext db = new FilterContext())
+                {
+                    foreach (FilterTable filter in db.filterTables.Where(x => x.FilterType == FilterTypeEnum.RegexFilter))
+                    {
+                        result.Add(new ModeratedElement()
+                        {
+                            DialogName = filter.FilterName,
+                            Pattern = filter.FilterPattern
+                        });
+                    }
+                    return result;
                 }
             }
             catch (Exception ex)
