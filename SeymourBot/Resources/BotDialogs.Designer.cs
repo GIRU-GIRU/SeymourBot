@@ -61,6 +61,24 @@ namespace SeymourBot.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à , do not use such foul language in my presence.
+        /// </summary>
+        internal static string DefaultContainFilterMessage {
+            get {
+                return ResourceManager.GetString("DefaultContainFilterMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à , that pattern looks fishy....
+        /// </summary>
+        internal static string DefaultRegexFilterMessage {
+            get {
+                return ResourceManager.GetString("DefaultRegexFilterMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à New Startup Message.
         /// </summary>
         internal static string StartupMessage {

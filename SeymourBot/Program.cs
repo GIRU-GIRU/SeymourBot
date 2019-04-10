@@ -30,6 +30,6 @@ namespace SeymourBot
                 Console.ReadLine();
             }
 
-        } 
+        }
     }
 }

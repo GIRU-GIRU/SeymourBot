@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DefaultContainFilterMessage" xml:space="preserve">
+    <value>, do not use such foul language in my presence</value>
+  </data>
+  <data name="DefaultRegexFilterMessage" xml:space="preserve">
+    <value>, that pattern looks fishy...</value>
+  </data>
   <data name="StartupMessage" xml:space="preserve">
     <value>New Startup Message</value>
   </data>

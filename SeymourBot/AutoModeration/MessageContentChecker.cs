@@ -15,27 +15,7 @@ namespace SeymourBot.AutoModeration
 
         internal static async Task MessageContainsAsync(SocketCommandContext context)
         {
-            if (_regexInviteLinkDiscord.Match(context.Message.Content).Success)
-            {
-                await AutoModeratorManager.DeleteInviteLinkWarn(context);
-            }
-
-            foreach (var item in tempBannedWordArray)
-            {
-                if (context.Message.Content.ToLower().Contains(item.ToLower()))
-                {
-                    await AutoModeratorManager.DeleteBannedWordWarn(context);
-                }
-            }
-
+            await AutoModeratorManager.FilterMessage(context);
         }
-
-        private static readonly string[] tempBannedWordArray = new string[]
-        {
-            "N WORD",
-            "bastard",
-            "judaism",
-            "son of bastard",
-        };
     }
 }

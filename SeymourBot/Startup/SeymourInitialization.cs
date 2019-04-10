@@ -4,6 +4,8 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using SeymourBot.AutoModeration;
 using SeymourBot.Config;
+using SeymourBot.DataAccess.Storage.Filter;
+using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.DiscordUtilities;
 using SeymourBot.Exceptions;
 using SeymourBot.Logging;

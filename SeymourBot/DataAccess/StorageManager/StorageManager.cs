@@ -200,6 +200,28 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
+        public static async Task AddFilterAsync(string name, string pattern, FilterTypeEnum type)
+        {
+            try
+            {
+                using (FilterContext db = new FilterContext())
+                {
+                    await db.AddAsync(new FilterTable()
+                    {
+                        FilterName = name,
+                        FilterPattern = pattern,
+                        FilterType = type
+                    });
+                    await db.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("0604", ex); //todo
+                throw;
+            }
+        }
+
         public static List<ModeratedElement> GetModeratedWords()
         {
             try
@@ -211,7 +233,7 @@ namespace SeymourBot.DataAccess.StorageManager
                     {
                         result.Add(new ModeratedElement()
                         {
-                            DialogName = filter.FilterName,
+                            Dialog = filter.FilterName,
                             Pattern = filter.FilterPattern
                         });
                     }
@@ -236,7 +258,7 @@ namespace SeymourBot.DataAccess.StorageManager
                     {
                         result.Add(new ModeratedElement()
                         {
-                            DialogName = filter.FilterName,
+                            Dialog = filter.FilterName,
                             Pattern = filter.FilterPattern
                         });
                     }

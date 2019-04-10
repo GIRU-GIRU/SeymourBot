@@ -1,6 +1,7 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Attributes;
+using SeymourBot.AutoModeration;
 using SeymourBot.Config;
 using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.DiscordUtilities;
@@ -19,6 +20,7 @@ namespace SeymourBot.Modules
 {
     public class Mute : ModuleBase<SocketCommandContext>
     {
+
         [Command("Mute")]
         [DevOrAdmin]
         [RequireBotPermission(Discord.GuildPermission.ManageRoles)]
@@ -26,9 +28,6 @@ namespace SeymourBot.Modules
         {
             try
             {
-                var role = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
-
-                await user.AddRoleAsync(role);
                 UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
                 {
                     DateInserted = DateTime.Now,
@@ -59,7 +58,6 @@ namespace SeymourBot.Modules
         {
             try
             {
-
 
             }
             catch (Exception ex)

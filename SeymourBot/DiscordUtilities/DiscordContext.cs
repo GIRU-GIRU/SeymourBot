@@ -42,6 +42,11 @@ namespace SeymourBot.DiscordUtilities
             }
         }
 
+        public static async Task AddRole(IRole role, ulong userId)
+        {
+            await GetGuild().GetUser(userId).AddRoleAsync(role);
+        }
+
         public static async Task GetEmoji(string emoji)
         {
             //todo

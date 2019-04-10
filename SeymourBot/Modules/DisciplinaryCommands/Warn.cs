@@ -16,7 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace SeymourBot.Modules.DisciplinaryCommands
 {
-    class Warn : ModuleBase<SocketCommandContext>
+    public class Warn : ModuleBase<SocketCommandContext>
     {
         [Command("warn")]
         [DevOrAdmin]
@@ -27,7 +27,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
                 {
                     DateInserted = DateTime.Now,
-                    DateToRemove = DateTime.Now.AddDays(14), //todo add config item and max warn config
+                    DateToRemove = DateTime.Now.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)),
                     DiscipinaryEventType = DisciplinaryEventEnum.WarnEvent,
                     DisciplineEventID = (ulong)DateTime.Now.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
