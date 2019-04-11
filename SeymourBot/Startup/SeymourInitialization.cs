@@ -32,6 +32,7 @@ namespace SeymourBot.Startup
         private CommandService _commands;
         private IServiceProvider _services;
 
+
         private async Task ConfigureSeymourAsync()
         {
             DiscordSocketConfig botConfig = new DiscordSocketConfig()
@@ -54,10 +55,21 @@ namespace SeymourBot.Startup
             _client.Log += Logger.Log;
             _commands.CommandExecuted += OnCommandExecutedAsync;
             _client.Ready += BotReadyEvent;
+            _client.UserJoined += UserJoinedEvent;
+            _client.MessageUpdated += MessageUpdatedEvent;
 
             await RegisterCommandAsync();
         }
 
+        private async Task MessageUpdatedEvent(Cacheable<IMessage, ulong> oldMsg, SocketMessage newMsg, ISocketMessageChannel channel)
+        {
+            await MessageContentChecker.AutoModerateMessage(new SocketCommandContext(_client, newMsg as SocketUserMessage));
+        }
+
+        private async Task UserJoinedEvent(SocketGuildUser arg)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task RegisterCommandAsync()
         {
@@ -65,13 +77,12 @@ namespace SeymourBot.Startup
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
         }
 
-
         private async Task BotReadyEvent()
         {
             DiscordContext.InitContext(_client);
             await BotStartupMessage();
         }
-
+         
 
         public static async Task BotStartupMessage()
         {
@@ -82,10 +93,10 @@ namespace SeymourBot.Startup
         {
             var message = arg as SocketUserMessage;
             if (message.Author.IsBot) return;
-
             var context = new SocketCommandContext(_client, message);
 
-            _ = Task.Run(() => MessageContentChecker.MessageContainsAsync(context));
+            await MessageContentChecker.AutoModerateMessage(context);
+
             int argPos = 0;
             if (message.HasStringPrefix(ConfigManager.GetProperty(PropertyItem.CommandPrefix), ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
             {

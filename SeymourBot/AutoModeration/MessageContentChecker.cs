@@ -6,12 +6,19 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
+using SeymourBot.DiscordUtilities;
 
 namespace SeymourBot.AutoModeration
 {
     public static class MessageContentChecker
     {
-        private static Regex _regexInviteLinkDiscord = new Regex(@"(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+[a-z]");
+        internal static async Task AutoModerateMessage(SocketCommandContext context)
+        {
+            if (!await DiscordContext.IsUserDevOrAdmin(context.Message.Author as SocketGuildUser))
+            {
+                _ = Task.Run(() => MessageContainsAsync(context));
+            }          
+        }
 
         internal static async Task MessageContainsAsync(SocketCommandContext context)
         {
