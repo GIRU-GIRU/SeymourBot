@@ -26,10 +26,10 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             {
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
                 {
-                    DateInserted = DateTime.Now,
-                    DateToRemove = DateTime.Now.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)),
+                    DateInserted = DateTime.UtcNow,
+                    DateToRemove = DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)),
                     DiscipinaryEventType = DisciplinaryEventEnum.WarnEvent,
-                    DisciplineEventID = (ulong)DateTime.Now.Millisecond,
+                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = Context.Message.Author.Id

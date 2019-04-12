@@ -16,9 +16,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SeymourBot.Modules
+namespace SeymourBot.Modules.DisciplinaryCommands
 {
-    public class Mute : ModuleBase<SocketCommandContext>
+    class Confinement : ModuleBase<SocketCommandContext>
     {
 
         [Command("Mute")]
@@ -30,10 +30,10 @@ namespace SeymourBot.Modules
             {
                 UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
                 {
-                    DateInserted = DateTime.Now,
-                    DateToRemove = DateTime.Now.AddMinutes(timeToMute),
+                    DateInserted = DateTime.UtcNow,
+                    DateToRemove = DateTime.UtcNow.AddMinutes(timeToMute),
                     DiscipinaryEventType = DisciplinaryEventEnum.MuteEvent,
-                    DisciplineEventID = (ulong)DateTime.Now.Millisecond,
+                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = user.Id
@@ -52,21 +52,5 @@ namespace SeymourBot.Modules
                 ExceptionManager.HandleException("", ex); //todo
             }
         }
-
-
-        public static async Task BanUserAsync(SocketGuildUser user, [Remainder]string reason = "")
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-
-                ExceptionManager.HandleException("", ex); //todo
-            }
-
-        }
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeymourBot.AutoModeration;
+using SeymourBot.Config;
 using SeymourBot.DataAccess.Storage.Filter;
 using SeymourBot.DataAccess.Storage.Filter.Tables;
 using SeymourBot.DataAccess.Storage.Information;
@@ -97,7 +98,7 @@ namespace SeymourBot.DataAccess.StorageManager
                         db.UserDisciplinaryEventStorageTable.Remove(eventToArchive);
                         var archivedEvent = new UserDisciplinaryEventArchive()
                         {
-                            DateArchived = DateTime.Now,
+                            DateArchived = DateTime.UtcNow,
                             DateInserted = eventToArchive.DateInserted,
                             DateToRemove = eventToArchive.DateToRemove,
                             DisciplineEventID = eventToArchive.DisciplineEventID,
@@ -163,13 +164,42 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        public static async Task StoreDisciplinaryEventAsync(UserDisciplinaryEventStorage obj)
+
+        //this should be handled by CreateEvent
+        //public static async Task StoreDisciplinaryEventAsync(UserDisciplinaryEventStorage obj, UserStorage user)
+        //{
+        //    try
+        //    {
+        //        using (UserContext db = new UserContext())
+        //        {
+        //            if (!await db.UserStorageTable.AnyAsync(x => x.UserID == user.UserID))
+        //            {
+        //                await db.AddAsync(user);
+        //            }
+
+        //            await db.UserDisciplinaryEventStorageTable.AddAsync(obj);
+        //            await db.SaveChangesAsync();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ExceptionManager.HandleException("0604", ex); //todo
+        //        throw;
+        //    }
+        //}
+
+        public static async Task StoreDisciplinaryPermanentEventAsync(UserDisciplinaryPermanentStorage obj, UserStorage user)
         {
             try
             {
                 using (UserContext db = new UserContext())
                 {
-                    await db.UserDisciplinaryEventStorageTable.AddAsync(obj);
+                    if (!await db.UserStorageTable.AnyAsync(x => x.UserID == user.UserID))
+                    {
+                        await db.AddAsync(user);
+                    }
+
+                    await db.UserDisciplinaryPermanentStorageTable.AddAsync(obj);
                     await db.SaveChangesAsync();
                 }
             }
@@ -188,7 +218,7 @@ namespace SeymourBot.DataAccess.StorageManager
                 {
                     int warnCount = await db.UserDisciplinaryEventStorageTable.Where(x => x.DiscipinaryEventType == DisciplinaryEventEnum.WarnEvent)
                                                                                 .Where(x => x.UserID == userID)
-                                                                                    .Where(x => x.DateToRemove <= DateTime.Now.AddDays(14))
+                                                                                    .Where(x => x.DateToRemove <= DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)))
                                                                                         .CountAsync();
                     return warnCount;
                 }

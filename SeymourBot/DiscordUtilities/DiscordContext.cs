@@ -98,6 +98,18 @@ namespace SeymourBot.DiscordUtilities
             return MordhauGuild.Emotes.Where(x => x.Name.ToLower() == emoteName.ToLower()).FirstOrDefault();
         }
 
+        public static Emote GetEmoteAyySeymour()
+        {
+            return MordhauGuild.Emotes.Where(x => x.Name.ToLower() == "ayyseymour").FirstOrDefault(); // todo
+        }
+
+        public static Emote GetEmoteReee()
+        {
+            return MordhauGuild.Emotes.Where(x => x.Name.ToLower() == "reee").FirstOrDefault(); // todo
+        }
+
+
+
 
 
         /// <summary>

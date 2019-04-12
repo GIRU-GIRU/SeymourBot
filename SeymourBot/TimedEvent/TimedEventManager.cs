@@ -46,10 +46,10 @@ namespace SeymourBot.TimedEvent
         {
             UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
             {
-                DateInserted = DateTime.Now,
+                DateInserted = DateTime.UtcNow,
                 DateToRemove = end,
                 DiscipinaryEventType = eventType,
-                DisciplineEventID = (ulong)DateTime.Now.Millisecond,
+                DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                 ModeratorID = moderatorId,
                 Reason = reason,
                 UserID = userId

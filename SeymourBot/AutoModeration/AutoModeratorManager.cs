@@ -42,7 +42,7 @@ namespace SeymourBot.AutoModeration
                         reason = element.Dialog;
                     }
                     await context.Channel.SendMessageAsync(context.User.Mention + reason);
-                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : " + reason, context.Message.Author.Id, context.Message.Author.Username, DateTime.Now.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
+                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : " + reason, context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
                     await CheckForWarnThreshold(context, await StorageManager.GetRecentWarningsAsync(context.Message.Author.Id));
                 }
             }
@@ -61,7 +61,7 @@ namespace SeymourBot.AutoModeration
                         reason = element.Dialog;
                     }
                     await context.Channel.SendMessageAsync(context.User.Mention + reason);
-                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : " + reason, context.Message.Author.Id, context.Message.Author.Username, DateTime.Now.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
+                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : " + reason, context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
                     await CheckForWarnThreshold(context, await StorageManager.GetRecentWarningsAsync(context.Message.Author.Id));
                 }
             }
@@ -79,12 +79,12 @@ namespace SeymourBot.AutoModeration
             {
                 if (warnCount >= (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns))) //more or equal the warn thresold
                 {
-                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent, context.Client.CurrentUser.Id, "User has been warned " + warnCount + " times, exceeding the " + ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) + " warn thresold", context.Message.Author.Id, context.Message.Author.Username, DateTime.Now.AddMinutes(30));
+                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent, context.Client.CurrentUser.Id, "User has been warned " + warnCount + " times, exceeding the " + ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) + " warn thresold", context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddMinutes(30));
                     await context.Channel.SendMessageAsync("I have had enough of your behaviour"); //todo externalize strings
                 }
                 else if (warnCount > (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) / 2)) //more than half the warn thresold
                 {
-                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent, context.Client.CurrentUser.Id, "User has been warned " + warnCount + " times, exceeding half of the " + ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) + " warn thresold", context.Message.Author.Id, context.Message.Author.Username, DateTime.Now.AddDays(1));
+                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent, context.Client.CurrentUser.Id, "User has been warned " + warnCount + " times, exceeding half of the " + ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) + " warn thresold", context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddDays(1));
                     await context.Channel.SendMessageAsync("Your foolish behaviour shant go unpunished !"); //todo externalize strings
                 }
             }
