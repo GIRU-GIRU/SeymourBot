@@ -8,6 +8,7 @@ namespace SeymourBot.Storage.User
     public enum DisciplinaryEventEnum
     {
         BanEvent,
+        BanCleanseEvent,
         KickEvent,
         MuteEvent,
         LimitedUserEvent,

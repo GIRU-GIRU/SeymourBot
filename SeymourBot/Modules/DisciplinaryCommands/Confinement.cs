@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Attributes;
 using SeymourBot.AutoModeration;
@@ -23,15 +24,19 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
         [Command("Mute")]
         [DevOrAdmin]
-        [RequireBotPermission(Discord.GuildPermission.ManageRoles)]
-        private async Task MuteUserAsync(SocketGuildUser user, int timeToMute = 5, string reason = "")
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        [Priority(1)]
+        public async Task MuteUserAsync(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
         {
             try
             {
+                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
+                await user.AddRoleAsync(mutedRole);
+
                 UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
                 {
                     DateInserted = DateTime.UtcNow,
-                    DateToRemove = DateTime.UtcNow.AddMinutes(timeToMute),
+                    DateToRemove = (DateTimeOffset.UtcNow + timeSpan).DateTime,
                     DiscipinaryEventType = DisciplinaryEventEnum.MuteEvent,
                     DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
@@ -45,12 +50,119 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 };
                 await TimedEventManager.CreateEvent(newEvent, newUser);
 
-                await Context.Channel.SendMessageAsync($"{Context.Message.Author.Mention} has muted {user.Mention} for {timeToMute} minute(s)");
+                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, Context, timeSpan, reason, user.Username);
+                await Context.Channel.SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
             {
                 ExceptionManager.HandleException("", ex); //todo
             }
         }
+
+        [Command("Mute")]
+        [DevOrAdmin]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        public async Task MuteUserAsync(SocketGuildUser user, [Remainder]string reason = "no reason specified")
+        {
+            try
+            {
+                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
+                await user.AddRoleAsync(mutedRole);
+
+                UserDisciplinaryPermanentStorage newEvent = new UserDisciplinaryPermanentStorage()
+                {
+                    DateInserted = DateTime.UtcNow,
+                    DiscipinaryEventType = DisciplinaryEventEnum.MuteEvent,
+                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
+                    ModeratorID = Context.Message.Author.Id,
+                    Reason = reason,
+                    UserID = user.Id
+                };
+                UserStorage newUser = new UserStorage()
+                {
+                    UserID = user.Id,
+                    UserName = user.Username
+                };
+
+                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, Context, new TimeSpan(), reason, user.Username);
+                await Context.Channel.SendMessageAsync("", false, embed);
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("", ex); //todo
+            }
+        }
+
+        [Command("Limit")]
+        [DevOrAdmin]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        [Priority(1)]
+        public async Task LimitUserAsync(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        {
+            try
+            {
+                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
+                await user.AddRoleAsync(mutedRole);
+
+                UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
+                {
+                    DateInserted = DateTime.UtcNow,
+                    DateToRemove = (DateTimeOffset.UtcNow + timeSpan).DateTime,
+                    DiscipinaryEventType = DisciplinaryEventEnum.LimitedUserEvent,
+                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
+                    ModeratorID = Context.Message.Author.Id,
+                    Reason = reason,
+                    UserID = user.Id
+                };
+                UserStorage newUser = new UserStorage()
+                {
+                    UserID = user.Id,
+                    UserName = user.Username
+                };
+                await TimedEventManager.CreateEvent(newEvent, newUser);
+
+                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, Context, timeSpan, reason, user.Username);
+                await Context.Channel.SendMessageAsync("", false, embed);
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("", ex); //todo
+            }
+        }
+
+        [Command("limit")]
+        [DevOrAdmin]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        public async Task LimitUserAsync(SocketGuildUser user, [Remainder]string reason = "no reason specified")
+        {
+            try
+            {
+                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
+                await user.AddRoleAsync(mutedRole);
+
+                UserDisciplinaryPermanentStorage newEvent = new UserDisciplinaryPermanentStorage()
+                {
+                    DateInserted = DateTime.UtcNow,
+                    DiscipinaryEventType = DisciplinaryEventEnum.LimitedUserEvent,
+                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
+                    ModeratorID = Context.Message.Author.Id,
+                    Reason = reason,
+                    UserID = user.Id
+                };
+                UserStorage newUser = new UserStorage()
+                {
+                    UserID = user.Id,
+                    UserName = user.Username
+                };
+
+                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, Context, new TimeSpan(), reason, user.Username);
+                await Context.Channel.SendMessageAsync("", false, embed);
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("", ex); //todo
+            }
+        }
+
     }
 }

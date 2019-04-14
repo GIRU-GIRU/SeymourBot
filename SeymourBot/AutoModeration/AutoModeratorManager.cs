@@ -90,7 +90,7 @@ namespace SeymourBot.AutoModeration
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;//todo
             }
         }
     }

@@ -68,7 +68,7 @@ namespace SeymourBot.Startup
 
         private async Task UserJoinedEvent(SocketGuildUser arg)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); // todo
         }
 
         public async Task RegisterCommandAsync()

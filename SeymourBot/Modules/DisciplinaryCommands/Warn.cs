@@ -20,7 +20,8 @@ namespace SeymourBot.Modules.DisciplinaryCommands
     {
         [Command("warn")]
         [DevOrAdmin]
-        private async Task WarnUserAsync(SocketGuildUser user, [Remainder]string reason = "")
+        [Priority(1)]
+        public async Task WarnUserAsync(SocketGuildUser user, [Remainder]string reason = "")
         {
             try
             {

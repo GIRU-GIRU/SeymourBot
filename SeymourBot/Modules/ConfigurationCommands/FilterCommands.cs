@@ -34,7 +34,7 @@ namespace SeymourBot.Modules.ConfigurationCommands
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
                 //todo
             }
         }
@@ -51,7 +51,7 @@ namespace SeymourBot.Modules.ConfigurationCommands
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
                 //todo
             }
         }
