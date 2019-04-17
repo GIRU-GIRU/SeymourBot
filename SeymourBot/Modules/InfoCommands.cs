@@ -10,6 +10,7 @@ using System.Linq;
 using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
 using SeymourBot.Exceptions;
+using SeymourBot.Resources;
 
 namespace SeymourBot.Modules
 {
@@ -50,7 +51,7 @@ namespace SeymourBot.Modules
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.InfoCommandException, ex);
             }
 
         }

@@ -36,7 +36,7 @@ namespace SeymourBot.Config
             {
                 configuration = ConfigInitializer.InitConfiguration();
                 SaveConfig();
-                ExceptionManager.HandleException("0201", new Exception());
+                ExceptionManager.LogExceptionAsync(ErrMessages.NoConfigException);
             }
         }
 

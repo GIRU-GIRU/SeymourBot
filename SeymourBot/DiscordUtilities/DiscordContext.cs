@@ -42,15 +42,15 @@ namespace SeymourBot.DiscordUtilities
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0701", ex, "Probably role sync issue");
+                ExceptionManager.HandleException(ErrMessages.DiscordContextException, ex, "Probably role sync issue");
                 throw;
             }
         }
 
-       public static async Task<bool> IsUserDevOrAdmin(ulong userId)
-       {
-           try
-           {
+        public static async Task<bool> IsUserDevOrAdmin(ulong userId)
+        {
+            try
+            {
                 var userRoles = MordhauGuild.Users.Where(x => x.Id == userId).FirstOrDefault().Roles;
 
                 if (userRoles.Any(x => x.Name.ToLower() == MordhauRoleEnum.Developer.ToString().ToLower() ||
@@ -60,13 +60,13 @@ namespace SeymourBot.DiscordUtilities
                 }
 
                 return false;
-           }
-           catch (Exception ex)
-           {
-               ExceptionManager.HandleException("", ex, ""); // todo
-               throw;
-           }
-       }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.DiscordContextException, ex);
+                throw;
+            }
+        }
 
         public static async Task<bool> IsUserDevOrAdmin(SocketGuildUser user)
         {
@@ -83,7 +83,7 @@ namespace SeymourBot.DiscordUtilities
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("", ex, ""); // todo
+                ExceptionManager.HandleException(ErrMessages.DiscordContextException, ex);
                 throw;
             }
         }

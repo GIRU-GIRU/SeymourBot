@@ -32,6 +32,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DBPaths.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\ErrMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ErrMessages.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +47,10 @@
     <EmbeddedResource Update="Resources\DBPaths.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DBPaths.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ErrMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

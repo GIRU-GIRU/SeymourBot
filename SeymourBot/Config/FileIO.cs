@@ -1,6 +1,7 @@
 ﻿
 using Newtonsoft.Json;
 using SeymourBot.Exceptions;
+using SeymourBot.Resources;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,7 +37,7 @@ namespace SeymourBot.Config
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0301", ex, path);
+                ExceptionManager.HandleException(ErrMessages.FileIOException, ex, path);
             }
             return result;
         }
@@ -57,7 +58,7 @@ namespace SeymourBot.Config
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0302", ex, path);
+                ExceptionManager.HandleException(ErrMessages.FileIOException, ex, path);
             }
         }
 
@@ -79,7 +80,7 @@ namespace SeymourBot.Config
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0303", ex, path);
+                ExceptionManager.HandleException(ErrMessages.FileIOException, ex, path);
             }
             return result;
         }
@@ -99,7 +100,7 @@ namespace SeymourBot.Config
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0304", ex, path);
+                ExceptionManager.HandleException(ErrMessages.FileIOException, ex, path);
             }
         }
 

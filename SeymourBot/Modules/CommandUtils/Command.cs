@@ -1,4 +1,5 @@
 ﻿using SeymourBot.Exceptions;
+using SeymourBot.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace SeymourBot.Modules.CommandUtils
             }
             catch (Exception e)
             {
-                ExceptionManager.HandleException("0401", e);
+                ExceptionManager.HandleException(ErrMessages.CommandParsingException, e);
                 Error = true;
             }
         }
