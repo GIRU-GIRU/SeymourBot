@@ -12,15 +12,14 @@ namespace Start
             {
                 var seymour = new SeymourInitialization();
                 var overseer = new OverseerInitialization();
-                string timeStamp = $"{DateTime.Now.ToString("HH:mm:ss")}\t     ";
 
-                Console.WriteLine($"{timeStamp}Launching Seymour..");
+                cw("Launching Seymour..");
                 var seymourBot = seymour.LaunchSeymourAsync();
-                Console.WriteLine($"{timeStamp}Seymour Ready");
+                cw("Seymour Ready");
 
-                Console.WriteLine($"{timeStamp}Launching Overseer..");
+                cw("Launching Overseer..");
                 var overseerBot = overseer.LaunchOverseerAsync();
-                Console.WriteLine($"{timeStamp}Overseer ready..");
+                cw("Overseer ready..");
 
                 seymourBot.Wait();
             }
@@ -30,6 +29,19 @@ namespace Start
                 Console.ReadLine();
             }
 
+        }
+
+        private static string cw(string input)
+        {
+            try
+            {
+                string timeStamp = $"{DateTime.Now.ToString("HH:mm:ss")}\t     ";
+                return timeStamp + input;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

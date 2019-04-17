@@ -3,6 +3,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using SeymourBot.AutoModeration;
+using SeymourBot.Modules.DisciplinaryCommands;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -63,7 +64,7 @@ namespace SeymourBot.Startup
         public async Task RegisterCommandAsync()
         {
             _client.MessageReceived += HandleCommandAsync;
-            await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
+            await _commands.AddModulesAsync(typeof(Confinement).Assembly, _services);
         }
 
         private async Task HandleCommandAsync(SocketMessage arg)
