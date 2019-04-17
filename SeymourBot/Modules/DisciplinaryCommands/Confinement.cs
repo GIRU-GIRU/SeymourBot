@@ -2,6 +2,7 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Attributes;
+using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
 using SeymourBot.Storage;
 using SeymourBot.Storage.User;
@@ -55,45 +56,45 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
         }
 
-        //[Command("Mute")]
-        //[DevOrAdmin]
-        //[RequireBotPermission(GuildPermission.ManageRoles)]
-        //[Priority(2)]
-        //public async Task MuteUserAsync(ulong userID, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
-        //{
-        //    try
-        //    {
-        //        SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
-        //        var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
-        //        await user.AddRoleAsync(mutedRole);
+        [Command("Mute")]
+        [DevOrAdmin]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        [Priority(2)]
+        public async Task MuteUserAsync(ulong userID, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        {
+            try
+            {
+                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
+                await user.AddRoleAsync(mutedRole);
 
-        //        var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, Context, timeSpan, reason, user.Username);
-        //        await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, Context, timeSpan, reason, user.Username);
+                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
 
-        //        UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
-        //        {
-        //            DateInserted = DateTime.UtcNow,
-        //            DateToRemove = (DateTimeOffset.UtcNow + timeSpan).DateTime,
-        //            DiscipinaryEventType = DisciplinaryEventEnum.MuteEvent,
-        //            DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
-        //            ModeratorID = Context.Message.Author.Id,
-        //            Reason = reason,
-        //            UserID = user.Id
-        //        };
-        //        UserStorage newUser = new UserStorage()
-        //        {
-        //            UserID = user.Id,
-        //            UserName = user.Username
-        //        };
-        //        await TimedEventManager.CreateEvent(newEvent, newUser);
+                UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
+                {
+                    DateInserted = DateTime.UtcNow,
+                    DateToRemove = (DateTimeOffset.UtcNow + timeSpan).DateTime,
+                    DiscipinaryEventType = DisciplinaryEventEnum.MuteEvent,
+                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
+                    ModeratorID = Context.Message.Author.Id,
+                    Reason = reason,
+                    UserID = user.Id
+                };
+                UserStorage newUser = new UserStorage()
+                {
+                    UserID = user.Id,
+                    UserName = user.Username
+                };
+                await TimedEventManager.CreateEvent(newEvent, newUser);
 
-   
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ExceptionManager.HandleException("", ex); //todo
-        //    }
-        //}
+
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException("", ex); //todo
+            }
+        }
 
         [Command("Mute")]
         [DevOrAdmin]
@@ -104,6 +105,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             {
                 var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
                 await user.AddRoleAsync(mutedRole);
+
 
                 UserDisciplinaryPermanentStorage newEvent = new UserDisciplinaryPermanentStorage()
                 {
@@ -119,6 +121,8 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     UserID = user.Id,
                     UserName = user.Username
                 };
+
+               await StorageManager.StoreDisciplinaryPermanentEventAsync(newEvent, newUser);
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, Context, new TimeSpan(), reason, user.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
@@ -156,7 +160,9 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     UserID = user.Id,
                     UserName = user.Username
-                };       
+                };
+
+                await StorageManager.StoreDisciplinaryPermanentEventAsync(newEvent, newUser);
             }
             catch (Exception ex)
             {
@@ -168,7 +174,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [DevOrAdmin]
         [RequireBotPermission(GuildPermission.ManageRoles)]
         [Priority(1)]
-        public async Task PermaLimitUserAsync(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        public async Task LimitUserAsync(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -266,6 +272,8 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     UserName = user.Username
                 };
 
+                await StorageManager.StoreDisciplinaryPermanentEventAsync(newEvent, newUser);
+
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, Context, new TimeSpan(), reason, user.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
@@ -304,6 +312,8 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     UserID = user.Id,
                     UserName = user.Username
                 };
+
+                await StorageManager.StoreDisciplinaryPermanentEventAsync(newEvent, newUser);
             }
             catch (Exception ex)
             {

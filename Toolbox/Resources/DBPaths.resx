@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FilterDB" xml:space="preserve">
-    <value>..\\..\\..\\\\Database\\SeymourFilterDB.db</value>
+    <value>F:\\SeymourV2\\SeymourBot\\SeymourBot\\Database\\SeymourFilterDB.db</value>
   </data>
   <data name="InfoDB" xml:space="preserve">
-    <value>..\\..\\..\\\\Database\\SeymourInfoDB.db</value>
+    <value>F:\\SeymourV2\\SeymourBot\\SeymourBot\\Database\\SeymourInfoDB.db</value>
   </data>
   <data name="UserDB" xml:space="preserve">
-    <value>..\\..\\..\\\\Database\\SeymourUserDB.db</value>
+    <value>F:\\SeymourV2\\SeymourBot\\SeymourBot\\Database\\SeymourUserDB.db</value>
   </data>
 </root>

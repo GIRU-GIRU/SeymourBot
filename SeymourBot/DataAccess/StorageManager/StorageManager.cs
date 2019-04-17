@@ -278,19 +278,26 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        public static async Task<DisciplinaryEventEnum> CheckPendingDisciplinaries(SocketGuildUser User)
+        public static async Task<List<DisciplinaryEventEnum>> CheckPendingDisciplinaries(SocketGuildUser User)
         {
             try
             {
+                //TODO this needs to catch multiple evnts
+                var list = new List<DisciplinaryEventEnum>();
                 using (var db = new UserContext())
                 {
                     if (await db.UserStorageTable.AnyAsync(x => x.UserID == User.Id))
                     {
-                        return await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == User.Id).Select(x => x.DiscipinaryEventType).FirstOrDefaultAsync();
-                    }             
+                        list.Add(await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == User.Id).Select(x => x.DiscipinaryEventType).FirstOrDefaultAsync());
+                        if (list.Count > 0)
+                        {
+                            list.Add(await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == User.Id).Select(x => x.DiscipinaryEventType).FirstOrDefaultAsync());
+
+                        }                    
+                    }
                 }
 
-                return DisciplinaryEventEnum.NoEvent;
+                return list;
 
             }
             catch (Exception ex)
@@ -300,3 +307,4 @@ namespace SeymourBot.DataAccess.StorageManager
         }
     }
 }
+

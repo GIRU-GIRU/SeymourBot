@@ -53,6 +53,8 @@ namespace SeymourBot.Startup
             _client.UserJoined += UserJoinedChecker.SanitizeJoinedUser;
             _client.MessageUpdated += MessageUpdatedEvent;
 
+            DiscordContext.InitContext(_client);
+
             await RegisterCommandAsync();
         }
 

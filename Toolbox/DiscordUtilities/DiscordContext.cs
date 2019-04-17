@@ -15,7 +15,7 @@ namespace Toolbox.DiscordUtilities
     /// <summary>
     /// Unify discord api interactions
     /// </summary>
-    public class DiscordContext
+    public static class DiscordContext
     {
         private static DiscordSocketClient _client;
         public static SocketGuild MordhauGuild;

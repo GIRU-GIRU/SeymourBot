@@ -13,7 +13,7 @@ namespace SeymourBot.DataAccess.Storage.Filter
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source={DBPaths.FilterDB}");
+            optionsBuilder.UseSqlite($"Data Source=F:\\SeymourV2\\SeymourBot\\SeymourBot\\Database\\SeymourFilterDB.db");
             optionsBuilder.EnableSensitiveDataLogging(true);
         }
     }

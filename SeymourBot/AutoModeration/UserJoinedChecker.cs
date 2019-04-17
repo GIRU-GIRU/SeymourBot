@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Discord.WebSocket;
+﻿using Discord.WebSocket;
 using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
-using SeymourBot.Storage.User;
+using System;
+using System.Threading.Tasks;
 
 namespace SeymourBot.AutoModeration
 {
@@ -15,12 +12,12 @@ namespace SeymourBot.AutoModeration
         {
             try
             {
-                var pendingEventType = await StorageManager.CheckPendingDisciplinaries(user);
+                var pendingEventTypeList = await StorageManager.CheckPendingDisciplinaries(user);
 
-                if (pendingEventType != DisciplinaryEventEnum.NoEvent)
+                if (pendingEventTypeList.Count > 0)
                 {
-                    await PunishmentExecution.ReapplyDisciplinaryAction(pendingEventType, user);
-                }              
+                    await PunishmentExecution.ReapplyDisciplinaryAction(pendingEventTypeList, user);
+                }
             }
             catch (Exception ex)
             {

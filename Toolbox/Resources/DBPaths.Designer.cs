@@ -22,22 +22,21 @@ namespace Toolbox.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class DBPaths {
+    internal class DBPaths {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-
-        DBPaths() {
+        internal DBPaths() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Toolbox.Resources.DBPaths", typeof(DBPaths).Assembly);
@@ -52,7 +51,7 @@ namespace Toolbox.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -62,27 +61,27 @@ namespace Toolbox.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ..\\..\\..\\\\Database\\SeymourFilterDB.db.
+        ///   Looks up a localized string similar to F:\\SeymourV2\\SeymourBot\\SeymourBot\\Database\\SeymourFilterDB.db.
         /// </summary>
-        public static string FilterDB {
+        internal static string FilterDB {
             get {
                 return ResourceManager.GetString("FilterDB", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ..\\..\\..\\\\Database\\SeymourInfoDB.db.
+        ///   Looks up a localized string similar to F:\\SeymourV2\\SeymourBot\\SeymourBot\\Database\\SeymourInfoDB.db.
         /// </summary>
-        public static string InfoDB {
+        internal static string InfoDB {
             get {
                 return ResourceManager.GetString("InfoDB", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ..\\..\\..\\\\Database\\SeymourUserDB.db.
+        ///   Looks up a localized string similar to F:\\SeymourV2\\SeymourBot\\SeymourBot\\Database\\SeymourUserDB.db.
         /// </summary>
-        public static string UserDB {
+        internal static string UserDB {
             get {
                 return ResourceManager.GetString("UserDB", resourceCulture);
             }

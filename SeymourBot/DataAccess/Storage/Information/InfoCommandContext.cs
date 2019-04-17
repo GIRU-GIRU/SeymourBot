@@ -10,7 +10,7 @@ namespace SeymourBot.DataAccess.Storage.Information
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source={DBPaths.InfoDB}");
+            optionsBuilder.UseSqlite($"Data Source=F:\\SeymourV2\\SeymourBot\\SeymourBot\\Database\\SeymourInfoDB.db");
             optionsBuilder.EnableSensitiveDataLogging(true);
         }
     }
