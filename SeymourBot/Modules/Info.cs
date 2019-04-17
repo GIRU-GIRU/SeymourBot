@@ -42,30 +42,56 @@ namespace SeymourBot.Modules
                 embed.WithColor(new Color(0, 204, 255));
                 await Context.Channel.SendMessageAsync("", false, embed.Build());
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 await Context.Channel.SendMessageAsync("Failed to display embed");
             }
 
         }
 
+        [Command("help")]
+        [DevOrAdmin]
+        private async Task ModeratorHelp()
+        {
+            try
+            {
+                //todo
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
         [Command("avatar")]
+        [DevOrAdmin]
         private async Task PullAvatarAsync(IGuildUser user)
         {
-            string avatarURL = user.GetAvatarUrl(ImageFormat.Auto, 1024);
-
-            if (avatarURL is null)
+            try
             {
-                await Context.Message.Channel.SendMessageAsync($"{user.Mention} does not have a profile picture");
-                return;
-            }
-            var embed = new EmbedBuilder();
-            embed.WithColor(new Color(0, 204, 255));
-            embed.WithTitle($"{user.Username}'s avatar");
-            embed.WithUrl(avatarURL);
-            embed.WithImageUrl(avatarURL);
+                string avatarURL = user.GetAvatarUrl(ImageFormat.Auto, 1024);
 
-            await Context.Channel.SendMessageAsync("", false, embed.Build());
+                if (avatarURL is null)
+                {
+                    await Context.Message.Channel.SendMessageAsync($"{user.Mention} does not have a profile picture");
+                    return;
+                }
+                var embed = new EmbedBuilder();
+                embed.WithColor(new Color(0, 204, 255));
+                embed.WithTitle($"{user.Username}'s avatar");
+                embed.WithUrl(avatarURL);
+                embed.WithImageUrl(avatarURL);
+
+                await Context.Channel.SendMessageAsync("", false, embed.Build());
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
         }
 
     }
