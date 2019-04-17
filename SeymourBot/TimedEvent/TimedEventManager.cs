@@ -93,10 +93,17 @@ namespace SeymourBot.TimedEvent
             {
                 switch (newEvent.DiscipinaryEventType)
                 {
-                    case Storage.User.DisciplinaryEventEnum.MuteEvent:
-                        await DiscordContext.AddRole(DiscordContext.GrabRole(MordhauRoleEnum.Muted), newEvent.UserID);
+                    case DisciplinaryEventEnum.BanEvent:
                         break;
-                    case Storage.User.DisciplinaryEventEnum.WarnEvent:
+                    case DisciplinaryEventEnum.BanCleanseEvent:
+                        break;
+                    case DisciplinaryEventEnum.KickEvent:
+                        break;
+                    case DisciplinaryEventEnum.MuteEvent:
+                        break;
+                    case DisciplinaryEventEnum.LimitedUserEvent:
+                        break;
+                    case DisciplinaryEventEnum.WarnEvent:
                         break;
                     default:
                         break;

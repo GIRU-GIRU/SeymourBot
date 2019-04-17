@@ -13,9 +13,10 @@ namespace SeymourBot.Config
     public enum PropertyItem
     {
         None,
-        BotToken,
+        SeymourBotToken,
         MessageCacheSize,
         CommandPrefix,
+        OverseerBotToken,
 
         MaxWarns,
         WarnDuration,
@@ -28,6 +29,7 @@ namespace SeymourBot.Config
         Role_Moderator,
         Role_Developer,
         Channel_Main,
-        Channel_Logging
+        Channel_Logging,
+        Channel_DeletedMessageLog
     }
 }

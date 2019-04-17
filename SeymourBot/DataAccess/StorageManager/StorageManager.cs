@@ -164,30 +164,6 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-
-        //this should be handled by CreateEvent
-        //public static async Task StoreDisciplinaryEventAsync(UserDisciplinaryEventStorage obj, UserStorage user)
-        //{
-        //    try
-        //    {
-        //        using (UserContext db = new UserContext())
-        //        {
-        //            if (!await db.UserStorageTable.AnyAsync(x => x.UserID == user.UserID))
-        //            {
-        //                await db.AddAsync(user);
-        //            }
-
-        //            await db.UserDisciplinaryEventStorageTable.AddAsync(obj);
-        //            await db.SaveChangesAsync();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ExceptionManager.HandleException("0604", ex); //todo
-        //        throw;
-        //    }
-        //}
-
         public static async Task StoreDisciplinaryPermanentEventAsync(UserDisciplinaryPermanentStorage obj, UserStorage user)
         {
             try

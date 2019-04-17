@@ -41,7 +41,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     return;
                 }
 
-                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, Context, new TimeSpan(), reason, kickTargetName);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
@@ -85,10 +85,10 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     return;
                 }
 
-                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, Context, new TimeSpan(), reason, kickTargetName);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
-                await StorageManager.StoreDisciplinaryPermanentEventAsync( new UserDisciplinaryPermanentStorage()
+                await StorageManager.StoreDisciplinaryPermanentEventAsync(new UserDisciplinaryPermanentStorage()
                     {
                         DateInserted = DateTime.UtcNow,
                         DiscipinaryEventType = DisciplinaryEventEnum.BanEvent,
@@ -128,7 +128,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     return;
                 }
 
-                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, Context, new TimeSpan(), reason, kickTargetName);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
@@ -173,7 +173,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     return;
                 }
                         
-                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, Context, new TimeSpan(), reason, kickTargetName);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
                 await StorageManager.StoreDisciplinaryPermanentEventAsync(new UserDisciplinaryPermanentStorage()
@@ -228,7 +228,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     UserName = user.Username,
                 });
 
-                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.KickEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.KickEvent, Context, new TimeSpan(), reason, kickTargetName);
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
             catch (Exception ex)

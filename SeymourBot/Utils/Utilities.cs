@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SeymourBot.Utils
 {
-    public static class Utils
+    public static class Utilities
     {
         public static Embed BuildDefaultEmbed(DisciplinaryEventEnum eventType, SocketCommandContext context, TimeSpan timeSpan, string reason, string targetName)
         {

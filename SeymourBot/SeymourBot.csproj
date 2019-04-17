@@ -22,6 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OverseerBot\OverseerBot.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Resources\BotDialogs.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

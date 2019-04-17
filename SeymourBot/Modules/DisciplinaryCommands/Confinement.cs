@@ -12,6 +12,7 @@ using SeymourBot.Resources;
 using SeymourBot.Storage;
 using SeymourBot.Storage.User;
 using SeymourBot.TimedEvent;
+using SeymourBot.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -50,7 +51,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 };
                 await TimedEventManager.CreateEvent(newEvent, newUser);
 
-                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, Context, timeSpan, reason, user.Username);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, Context, timeSpan, reason, user.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
@@ -84,7 +85,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     UserName = user.Username
                 };
 
-                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, Context, new TimeSpan(), reason, user.Username);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, Context, new TimeSpan(), reason, user.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
@@ -121,7 +122,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 };
                 await TimedEventManager.CreateEvent(newEvent, newUser);
 
-                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, Context, timeSpan, reason, user.Username);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, Context, timeSpan, reason, user.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
@@ -155,7 +156,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     UserName = user.Username
                 };
 
-                var embed = Utils.Utils.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, Context, new TimeSpan(), reason, user.Username);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, Context, new TimeSpan(), reason, user.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
             catch (Exception ex)

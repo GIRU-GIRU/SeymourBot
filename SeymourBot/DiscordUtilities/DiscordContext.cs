@@ -17,7 +17,7 @@ namespace SeymourBot.DiscordUtilities
     /// <summary>
     /// Unify discord api interactions
     /// </summary>
-    class DiscordContext
+    public class DiscordContext
     {
         private static DiscordSocketClient _client;
         public static SocketGuild MordhauGuild;
@@ -47,7 +47,23 @@ namespace SeymourBot.DiscordUtilities
             }
         }
 
-       public static async Task<bool> IsUserDevOrAdmin(ulong userId)
+        public static ITextChannel GetDeletedMessageLog()
+        {
+            try
+            {
+                return MordhauGuild.GetTextChannel(ConfigManager.GetUlongProperty(PropertyItem.Channel_DeletedMessageLog));
+            }
+            catch (Exception ex)
+            {
+
+                throw ex; //todo
+            }
+
+        }
+
+       
+
+        public static async Task<bool> IsUserDevOrAdmin(ulong userId)
        {
            try
            {

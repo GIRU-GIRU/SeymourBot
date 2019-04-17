@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeymourBot", "SeymourBot\SeymourBot.csproj", "{C7FDB37D-B39E-474E-8B63-D84896D033F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverseerBot", "OverseerBot\OverseerBot.csproj", "{EB5DB42C-08B1-4A2B-B894-C40F9EC7EDF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C7FDB37D-B39E-474E-8B63-D84896D033F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7FDB37D-B39E-474E-8B63-D84896D033F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7FDB37D-B39E-474E-8B63-D84896D033F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB5DB42C-08B1-4A2B-B894-C40F9EC7EDF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB5DB42C-08B1-4A2B-B894-C40F9EC7EDF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB5DB42C-08B1-4A2B-B894-C40F9EC7EDF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB5DB42C-08B1-4A2B-B894-C40F9EC7EDF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,6 +10,7 @@ using SeymourBot.Logging;
 using SeymourBot.Exceptions;
 using SeymourBot.DiscordUtilities;
 using SeymourBot.Startup;
+using OverseerBot.Startup;
 
 namespace SeymourBot
 {
@@ -17,12 +18,15 @@ namespace SeymourBot
     {
         static void Main(string[] args)
         {
-            var start = new SeymourInitialization();
+            var seymour = new SeymourInitialization();
+            var overseer = new OverseerInitialization();
 
             try
             {
-                var bot = start.LaunchSeymourAsync();
-                bot.Wait();
+                var seymourBot = seymour.LaunchSeymourAsync();
+                var overseerBot = overseer.LaunchOverseerAsync();
+
+                seymourBot.Wait();
             }
             catch (Exception ex)
             {

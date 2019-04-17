@@ -19,7 +19,7 @@ namespace SeymourBot.Modules.ConfigurationCommands
 {
     public class FilterCommands : ModuleBase<SocketCommandContext>
     {
-        [Command("Filter")]
+        [Command("addfilters")]
         [DevOrAdmin]
         private async Task AddFilterAsync([Remainder]string words)
         {
@@ -31,6 +31,23 @@ namespace SeymourBot.Modules.ConfigurationCommands
                 {
                     await AutoModeratorManager.AddBannedWord(new ModeratedElement() { Dialog = "", Pattern = splitword.ToLower() });
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //todo
+            }
+        }
+
+        [Command("addcustomfilter")]
+        [DevOrAdmin]
+        private async Task AddCustomFilter([Remainder]string words)
+        {
+            try
+            {
+                string pattern = words.Substring(0, words.IndexOf(' '));
+                string message = words.Substring(words.IndexOf(' '));
+                await AutoModeratorManager.AddBannedWord(new ModeratedElement() { Dialog = message, Pattern = pattern.ToLower() });
             }
             catch (Exception ex)
             {
