@@ -85,33 +85,18 @@ namespace SeymourBot.TimedEvent
 
         private static async Task HandleEventCreated(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
         {
-            var newActiveEvent = BuildActiveTimedEvent(newEvent);
-            activeEvents.Add(newActiveEvent);
-            var id = await StorageManager.StoreTimedEventAsync(newEvent, newUser);
-            newActiveEvent.DisciplinaryEventId = id;
             try
             {
-                switch (newEvent.DiscipinaryEventType)
-                {
-                    case DisciplinaryEventEnum.BanEvent:
-                        break;
-                    case DisciplinaryEventEnum.BanCleanseEvent:
-                        break;
-                    case DisciplinaryEventEnum.KickEvent:
-                        break;
-                    case DisciplinaryEventEnum.MuteEvent:
-                        break;
-                    case DisciplinaryEventEnum.LimitedUserEvent:
-                        break;
-                    case DisciplinaryEventEnum.WarnEvent:
-                        break;
-                    default:
-                        break;
-                }
+                var newActiveEvent = BuildActiveTimedEvent(newEvent);
+                activeEvents.Add(newActiveEvent);
+                var id = await StorageManager.StoreTimedEventAsync(newEvent, newUser);
+                newActiveEvent.DisciplinaryEventId = id;
+
+               
             }
             catch (Exception ex)
             {
-                ExceptionManager.LogExceptionAsync(ex);
+                await ExceptionManager.LogExceptionAsync(ex);
             }
         }
 

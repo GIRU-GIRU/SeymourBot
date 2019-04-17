@@ -8,13 +8,19 @@ namespace Start
     {
         static void Main(string[] args)
         {
-            var seymour = new SeymourInitialization();
-            var overseer = new OverseerInitialization();
-
             try
             {
+                var seymour = new SeymourInitialization();
+                var overseer = new OverseerInitialization();
+                string timeStamp = $"{DateTime.Now.ToString("HH:mm:ss")}\t     ";
+
+                Console.WriteLine($"{timeStamp}Launching Seymour..");
                 var seymourBot = seymour.LaunchSeymourAsync();
+                Console.WriteLine($"{timeStamp}Seymour Ready");
+
+                Console.WriteLine($"{timeStamp}Launching Overseer..");
                 var overseerBot = overseer.LaunchOverseerAsync();
+                Console.WriteLine($"{timeStamp}Overseer ready..");
 
                 seymourBot.Wait();
             }

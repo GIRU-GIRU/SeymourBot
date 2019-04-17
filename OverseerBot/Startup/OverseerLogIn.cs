@@ -2,7 +2,7 @@
 using Discord.WebSocket;
 using System;
 using System.Threading.Tasks;
-
+using Toolbox.Config;
 
 namespace OverseerBot.Startup
 {
@@ -12,15 +12,13 @@ namespace OverseerBot.Startup
         {
             try
             {
-                //ConfigManager.GetProperty(PropertyItem.OverseerBotToken)
-                await client.LoginAsync(TokenType.Bot, "NTY4MTMyNDA4Njg0MzE0NjM2.XLdonA.nruqyAT9HAbHfS2orZrB840XaZE");
+                await client.LoginAsync(TokenType.Bot, ConfigManager.GetProperty(PropertyItem.OverseerBotToken));
                 await client.StartAsync();
 
                 await Task.Delay(-1);
             }
             catch (Exception ex)
             {
-                // ExceptionManager.HandleException("0801", ex);
                 throw ex;
             }
 

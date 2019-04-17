@@ -52,7 +52,6 @@ namespace Toolbox.DiscordUtilities
             }
             catch (Exception ex)
             {
-
                 throw ex; //todo
             }
 

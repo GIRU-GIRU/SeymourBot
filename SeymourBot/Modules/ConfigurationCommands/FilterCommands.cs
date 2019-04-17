@@ -13,6 +13,7 @@ namespace SeymourBot.Modules.ConfigurationCommands
     public class FilterCommands : ModuleBase<SocketCommandContext>
     {
         [Command("addmultiplefilters")]
+        [Alias("addfilters")]
         [DevOrAdmin]
         private async Task AddFilterAsync([Remainder]string words)
         {

@@ -172,8 +172,8 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
-                await user.AddRoleAsync(mutedRole);
+                var limitedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
+                await user.AddRoleAsync(limitedRole);
 
                 UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
                 {
@@ -210,8 +210,9 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
-                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
-                await user.AddRoleAsync(mutedRole);
+
+                var limitedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
+                await user.AddRoleAsync(limitedRole);
 
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, Context, timeSpan, reason, user.Username);
@@ -247,8 +248,8 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
-                await user.AddRoleAsync(mutedRole);
+                var limitedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
+                await user.AddRoleAsync(limitedRole);
 
                 UserDisciplinaryPermanentStorage newEvent = new UserDisciplinaryPermanentStorage()
                 {
@@ -282,8 +283,9 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
-                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
-                await user.AddRoleAsync(mutedRole);
+
+                var limitedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
+                await user.AddRoleAsync(limitedRole);
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, Context, new TimeSpan(), reason, user.Username);
                 await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);

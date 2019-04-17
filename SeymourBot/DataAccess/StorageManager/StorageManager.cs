@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Discord.WebSocket;
+using Microsoft.EntityFrameworkCore;
 using SeymourBot.AutoModeration;
 using SeymourBot.DataAccess.Storage.Filter;
 using SeymourBot.DataAccess.Storage.Filter.Tables;
@@ -274,6 +275,27 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 ExceptionManager.HandleException(ErrMessages.StorageException, ex);
                 throw;
+            }
+        }
+
+        public static async Task<DisciplinaryEventEnum> CheckPendingDisciplinaries(SocketGuildUser User)
+        {
+            try
+            {
+                using (var db = new UserContext())
+                {
+                    if (await db.UserStorageTable.AnyAsync(x => x.UserID == User.Id))
+                    {
+                        return await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == User.Id).Select(x => x.DiscipinaryEventType).FirstOrDefaultAsync();
+                    }             
+                }
+
+                return DisciplinaryEventEnum.NoEvent;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
             }
         }
     }

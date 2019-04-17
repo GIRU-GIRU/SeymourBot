@@ -49,8 +49,7 @@ namespace SeymourBot.Startup
 
             _client.Log += Toolbox.Logging.Logger.Log;
             _commands.CommandExecuted += OnCommandExecutedAsync;
-            _client.Ready += BotReadyEvent;
-            _client.UserJoined += UserJoinedEvent;
+            _client.UserJoined += UserJoinedChecker.SanitizeJoinedUser;
             _client.MessageUpdated += MessageUpdatedEvent;
 
             await RegisterCommandAsync();
@@ -61,27 +60,10 @@ namespace SeymourBot.Startup
             await MessageContentChecker.AutoModerateMessage(new SocketCommandContext(_client, newMsg as SocketUserMessage));
         }
 
-        private async Task UserJoinedEvent(SocketGuildUser arg)
-        {
-            throw new NotImplementedException(); // todo
-        }
-
         public async Task RegisterCommandAsync()
         {
             _client.MessageReceived += HandleCommandAsync;
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
-        }
-
-        private async Task BotReadyEvent()
-        {
-            DiscordContext.InitContext(_client);
-            await BotStartupMessage();
-        }
-
-
-        public static async Task BotStartupMessage()
-        {
-            await DiscordContext.GetMainChannel().SendMessageAsync(BotDialogs.StartupMessage);
         }
 
         private async Task HandleCommandAsync(SocketMessage arg)

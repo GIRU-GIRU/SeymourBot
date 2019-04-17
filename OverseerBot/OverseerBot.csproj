@@ -8,4 +8,8 @@
     <PackageReference Include="Discord.Net" Version="2.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Toolbox\Toolbox.csproj" />
+  </ItemGroup>
+
 </Project>
