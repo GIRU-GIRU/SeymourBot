@@ -6,6 +6,7 @@ using SeymourBot.DataAccess.Storage.Filter.Tables;
 using SeymourBot.DataAccess.Storage.Information;
 using SeymourBot.Exceptions;
 using SeymourBot.Modules.CommandUtils;
+using SeymourBot.Resources;
 using SeymourBot.Storage;
 using SeymourBot.Storage.Information;
 using SeymourBot.Storage.Information.Tables;
@@ -38,7 +39,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0601", ex);
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
             }
         }
 
@@ -58,7 +59,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0602", ex);
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
                 throw;
             }
         }
@@ -81,7 +82,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0605", ex);
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
                 throw;
             }
         }
@@ -112,13 +113,13 @@ namespace SeymourBot.DataAccess.StorageManager
                     }
                     else
                     {
-                        ExceptionManager.HandleException("0606", new Exception());
+                        ExceptionManager.HandleException(ErrMessages.StorageException, new Exception());
                     }
                 }
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0606", ex);
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
             }
         }
 
@@ -138,7 +139,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0603", ex);
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
                 throw;
             }
         }
@@ -159,7 +160,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0604", ex);
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
                 throw;
             }
         }
@@ -181,7 +182,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0604", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
                 throw;
             }
         }
@@ -201,7 +202,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0604", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
                 throw;
             }
         }
@@ -223,7 +224,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0604", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
                 throw;
             }
         }
@@ -248,7 +249,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0604", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
                 throw;
             }
         }
@@ -273,7 +274,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("0604", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
                 throw;
             }
         }

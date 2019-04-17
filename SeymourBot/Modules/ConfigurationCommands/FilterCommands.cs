@@ -34,8 +34,7 @@ namespace SeymourBot.Modules.ConfigurationCommands
             }
             catch (Exception ex)
             {
-                throw ex;
-                //todo
+                ExceptionManager.HandleException(ErrMessages.FilterException, ex);
             }
         }
 
@@ -68,8 +67,7 @@ namespace SeymourBot.Modules.ConfigurationCommands
             }
             catch (Exception ex)
             {
-                throw ex;
-                //todo
+                ExceptionManager.HandleException(ErrMessages.FilterException, ex);
             }
         }
     }
