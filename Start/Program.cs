@@ -1,14 +1,8 @@
-﻿using System;
-using Discord;
-using Discord.Commands;
-using Discord.WebSocket;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using OverseerBot.Startup;
 using SeymourBot.Startup;
-using OverseerBot.Startup;
+using System;
 
-namespace SeymourBot
+namespace Start
 {
     class Program
     {

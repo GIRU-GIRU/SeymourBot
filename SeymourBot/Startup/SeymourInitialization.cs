@@ -13,7 +13,7 @@ using Toolbox.Resources;
 
 namespace SeymourBot.Startup
 {
-    class SeymourInitialization
+    public class SeymourInitialization
     {
         public async Task LaunchSeymourAsync()
         {
