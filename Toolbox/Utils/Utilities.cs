@@ -1,12 +1,12 @@
 ﻿using Discord;
 using Discord.Commands;
-using SeymourBot.DiscordUtilities;
 using SeymourBot.Storage.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Toolbox.DiscordUtilities;
 
-namespace SeymourBot.Utils
+namespace Toolbox.Utils
 {
     public static class Utilities
     {

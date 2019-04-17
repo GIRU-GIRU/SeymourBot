@@ -1,12 +1,6 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using SeymourBot.Config;
-using SeymourBot.Resources;
+﻿using Microsoft.EntityFrameworkCore;
 using SeymourBot.Storage.User.Tables;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+using Toolbox.Resources;
 
 namespace SeymourBot.Storage.User
 {

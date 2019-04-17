@@ -2,21 +2,10 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Attributes;
-using SeymourBot.Config;
-using SeymourBot.DataAccess.StorageManager;
-using SeymourBot.DiscordUtilities;
-using SeymourBot.Exceptions;
 using SeymourBot.Modules.CommandUtils;
-using SeymourBot.Resources;
-using SeymourBot.Storage;
-using SeymourBot.Storage.User;
-using SeymourBot.TimedEvent;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Toolbox.DiscordUtilities;
 
 namespace SeymourBot.Modules.DisciplinaryCommands
 {

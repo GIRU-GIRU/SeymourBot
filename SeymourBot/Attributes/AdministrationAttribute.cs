@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using Discord.WebSocket;
+using System;
 using System.Linq;
-using SeymourBot.DiscordUtilities;
+using System.Threading.Tasks;
+using Toolbox.DiscordUtilities;
 
 namespace SeymourBot.Attributes
 

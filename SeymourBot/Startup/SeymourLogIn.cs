@@ -1,11 +1,9 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using SeymourBot.Config;
-using SeymourBot.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Toolbox.Config;
+using Toolbox.Exceptions;
 
 namespace SeymourBot.Startup
 {
@@ -15,7 +13,7 @@ namespace SeymourBot.Startup
         {
             try
             {
-                await client.LoginAsync(TokenType.Bot, ConfigManager.GetProperty(PropertyItem.BotToken));
+                await client.LoginAsync(TokenType.Bot, ConfigManager.GetProperty(PropertyItem.SeymourBotToken));
                 await client.StartAsync();
 
                 await Task.Delay(-1);

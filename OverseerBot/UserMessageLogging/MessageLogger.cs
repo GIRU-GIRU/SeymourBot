@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Discord.Commands;
+﻿using Discord;
 using Discord.WebSocket;
-using Discord;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Net.Http;
 
 namespace OverseerBot.UserMessageLogging
 {

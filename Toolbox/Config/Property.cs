@@ -1,14 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using SeymourBot.DiscordUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Toolbox.DiscordUtilities;
 
-namespace SeymourBot.Config
+namespace Toolbox.Config
 {
     /// <summary>
     /// A property with a name and its associated value.

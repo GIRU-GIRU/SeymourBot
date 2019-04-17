@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SeymourBot.Resources
+namespace Toolbox.Resources
 {
     public static class ResourceUtils
     {

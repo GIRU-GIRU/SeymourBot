@@ -2,13 +2,9 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
-using OverseerBot.Logging;
-using OverseerBot.Startup;
 using OverseerBot.UserMessageLogging;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OverseerBot.Startup
@@ -46,10 +42,10 @@ namespace OverseerBot.Startup
                 .AddSingleton(_client)
                 .BuildServiceProvider();
 
-           // _client.Log += ConsoleLogger.LogToConsoleTest;
-           // _commands.CommandExecuted += OnCommandExecutedAsync;
-           // _client.Ready += BotReadyEvent;
-           // _client.UserJoined += UserJoinedEvent;
+            // _client.Log += ConsoleLogger.LogToConsoleTest;
+            // _commands.CommandExecuted += OnCommandExecutedAsync;
+            // _client.Ready += BotReadyEvent;
+            // _client.UserJoined += UserJoinedEvent;
             _client.MessageUpdated += MessageLogger.EditedMessageEvent;
             _client.MessageDeleted += MessageLogger.DeletedMessageEvent;
 
@@ -70,7 +66,7 @@ namespace OverseerBot.Startup
 
         private async Task BotReadyEvent()
         {
- 
+
         }
 
         private async Task HandleCommandAsync(SocketMessage arg)

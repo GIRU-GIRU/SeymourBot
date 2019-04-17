@@ -1,7 +1,4 @@
-﻿
-using Newtonsoft.Json;
-using SeymourBot.Exceptions;
-using SeymourBot.Resources;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,8 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Xml.Serialization;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 
-namespace SeymourBot.Config
+namespace Toolbox.Config
 {
     public class FileIO
     {

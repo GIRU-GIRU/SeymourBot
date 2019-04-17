@@ -3,18 +3,13 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using SeymourBot.AutoModeration;
-using SeymourBot.Config;
-using SeymourBot.DataAccess.Storage.Filter;
-using SeymourBot.DataAccess.StorageManager;
-using SeymourBot.DiscordUtilities;
-using SeymourBot.Exceptions;
-using SeymourBot.Logging;
-using SeymourBot.Resources;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
+using Toolbox.Config;
+using Toolbox.DiscordUtilities;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 
 namespace SeymourBot.Startup
 {
@@ -52,7 +47,7 @@ namespace SeymourBot.Startup
                 .AddSingleton(_client)
                 .BuildServiceProvider();
 
-            _client.Log += Logger.Log;
+            _client.Log += Toolbox.Logging.Logger.Log;
             _commands.CommandExecuted += OnCommandExecutedAsync;
             _client.Ready += BotReadyEvent;
             _client.UserJoined += UserJoinedEvent;
@@ -82,7 +77,7 @@ namespace SeymourBot.Startup
             DiscordContext.InitContext(_client);
             await BotStartupMessage();
         }
-         
+
 
         public static async Task BotStartupMessage()
         {

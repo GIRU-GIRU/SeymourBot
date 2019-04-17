@@ -1,7 +1,4 @@
-﻿using SeymourBot.Config;
-using SeymourBot.DataAccess.StorageManager;
-using SeymourBot.DiscordUtilities;
-using SeymourBot.Exceptions;
+﻿using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Storage;
 using SeymourBot.Storage.User;
 using System;
@@ -9,6 +6,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using Toolbox.Config;
+using Toolbox.DiscordUtilities;
+using Toolbox.Exceptions;
 
 namespace SeymourBot.TimedEvent
 {

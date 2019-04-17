@@ -1,16 +1,14 @@
 ﻿using Discord.Commands;
-using SeymourBot.Config;
 using SeymourBot.DataAccess.Storage.Filter;
 using SeymourBot.DataAccess.StorageManager;
-using SeymourBot.Resources;
-using SeymourBot.Storage;
 using SeymourBot.Storage.User;
 using SeymourBot.TimedEvent;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Toolbox.Config;
+using Toolbox.Resources;
 
 namespace SeymourBot.AutoModeration
 {

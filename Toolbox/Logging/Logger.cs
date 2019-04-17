@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SeymourBot.Logging
+namespace Toolbox.Logging
 {
     public static class Logger 
     {

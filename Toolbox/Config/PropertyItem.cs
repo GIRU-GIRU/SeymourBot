@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SeymourBot.Config
+namespace Toolbox.Config
 {
     /// <summary>
     /// The enum listing the names of properties stored in the configuration.

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SeymourBot.Config;
-using SeymourBot.Resources;
 using SeymourBot.Storage.Information.Tables;
+using Toolbox.Resources;
 
 namespace SeymourBot.DataAccess.Storage.Information
 {

@@ -23,39 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OverseerBot\OverseerBot.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resources\BotDialogs.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>BotDialogs.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\DBPaths.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DBPaths.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\ErrMessages.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ErrMessages.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\BotDialogs.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>BotDialogs.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\DBPaths.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>DBPaths.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ErrMessages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ErrMessages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\Toolbox\Toolbox.csproj" />
   </ItemGroup>
 
 </Project>

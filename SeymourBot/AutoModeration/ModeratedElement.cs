@@ -1,9 +1,4 @@
-﻿using SeymourBot.DataAccess.Storage.Filter;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SeymourBot.AutoModeration
+﻿namespace SeymourBot.AutoModeration
 {
     public class ModeratedElement
     {

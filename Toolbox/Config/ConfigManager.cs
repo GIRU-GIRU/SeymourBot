@@ -1,6 +1,4 @@
-﻿using SeymourBot.Exceptions;
-using SeymourBot.Resources;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -8,8 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 
-namespace SeymourBot.Config
+namespace Toolbox.Config
 {
 
     /// <summary>
@@ -36,7 +36,7 @@ namespace SeymourBot.Config
             {
                 configuration = ConfigInitializer.InitConfiguration();
                 SaveConfig();
-                ExceptionManager.LogExceptionAsync(ErrMessages.NoConfigException);
+                _ = ExceptionManager.LogExceptionAsync(ErrMessages.NoConfigException);
             }
         }
 

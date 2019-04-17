@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Discord;
+﻿using Discord;
 using Discord.WebSocket;
+using System;
 using System.Threading.Tasks;
 
 
@@ -15,7 +13,7 @@ namespace OverseerBot.Startup
             try
             {
                 //ConfigManager.GetProperty(PropertyItem.OverseerBotToken)
-                await client.LoginAsync(TokenType.Bot, );
+                await client.LoginAsync(TokenType.Bot, "NTY4MTMyNDA4Njg0MzE0NjM2.XLdonA.nruqyAT9HAbHfS2orZrB840XaZE");
                 await client.StartAsync();
 
                 await Task.Delay(-1);

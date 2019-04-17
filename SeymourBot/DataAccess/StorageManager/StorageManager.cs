@@ -1,21 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeymourBot.AutoModeration;
-using SeymourBot.Config;
 using SeymourBot.DataAccess.Storage.Filter;
 using SeymourBot.DataAccess.Storage.Filter.Tables;
 using SeymourBot.DataAccess.Storage.Information;
-using SeymourBot.Exceptions;
 using SeymourBot.Modules.CommandUtils;
-using SeymourBot.Resources;
 using SeymourBot.Storage;
-using SeymourBot.Storage.Information;
 using SeymourBot.Storage.Information.Tables;
 using SeymourBot.Storage.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Toolbox.Config;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 
 namespace SeymourBot.DataAccess.StorageManager
 {

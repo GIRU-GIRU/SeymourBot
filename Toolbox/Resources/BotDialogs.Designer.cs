@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SeymourBot.Resources {
+namespace Toolbox.Resources {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace SeymourBot.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class DBPaths {
+    public class BotDialogs {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal DBPaths() {
+        public BotDialogs() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SeymourBot.Resources.DBPaths", typeof(DBPaths).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Toolbox.Resources.BotDialogs", typeof(BotDialogs).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace SeymourBot.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,29 +61,47 @@ namespace SeymourBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ..\\..\\..\\\\Database\\SeymourFilterDB.db.
+        ///   Looks up a localized string similar to , do not use such foul language in my presence.
         /// </summary>
-        internal static string FilterDB {
+        public static string DefaultContainFilterMessage {
             get {
-                return ResourceManager.GetString("FilterDB", resourceCulture);
+                return ResourceManager.GetString("DefaultContainFilterMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ..\\..\\..\\\\Database\\SeymourInfoDB.db.
+        ///   Looks up a localized string similar to , that pattern looks fishy....
         /// </summary>
-        internal static string InfoDB {
+        public static string DefaultRegexFilterMessage {
             get {
-                return ResourceManager.GetString("InfoDB", resourceCulture);
+                return ResourceManager.GetString("DefaultRegexFilterMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ..\\..\\..\\\\Database\\SeymourUserDB.db.
+        ///   Looks up a localized string similar to New Startup Message.
         /// </summary>
-        internal static string UserDB {
+        public static string StartupMessage {
             get {
-                return ResourceManager.GetString("UserDB", resourceCulture);
+                return ResourceManager.GetString("StartupMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to has recieved a warning.
+        /// </summary>
+        public static string WarnMessageNoReason {
+            get {
+                return ResourceManager.GetString("WarnMessageNoReason", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to 🚫 | has recieved a warning for | 🚫||/| warnings.
+        /// </summary>
+        public static string WarnMessageReason {
+            get {
+                return ResourceManager.GetString("WarnMessageReason", resourceCulture);
             }
         }
     }

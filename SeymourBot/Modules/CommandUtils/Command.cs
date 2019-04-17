@@ -1,9 +1,7 @@
-﻿using SeymourBot.Exceptions;
-using SeymourBot.Resources;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 
 namespace SeymourBot.Modules.CommandUtils
 {

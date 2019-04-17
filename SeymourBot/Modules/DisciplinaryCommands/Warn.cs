@@ -1,19 +1,17 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Attributes;
-using SeymourBot.Config;
 using SeymourBot.DataAccess.StorageManager;
-using SeymourBot.DiscordUtilities;
-using SeymourBot.Exceptions;
 using SeymourBot.Modules.CommandUtils;
-using SeymourBot.Resources;
 using SeymourBot.Storage;
 using SeymourBot.Storage.User;
 using SeymourBot.TimedEvent;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Toolbox.Config;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
+
 namespace SeymourBot.Modules.DisciplinaryCommands
 {
     public class Warn : ModuleBase<SocketCommandContext>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SeymourBot.Exceptions
+namespace Toolbox.Exceptions
 {
     class SeymourException : Exception
     {

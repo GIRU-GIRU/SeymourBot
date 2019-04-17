@@ -2,22 +2,15 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Attributes;
-using SeymourBot.Config;
 using SeymourBot.DataAccess.StorageManager;
-using SeymourBot.DiscordUtilities;
-using SeymourBot.Exceptions;
 using SeymourBot.Modules.CommandUtils;
-using SeymourBot.Resources;
 using SeymourBot.Storage;
 using SeymourBot.Storage.User;
 using SeymourBot.TimedEvent;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using SeymourBot.Utils;
+using Toolbox.DiscordUtilities;
+using Toolbox.Utils;
 
 namespace SeymourBot.Modules.DisciplinaryCommands
 {
@@ -89,14 +82,14 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 await Context.Channel.SendMessageAsync("", false, embed);
 
                 await StorageManager.StoreDisciplinaryPermanentEventAsync(new UserDisciplinaryPermanentStorage()
-                    {
-                        DateInserted = DateTime.UtcNow,
-                        DiscipinaryEventType = DisciplinaryEventEnum.BanEvent,
-                        DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
-                        ModeratorID = Context.Message.Author.Id,
-                        Reason = reason,
-                        UserID = Context.Message.Author.Id
-                    }, 
+                {
+                    DateInserted = DateTime.UtcNow,
+                    DiscipinaryEventType = DisciplinaryEventEnum.BanEvent,
+                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
+                    ModeratorID = Context.Message.Author.Id,
+                    Reason = reason,
+                    UserID = Context.Message.Author.Id
+                },
                     new UserStorage()
                     {
                         UserID = user.Id,
@@ -172,7 +165,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     return;
                 }
-                        
+
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, Context, new TimeSpan(), reason, kickTargetName);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
@@ -212,7 +205,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 else
                 {
                     return;
-                }             
+                }
 
                 await StorageManager.StoreDisciplinaryPermanentEventAsync(new UserDisciplinaryPermanentStorage()
                 {

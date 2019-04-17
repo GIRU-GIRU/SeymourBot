@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeymourBot.DataAccess.Storage.Filter.Tables;
-using SeymourBot.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Toolbox.Resources;
 
 namespace SeymourBot.DataAccess.Storage.Filter
 {

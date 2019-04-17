@@ -1,15 +1,12 @@
 ﻿using Discord.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SeymourBot.Exceptions
+namespace Toolbox.Exceptions
 {
     public class CommandErrorResult : RuntimeResult
     {
         public CommandErrorResult(CommandError? error, string reason) : base(error, reason)
         {
-             
+
         }
 
         public static CommandErrorResult FromError(string reason) =>

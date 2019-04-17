@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SeymourBot.DiscordUtilities
+﻿namespace Toolbox.DiscordUtilities
 {
     public enum MordhauRoleEnum
     {

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Discord.Commands;
+﻿using Discord.Commands;
 using Discord.WebSocket;
-using SeymourBot.DiscordUtilities;
+using System.Threading.Tasks;
+using Toolbox.DiscordUtilities;
 
 namespace SeymourBot.AutoModeration
 {
@@ -17,7 +12,7 @@ namespace SeymourBot.AutoModeration
             if (!await DiscordContext.IsUserDevOrAdmin(context.Message.Author as SocketGuildUser))
             {
                 _ = Task.Run(() => MessageContainsAsync(context));
-            }          
+            }
         }
 
         internal static async Task MessageContainsAsync(SocketCommandContext context)

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Discord;
+﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using System.Threading.Tasks;
 using SeymourBot.Attributes;
-using System.Linq;
-using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
-using SeymourBot.Exceptions;
+using System;
+using System.Threading.Tasks;
 
 namespace SeymourBot.Modules
 {
@@ -53,7 +48,7 @@ namespace SeymourBot.Modules
             }
 
         }
-        
+
         [Command("avatar")]
         private async Task PullAvatarAsync(IGuildUser user)
         {

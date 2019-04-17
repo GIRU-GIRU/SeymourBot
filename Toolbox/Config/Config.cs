@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SeymourBot.Config
+namespace Toolbox.Config
 {
     /// <summary>
     /// The class used by the ConfigManager to store the configuration.
@@ -40,7 +40,8 @@ namespace SeymourBot.Config
     {
         private readonly static IDictionary<PropertyItem, string> DefaultConfiguration = new Dictionary<PropertyItem, string>()
         {
-            {PropertyItem.BotToken, ""},
+            {PropertyItem.SeymourBotToken, ""},
+            {PropertyItem.SeymourBotToken, "" },
             {PropertyItem.MessageCacheSize, ""},
             {PropertyItem.CommandPrefix, ""},
             {PropertyItem.Guild_Mordhau, ""},

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Discord;
+﻿using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
-using System.Threading.Tasks;
 using SeymourBot.Attributes;
-using System.Linq;
 using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
-using SeymourBot.Exceptions;
-using SeymourBot.Resources;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 
 namespace SeymourBot.Modules
 {

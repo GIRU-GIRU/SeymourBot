@@ -1,12 +1,13 @@
-﻿using SeymourBot.DiscordUtilities;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Toolbox.DiscordUtilities;
 
-namespace SeymourBot.Exceptions
+namespace Toolbox.Exceptions
 {
-    class ExceptionManager
+    public class ExceptionManager
     {
         public static async Task LogExceptionAsync(string message)
         {

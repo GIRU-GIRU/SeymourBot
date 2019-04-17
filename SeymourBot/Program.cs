@@ -1,14 +1,10 @@
 ﻿using System;
-using SeymourBot.Config;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Threading.Tasks;
-using SeymourBot.Logging;
-using SeymourBot.Exceptions;
-using SeymourBot.DiscordUtilities;
 using SeymourBot.Startup;
 using OverseerBot.Startup;
 

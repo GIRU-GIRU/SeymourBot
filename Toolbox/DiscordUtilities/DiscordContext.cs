@@ -1,18 +1,16 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using SeymourBot.Config;
-using SeymourBot.Exceptions;
-using SeymourBot.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using Toolbox.Config;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 
-
-namespace SeymourBot.DiscordUtilities
+namespace Toolbox.DiscordUtilities
 {
     /// <summary>
     /// Unify discord api interactions
@@ -87,7 +85,6 @@ namespace SeymourBot.DiscordUtilities
         {
             try
             {
-
                 if (user.Roles.Any(x => x.Name.ToLower() == MordhauRoleEnum.Developer.ToString().ToLower() ||
                 user.Roles.Any(y => y.Name.ToLower() == MordhauRoleEnum.Moderator.ToString().ToLower())))
                 {

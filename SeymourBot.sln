@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeymourBot", "SeymourBot\Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverseerBot", "OverseerBot\OverseerBot.csproj", "{EB5DB42C-08B1-4A2B-B894-C40F9EC7EDF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox", "Toolbox\Toolbox.csproj", "{540FA09C-B649-409E-9C5C-EADF01D314F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EB5DB42C-08B1-4A2B-B894-C40F9EC7EDF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB5DB42C-08B1-4A2B-B894-C40F9EC7EDF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB5DB42C-08B1-4A2B-B894-C40F9EC7EDF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{540FA09C-B649-409E-9C5C-EADF01D314F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{540FA09C-B649-409E-9C5C-EADF01D314F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{540FA09C-B649-409E-9C5C-EADF01D314F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{540FA09C-B649-409E-9C5C-EADF01D314F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
