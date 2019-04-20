@@ -57,8 +57,6 @@ namespace Toolbox.DiscordUtilities
 
         }
 
-
-
         public static async Task<bool> IsUserDevOrAdmin(ulong userId)
         {
             try
@@ -120,9 +118,6 @@ namespace Toolbox.DiscordUtilities
         }
 
 
-
-
-
         /// <summary>
         /// Unified logging method
         /// </summary>
@@ -153,6 +148,5 @@ namespace Toolbox.DiscordUtilities
         {
             return _client.GetChannel(ConfigManager.GetUlongProperty(PropertyItem.Channel_Logging)) as ITextChannel;
         }
-
     }
 }

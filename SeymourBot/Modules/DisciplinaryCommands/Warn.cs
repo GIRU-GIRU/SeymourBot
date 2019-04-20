@@ -23,6 +23,8 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
+                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
                 {
                     DateInserted = DateTime.UtcNow,
@@ -66,6 +68,8 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+              
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
                 {
                     DateInserted = DateTime.UtcNow,

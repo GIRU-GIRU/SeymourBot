@@ -2,22 +2,27 @@
 using Discord.Commands;
 using SeymourBot.Storage.User;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Toolbox.DiscordUtilities;
 
 namespace Toolbox.Utils
 {
     public static class Utilities
     {
-        public static Embed BuildDefaultEmbed(DisciplinaryEventEnum eventType, SocketCommandContext context, TimeSpan timeSpan, string reason, string targetName)
+        public static Embed BuildDefaultEmbed(DisciplinaryEventEnum eventType,
+                                                 TimeSpan timeSpan,
+                                                   string reason,
+                                                      string targetName,
+                                                          bool existing,
+                                                             string author = "Seymour")
         {
             try
             {
+
+
                 switch (eventType)
                 {
                     case DisciplinaryEventEnum.KickEvent:
-                        return GenerateKickEmbed(eventType, context, reason, targetName);
+                        return GenerateKickEmbed(eventType, author, reason, targetName);
                     case DisciplinaryEventEnum.BanEvent:
                         break;
                     case DisciplinaryEventEnum.BanCleanseEvent:
@@ -32,7 +37,7 @@ namespace Toolbox.Utils
                         break;
                 }
 
-                return GenerateDefaultEmbed(eventType, context, timeSpan, reason, targetName);
+                return GenerateDefaultEmbed(eventType, timeSpan, reason, targetName, existing, author);
             }
             catch (Exception ex)
             {
@@ -40,11 +45,55 @@ namespace Toolbox.Utils
             }
         }
 
-        private static Embed GenerateDefaultEmbed(DisciplinaryEventEnum eventType, SocketCommandContext context, TimeSpan timeSpan, string reason, string targetName)
+        private static Embed GenerateDefaultEmbed(DisciplinaryEventEnum eventType,TimeSpan timeSpan, string reason, string targetName, bool existing, string author)
         {
             try
             {
                 string commandName = ReturnEventTypeString(eventType);
+                string duration = "Permanent.";
+
+                if (timeSpan.TotalDays >= 1)
+                {
+                    duration = $"{Math.Round(timeSpan.TotalDays, 2)} day{SAppend(timeSpan.TotalDays)}.";
+                }
+                else if (timeSpan.TotalHours >= 1)
+                {
+                    duration = $"{Math.Round(timeSpan.TotalMinutes, 2)} hour{SAppend(timeSpan.TotalHours)}.";
+                }
+                else if (timeSpan.TotalMinutes >= 1)
+                {
+                    duration = $"{Math.Round(timeSpan.TotalMinutes, 2)} min{SAppend(timeSpan.TotalMinutes)}.";
+                }
+                else if (timeSpan.TotalSeconds >= 1)
+                {
+                    duration = $"{Math.Round(timeSpan.TotalSeconds, 2)} sec{SAppend(timeSpan.TotalSeconds)}.";
+                }
+
+                Emote emote = duration == "Permanent" ? DiscordContext.GetEmoteReee() : DiscordContext.GetEmoteAyySeymour();
+
+                string existingDisciplinary = String.Empty;
+                if (existing)
+                {
+                    existingDisciplinary = "updated to";
+                }
+
+                var embed = new EmbedBuilder();
+                embed.WithTitle($"{author} {commandName} {targetName} {emote.ToString()}");
+                embed.WithDescription($"Reason: {reason}\nDuration {existingDisciplinary}: {duration}");
+                embed.WithColor(new Color(255, 0, 0));
+
+                return embed.Build();
+            }
+            catch (Exception ex)
+            {
+                throw ex; // todo
+            }
+        }
+        public static Embed BuildBlacklistEmbed(TimeSpan timeSpan, string username, bool existing, string author = "SeymourBot")
+        {
+            try
+            {
+                string commandName = "blacklisted";
                 string duration = "Permanent.";
 
                 if (timeSpan.TotalDays > 0)
@@ -62,28 +111,33 @@ namespace Toolbox.Utils
 
                 Emote emote = duration == "Permanent" ? DiscordContext.GetEmoteReee() : DiscordContext.GetEmoteAyySeymour();
 
+                string existingDisciplinary = String.Empty;
+                if (existing)
+                {
+                    existingDisciplinary = "updated to";
+                }
+
                 var embed = new EmbedBuilder();
-                embed.WithTitle($"{context.User.Username} {commandName} {targetName} {emote.ToString()}");
-                embed.WithDescription($"Reason: {reason}\nDuration: {duration}");
+                embed.WithTitle($"{author} {commandName} {username} {emote.ToString()}");
+                embed.WithDescription($"Duration {existingDisciplinary}: {duration}");
                 embed.WithColor(new Color(255, 0, 0));
 
                 return embed.Build();
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw ex; //todo
             }
-
         }
 
-        private static Embed GenerateKickEmbed(DisciplinaryEventEnum eventType, SocketCommandContext context, string reason, string targetName)
+        private static Embed GenerateKickEmbed(DisciplinaryEventEnum eventType, string author, string reason, string targetName)
         {
             try
             {
                 var seymourEmote = DiscordContext.GetEmoteAyySeymour();
 
                 var embed = new EmbedBuilder();
-                embed.WithTitle($"{context.User.Username} booted {targetName} {seymourEmote.ToString()} ");
+                embed.WithTitle($"{author} booted {targetName} {seymourEmote.ToString()} ");
                 embed.WithDescription($"reason: {reason}");
                 embed.WithColor(new Color(255, 0, 0));
 
@@ -94,7 +148,6 @@ namespace Toolbox.Utils
                 throw ex;  //todo
             }
         }
-
 
         private static string ReturnEventTypeString(DisciplinaryEventEnum eventType)
         {
@@ -116,7 +169,6 @@ namespace Toolbox.Utils
                     return "disciplined";
             }
         }
-
 
         public static bool IsDigitsOnly(string str)
         {

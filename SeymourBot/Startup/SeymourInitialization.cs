@@ -5,12 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using SeymourBot.AutoModeration;
 using SeymourBot.Modules.DisciplinaryCommands;
 using System;
-using System.Reflection;
 using System.Threading.Tasks;
 using Toolbox.Config;
 using Toolbox.DiscordUtilities;
-using Toolbox.Exceptions;
-using Toolbox.Resources;
 
 namespace SeymourBot.Startup
 {
@@ -51,11 +48,15 @@ namespace SeymourBot.Startup
             _client.Log += Toolbox.Logging.Logger.Log;
             _commands.CommandExecuted += OnCommandExecutedAsync;
             _client.UserJoined += UserJoinedChecker.SanitizeJoinedUser;
+            _client.Ready += BotReady;
             _client.MessageUpdated += MessageUpdatedEvent;
 
-            DiscordContext.InitContext(_client);
-
             await RegisterCommandAsync();
+        }
+
+        private async Task BotReady()
+        {
+            DiscordContext.InitContext(_client);
         }
 
         private async Task MessageUpdatedEvent(Cacheable<IMessage, ulong> oldMsg, SocketMessage newMsg, ISocketMessageChannel channel)
@@ -80,26 +81,15 @@ namespace SeymourBot.Startup
             int argPos = 0;
             if (message.HasStringPrefix(ConfigManager.GetProperty(PropertyItem.CommandPrefix), ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
             {
-                //todo blacklist check
                 var result = await _commands.ExecuteAsync(context, argPos, _services);
             }
         }
 
         public async Task OnCommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
         {
-            switch (result)
+            if (!string.IsNullOrEmpty(result.ErrorReason) && result.ErrorReason != "Unauthorized" && result.ErrorReason != "You are currently in Timeout.")
             {
-                case CommandErrorResult errorResult:
-                    await DiscordContext.LogError(result.ErrorReason);
-                    break;
-
-                default:
-
-                    if (!string.IsNullOrEmpty(result.ErrorReason) && result.ErrorReason != "Unauthorized")
-                    {
-                        await DiscordContext.LogErrorAsync(result.ErrorReason, context.Message.Content);
-                    }
-                    break;
+                await DiscordContext.LogErrorAsync(result.ErrorReason, context.Message.Content);
             }
         }
     }

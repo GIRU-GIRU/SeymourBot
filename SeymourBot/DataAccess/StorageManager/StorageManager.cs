@@ -8,6 +8,7 @@ using SeymourBot.Modules.CommandUtils;
 using SeymourBot.Storage;
 using SeymourBot.Storage.Information.Tables;
 using SeymourBot.Storage.User;
+using SeymourBot.Storage.User.Tables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,25 +21,42 @@ namespace SeymourBot.DataAccess.StorageManager
 {
     static class StorageManager
     {
-        public static async Task StoreInfoCommandAsync(Command command)
+        public static async Task<bool> StoreInfoCommandAsync(Command command)
         {
             try
             {
                 using (InfoCommandContext db = new InfoCommandContext())
                 {
-                    await db.InfoCommandTable.AddAsync(new InfoCommandTable
+                    var cmd = await db.InfoCommandTable.FirstOrDefaultAsync(x => x.CommandName.ToLower() == command.CommandName.ToLower());
+
+                    if (cmd == null)
                     {
-                        CommandName = command.CommandName,
-                        CommandContent = command.CommandContent
-                    });
+                        await db.InfoCommandTable.AddAsync(new InfoCommandTable
+                        {
+                            CommandName = command.CommandName,
+                            CommandContent = command.CommandContent
+                        });
 
-                    await db.SaveChangesAsync();
+                        await db.SaveChangesAsync();
+                        return false;
+                    }
+                    else
+                    {
+                        cmd = new InfoCommandTable
+                        {
+                            CommandName = command.CommandName,
+                            CommandContent = command.CommandContent
+                        };
 
+                        await db.SaveChangesAsync();
+                        return true;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 ExceptionManager.HandleException(ErrMessages.StorageException, ex);
+                throw;
             }
         }
 
@@ -63,7 +81,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        public static async Task<ulong> StoreTimedEventAsync(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
+        public static async Task<KeyValuePair<ulong, bool>> StoreTimedEventAsync(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
         {
             try
             {
@@ -74,9 +92,21 @@ namespace SeymourBot.DataAccess.StorageManager
                     {
                         await db.UserStorageTable.AddAsync(newUser);
                     }
-                    await db.UserDisciplinaryEventStorageTable.AddAsync(newEvent);
-                    await db.SaveChangesAsync();
-                    return newEvent.DisciplineEventID;
+
+                    var existingDisciplinaryEvent = await db.UserDisciplinaryEventStorageTable.FirstOrDefaultAsync(x => x.UserID == newUser.UserID);
+
+                    if (existingDisciplinaryEvent != null)
+                    {
+                        existingDisciplinaryEvent = newEvent;
+                        await db.SaveChangesAsync();
+                        return new KeyValuePair<ulong, bool>(newEvent.DisciplineEventID, true);
+                    }
+                    else
+                    {
+                        await db.AddAsync(newEvent);
+                        await db.SaveChangesAsync();
+                        return new KeyValuePair<ulong, bool>(newEvent.DisciplineEventID, false);
+                    }
                 }
             }
             catch (Exception ex)
@@ -164,7 +194,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        public static async Task StoreDisciplinaryPermanentEventAsync(UserDisciplinaryPermanentStorage obj, UserStorage user)
+        public static async Task<bool> StoreBlacklistReturnIfExisting(BlacklistUserStorage obj, UserStorage user)
         {
             try
             {
@@ -175,8 +205,84 @@ namespace SeymourBot.DataAccess.StorageManager
                         await db.AddAsync(user);
                     }
 
-                    await db.UserDisciplinaryPermanentStorageTable.AddAsync(obj);
-                    await db.SaveChangesAsync();
+                    var existingBlacklist = await db.BlackListedTable.FirstOrDefaultAsync(x => x.UserID == user.UserID);
+
+                    if (existingBlacklist != null)
+                    {
+                        existingBlacklist = obj;
+                        await db.SaveChangesAsync();
+                        return true;
+                    }
+                    else
+                    {
+                        await db.AddAsync(obj);
+                        await db.SaveChangesAsync();
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
+                throw;
+            }
+        }
+
+        public static async Task<bool> UserCheckAndUpdateBlacklist(SocketGuildUser user)
+        {
+            try
+            {
+                using (UserContext db = new UserContext())
+                {
+                    var existingBlacklist = await db.BlackListedTable.FirstOrDefaultAsync(x => x.UserID == user.Id);
+
+                    if (existingBlacklist == null)
+                    {
+                        return false;
+                    }
+
+                    if (existingBlacklist.DateToRemove <= DateTime.UtcNow)
+                    {
+                        db.Remove(existingBlacklist);
+                        await db.SaveChangesAsync();
+                        return false;
+                    }
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
+        public static async Task<bool> StoreDisciplinaryPermanentEventAsync(UserDisciplinaryPermanentStorage obj, UserStorage user)
+        {
+            try
+            {
+                using (UserContext db = new UserContext())
+                {
+                    if (!await db.UserStorageTable.AnyAsync(x => x.UserID == user.UserID))
+                    {
+                        await db.AddAsync(user);
+                    }
+
+
+                    var existingEvent = await db.UserDisciplinaryPermanentStorageTable.FirstOrDefaultAsync(x => x.UserID == user.UserID);
+
+                    if (existingEvent != null)
+                    {
+                        existingEvent = obj;
+                        await db.SaveChangesAsync();
+                        return true;
+                    }
+                    else
+                    {
+                        await db.AddAsync(obj);
+                        await db.SaveChangesAsync();
+                        return false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -243,7 +349,9 @@ namespace SeymourBot.DataAccess.StorageManager
                             Pattern = filter.FilterPattern
                         });
                     }
+
                     return result;
+
                 }
             }
             catch (Exception ex)
@@ -282,18 +390,16 @@ namespace SeymourBot.DataAccess.StorageManager
         {
             try
             {
-                //TODO this needs to catch multiple evnts
                 var list = new List<DisciplinaryEventEnum>();
                 using (var db = new UserContext())
                 {
                     if (await db.UserStorageTable.AnyAsync(x => x.UserID == User.Id))
                     {
-                        list.Add(await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == User.Id).Select(x => x.DiscipinaryEventType).FirstOrDefaultAsync());
+                        list.AddRange(await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == User.Id).Select(x => x.DiscipinaryEventType).ToListAsync());
                         if (list.Count > 0)
                         {
-                            list.Add(await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == User.Id).Select(x => x.DiscipinaryEventType).FirstOrDefaultAsync());
-
-                        }                    
+                            list.AddRange(await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == User.Id).Select(x => x.DiscipinaryEventType).ToListAsync());
+                        }
                     }
                 }
 

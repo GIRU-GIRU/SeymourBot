@@ -4,6 +4,7 @@ using Discord.WebSocket;
 using SeymourBot.Attributes;
 using SeymourBot.Modules.CommandUtils;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SeymourBot.Modules
@@ -13,7 +14,7 @@ namespace SeymourBot.Modules
         ImageFormat png = ImageFormat.Png;
         [Command("info")]
         [DevOrAdmin]
-        private async Task GetInfoAsync(IGuildUser user = null)
+        public async Task GetInfoAsync(IGuildUser user = null)
         {
             try
             {
@@ -30,7 +31,6 @@ namespace SeymourBot.Modules
                 var userDiscriminator = user.Discriminator;
                 string userActivity = user.Activity == null ? "nothing" : user.Activity.Name;
 
-
                 var embed = new EmbedBuilder();
                 embed.WithTitle($"{user.Username}{userDiscriminator}");
                 embed.AddField("Account Created: ", userCreatedAtString, true);
@@ -44,14 +44,13 @@ namespace SeymourBot.Modules
             }
             catch (Exception ex)
             {
-                await Context.Channel.SendMessageAsync("Failed to display embed");
+                throw ex; // todo
             }
-
         }
 
         [Command("help")]
         [DevOrAdmin]
-        private async Task ModeratorHelp()
+        public async Task ModeratorHelp()
         {
             try
             {
@@ -60,14 +59,13 @@ namespace SeymourBot.Modules
             catch (Exception ex)
             {
 
-                throw ex;
+                throw ex;// todo
             }
-
         }
 
         [Command("avatar")]
         [DevOrAdmin]
-        private async Task PullAvatarAsync(IGuildUser user)
+        public async Task PullAvatarAsync(IGuildUser user)
         {
             try
             {
@@ -89,10 +87,8 @@ namespace SeymourBot.Modules
             catch (Exception ex)
             {
 
-                throw ex;
+                throw ex;// todo
             }
-            
         }
-
     }
 }

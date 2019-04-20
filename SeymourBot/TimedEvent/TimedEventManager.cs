@@ -37,9 +37,9 @@ namespace SeymourBot.TimedEvent
             }
         }
 
-        public async static Task CreateEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
+        public async static Task<bool> CreateEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
         {
-            await HandleEventCreated(newEvent, newUser);
+           return await HandleEventCreated(newEvent, newUser);
         }
 
         public async static Task CreateEvent(DisciplinaryEventEnum eventType, ulong moderatorId, string reason, ulong userId, string userName, DateTime end)
@@ -83,20 +83,21 @@ namespace SeymourBot.TimedEvent
             return activeEvent;
         }
 
-        private static async Task HandleEventCreated(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
+        private static async Task<bool> HandleEventCreated(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
         {
             try
             {
                 var newActiveEvent = BuildActiveTimedEvent(newEvent);
                 activeEvents.Add(newActiveEvent);
-                var id = await StorageManager.StoreTimedEventAsync(newEvent, newUser);
-                newActiveEvent.DisciplinaryEventId = id;
+                var result = await StorageManager.StoreTimedEventAsync(newEvent, newUser);
+                newActiveEvent.DisciplinaryEventId = result.Key;
 
-               
+                return result.Value;      
             }
             catch (Exception ex)
             {
                 await ExceptionManager.LogExceptionAsync(ex);
+                throw;
             }
         }
 

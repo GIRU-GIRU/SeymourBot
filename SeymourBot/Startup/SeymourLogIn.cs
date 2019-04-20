@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using System;
 using System.Threading.Tasks;
 using Toolbox.Config;
+using Toolbox.DiscordUtilities;
 using Toolbox.Exceptions;
 
 namespace SeymourBot.Startup
@@ -15,7 +16,7 @@ namespace SeymourBot.Startup
             {
                 await client.LoginAsync(TokenType.Bot, ConfigManager.GetProperty(PropertyItem.SeymourBotToken));
                 await client.StartAsync();
-
+                
                 await Task.Delay(-1);
             }
             catch (Exception ex)

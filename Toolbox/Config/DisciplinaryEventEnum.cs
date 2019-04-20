@@ -13,6 +13,6 @@ namespace SeymourBot.Storage.User
         KickEvent,
         MuteEvent,
         LimitedUserEvent,
-        WarnEvent,
+        WarnEvent
     }
 }

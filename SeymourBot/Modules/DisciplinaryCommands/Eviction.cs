@@ -34,7 +34,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     return;
                 }
 
-                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, new TimeSpan(), reason, kickTargetName, false, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
@@ -80,7 +80,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     return;
                 }
 
-                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, new TimeSpan(), reason, kickTargetName, false);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
@@ -107,48 +107,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
         }
 
-        [Command("ban")]
-        [RequireBotPermission(GuildPermission.BanMembers)]
-        [DevOrAdmin]
-        public async Task PermaBanUserAsync(ulong userID, [Remainder]string reason = "no reason specified")
-        {
-            try
-            {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
-                string kickTargetName = user.Username;
-                if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
-                {
-                    await user.BanAsync(reason: reason);
-                }
-                else
-                {
-                    return;
-                }
-
-                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, Context, new TimeSpan(), reason, kickTargetName);
-                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
-
-                await StorageManager.StoreDisciplinaryPermanentEventAsync(new UserDisciplinaryPermanentStorage()
-                {
-                    DateInserted = DateTime.UtcNow,
-                    DiscipinaryEventType = DisciplinaryEventEnum.BanEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
-                    ModeratorID = Context.Message.Author.Id,
-                    Reason = reason,
-                    UserID = Context.Message.Author.Id
-                },
-                    new UserStorage()
-                    {
-                        UserID = user.Id,
-                        UserName = user.Username,
-                    });
-
-            }
-            catch (Exception ex)
-            {
-                throw ex; //todo
-            }
-        }
 
         [Command("ban")]
         [RequireBotPermission(GuildPermission.BanMembers)]
@@ -167,7 +125,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     return;
                 }
 
-                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, new TimeSpan(), reason, kickTargetName, false, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
                 await StorageManager.StoreDisciplinaryPermanentEventAsync(new UserDisciplinaryPermanentStorage()
@@ -192,6 +150,50 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
         }
 
+        [Command("ban")]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        [DevOrAdmin]
+        public async Task PermaBanUserAsync(ulong userID, [Remainder]string reason = "no reason specified")
+        {
+            try
+            {
+                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                string kickTargetName = user.Username;
+                if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
+                {
+                    await user.BanAsync(reason: reason);
+                }
+                else
+                {
+                    return;
+                }
+
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, new TimeSpan(), reason, kickTargetName, false);
+                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
+
+                await StorageManager.StoreDisciplinaryPermanentEventAsync(new UserDisciplinaryPermanentStorage()
+                {
+                    DateInserted = DateTime.UtcNow,
+                    DiscipinaryEventType = DisciplinaryEventEnum.BanEvent,
+                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
+                    ModeratorID = Context.Message.Author.Id,
+                    Reason = reason,
+                    UserID = Context.Message.Author.Id
+                },
+                    new UserStorage()
+                    {
+                        UserID = user.Id,
+                        UserName = user.Username,
+                    });
+
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
+
         [Command("bancleanse")]
         [RequireBotPermission(GuildPermission.BanMembers)]
         [DevOrAdmin]
@@ -210,7 +212,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     return;
                 }
 
-                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, new TimeSpan(), reason, kickTargetName, false, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
@@ -256,7 +258,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     return;
                 }
 
-                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, new TimeSpan(), reason, kickTargetName, false);
                 await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
 
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
@@ -301,7 +303,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     return;
                 }
 
-                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, new TimeSpan(), reason, kickTargetName, false);
                 await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
 
                 await StorageManager.StoreDisciplinaryPermanentEventAsync(new UserDisciplinaryPermanentStorage()
@@ -343,7 +345,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     return;
                 }
 
-                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, new TimeSpan(), reason, kickTargetName, false, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
                 await StorageManager.StoreDisciplinaryPermanentEventAsync(new UserDisciplinaryPermanentStorage()
@@ -355,11 +357,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     Reason = reason,
                     UserID = Context.Message.Author.Id
                 },
-                    new UserStorage()
-                    {
-                        UserID = user.Id,
-                        UserName = user.Username,
-                    });
+                 new UserStorage()
+                 {
+                     UserID = user.Id,
+                     UserName = user.Username,
+                 });
             }
             catch (Exception ex)
             {
@@ -398,7 +400,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     UserName = user.Username,
                 });
 
-                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.KickEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.KickEvent, new TimeSpan(), reason, kickTargetName, false, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
@@ -415,6 +417,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+
                 string kickTargetName = user.Username;
                 if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
@@ -439,7 +442,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     UserName = user.Username,
                 });
 
-                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.KickEvent, Context, new TimeSpan(), reason, kickTargetName);
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.KickEvent, new TimeSpan(), reason, kickTargetName, false);
                 await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
             }
             catch (Exception ex)

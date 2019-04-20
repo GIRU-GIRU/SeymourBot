@@ -1,11 +1,13 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 using SeymourBot.Attributes;
 using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Toolbox.DiscordUtilities;
 using Toolbox.Exceptions;
 using Toolbox.Resources;
 
@@ -14,25 +16,37 @@ namespace SeymourBot.Modules
     public class InfoCommands : ModuleBase<SocketCommandContext>
     {
 
-        [Command("InfoNew")]
+        [Command("addinfo")]
+        [DevOrAdmin]
         private async Task StoreInfoCommandTest([Remainder]string UserInput)
         {
             try
             {
+                bool existing = false;
                 Command command = new Command(UserInput);
                 if (!command.Error)
                 {
-                    await StorageManager.StoreInfoCommandAsync(command);
+                    existing = await StorageManager.StoreInfoCommandAsync(command);
+                }
+
+                if (existing)
+                {
+                    await Context.Channel.SendMessageAsync($"Updated {command.CommandName} {DiscordContext.GetEmoteAyySeymour()}");
+                }
+                else
+                {
+                    await Context.Channel.SendMessageAsync($"Added {command.CommandName} {DiscordContext.GetEmoteAyySeymour()}");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
         }
 
-        [Command("InfoList")]
+        [Command("infolist")]
+        [DevOrAdmin]
         private async Task ListInfoCommandsTest()
         {
             try
@@ -56,22 +70,25 @@ namespace SeymourBot.Modules
         [Command("c")]
         [Alias("i", "info")]
         [Ratelimit(5, 10, Measure.Minutes)]
-        private async Task<RuntimeResult> PostInfoCommandTest(string cmdName)
+        private async Task PostInfoCommand(string cmdName)
         {
             try
             {
+                if (await StorageManager.UserCheckAndUpdateBlacklist(Context.Message.Author as SocketGuildUser))
+                {
+                    return;
+                }
+
                 Command command = new Command(cmdName);
                 if (!command.Error)
                 {
                     string commandContent = await StorageManager.GetInfoCommandAsync(command);
                     await Context.Channel.SendMessageAsync(commandContent);
                 }
-
-                return null;
             }
             catch (Exception ex)
             {
-                return new CommandErrorResult(CommandError.Unsuccessful, ex.Message);
+                throw ex; //todo
             }
         }
     }
