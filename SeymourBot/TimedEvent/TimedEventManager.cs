@@ -3,38 +3,54 @@ using SeymourBot.Storage;
 using SeymourBot.Storage.User;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using Toolbox.Config;
 using Toolbox.DiscordUtilities;
+using Microsoft.EntityFrameworkCore;
 using Toolbox.Exceptions;
 
 namespace SeymourBot.TimedEvent
 {
     static class TimedEventManager
     {
-        private static List<ActiveTimedEvent> activeEvents;
-        private static Timer timer;
+        private static List<ActiveTimedEvent> ActiveEvents;
+        private static Timer Timer;
 
         static TimedEventManager()
         {
-            timer = new Timer();
-            timer.AutoReset = true;
-            timer.Interval = 60000; //tick every minute
-            timer.Elapsed += Timer_Elapsed;
+            Timer = new Timer();
+            Timer.AutoReset = true;
+            Timer.Interval = 60000; //tick every minute
+            Timer.Elapsed += Timer_Elapsed;
             _ = LoadFromDB();
-            timer.Start();
+            Timer.Start();
         }
 
         private async static Task LoadFromDB()
         {
-            activeEvents = new List<ActiveTimedEvent>();
+            ActiveEvents = new List<ActiveTimedEvent>();
             var dbTimedEvents = await StorageManager.GetTimedEvents();
             foreach (var timedEvent in dbTimedEvents)
             {
-                activeEvents.Add(BuildActiveTimedEvent(timedEvent));
+                ActiveEvents.Add(BuildActiveTimedEvent(timedEvent));
             }
+        }
+
+        public async static Task RemoveEvent(ulong eventID)
+        {
+            try
+            {
+                var eventToRemove = ActiveEvents.FirstOrDefault(x => x.DisciplinaryEventId == eventID);
+                ActiveEvents.Remove(eventToRemove);
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+
         }
 
         public async static Task<bool> CreateEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
@@ -64,7 +80,7 @@ namespace SeymourBot.TimedEvent
 
         private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            ActiveTimedEvent[] events = activeEvents.ToArray(); //fix for a vulnerability (event being added while checking elapsed events cause crash)
+            ActiveTimedEvent[] events = ActiveEvents.ToArray(); //fix for a vulnerability (event being added while checking elapsed events cause crash)
             foreach (ActiveTimedEvent activeEvent in events)
             {
                 if (--activeEvent.TimeToTrigger <= 0)
@@ -88,7 +104,7 @@ namespace SeymourBot.TimedEvent
             try
             {
                 var newActiveEvent = BuildActiveTimedEvent(newEvent);
-                activeEvents.Add(newActiveEvent);
+                ActiveEvents.Add(newActiveEvent);
                 var result = await StorageManager.StoreTimedEventAsync(newEvent, newUser);
                 newActiveEvent.DisciplinaryEventId = result.Key;
 
@@ -108,13 +124,13 @@ namespace SeymourBot.TimedEvent
                 switch (activeEvent.DisciplinaryEvent)
                 {
                     case Storage.User.DisciplinaryEventEnum.MuteEvent:
-                        activeEvents.Remove(activeEvent);
+                        ActiveEvents.Remove(activeEvent);
                         //todo
                         await DiscordContext.RemoveRoleAsync(activeEvent.UserId, ConfigManager.GetUlongProperty(PropertyItem.Role_Muted));
                         await StorageManager.ArchiveTimedEventAsync(activeEvent.DisciplinaryEventId);
                         break;
                     case Storage.User.DisciplinaryEventEnum.WarnEvent:
-                        activeEvents.Remove(activeEvent);
+                        ActiveEvents.Remove(activeEvent);
                         await StorageManager.ArchiveTimedEventAsync(activeEvent.DisciplinaryEventId);
                         break;
                     default:

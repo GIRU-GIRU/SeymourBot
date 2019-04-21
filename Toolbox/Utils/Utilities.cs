@@ -17,8 +17,6 @@ namespace Toolbox.Utils
         {
             try
             {
-
-
                 switch (eventType)
                 {
                     case DisciplinaryEventEnum.KickEvent:
@@ -74,12 +72,12 @@ namespace Toolbox.Utils
                 string existingDisciplinary = String.Empty;
                 if (existing)
                 {
-                    existingDisciplinary = "updated to";
+                    existingDisciplinary = " updated to";
                 }
 
                 var embed = new EmbedBuilder();
                 embed.WithTitle($"{author} {commandName} {targetName} {emote.ToString()}");
-                embed.WithDescription($"Reason: {reason}\nDuration {existingDisciplinary}: {duration}");
+                embed.WithDescription($"Reason: {reason}\nDuration{existingDisciplinary}: {duration}");
                 embed.WithColor(new Color(255, 0, 0));
 
                 return embed.Build();
@@ -94,17 +92,17 @@ namespace Toolbox.Utils
             try
             {
                 string commandName = "blacklisted";
-                string duration = "Permanent.";
+                string duration = "1 month";
 
-                if (timeSpan.TotalDays > 0)
+                if (timeSpan.TotalDays >= 1)
                 {
                     duration = $"{Math.Round(timeSpan.TotalDays, 2)} day{SAppend(timeSpan.TotalDays)}.";
                 }
-                else if (timeSpan.TotalHours > 0)
+                else if (timeSpan.TotalHours >= 1)
                 {
                     duration = $"{Math.Round(timeSpan.TotalMinutes, 2)} hour{SAppend(timeSpan.TotalHours)}.";
                 }
-                else if (timeSpan.TotalMinutes > 0)
+                else if (timeSpan.TotalMinutes >= 1)
                 {
                     duration = $"{Math.Round(timeSpan.TotalMinutes, 2)} min{SAppend(timeSpan.TotalMinutes)}.";
                 }
@@ -114,12 +112,12 @@ namespace Toolbox.Utils
                 string existingDisciplinary = String.Empty;
                 if (existing)
                 {
-                    existingDisciplinary = "updated to";
+                    existingDisciplinary = " updated to";
                 }
 
                 var embed = new EmbedBuilder();
                 embed.WithTitle($"{author} {commandName} {username} {emote.ToString()}");
-                embed.WithDescription($"Duration {existingDisciplinary}: {duration}");
+                embed.WithDescription($"Duration{existingDisciplinary}: {duration}");
                 embed.WithColor(new Color(255, 0, 0));
 
                 return embed.Build();
@@ -140,6 +138,24 @@ namespace Toolbox.Utils
                 embed.WithTitle($"{author} booted {targetName} {seymourEmote.ToString()} ");
                 embed.WithDescription($"reason: {reason}");
                 embed.WithColor(new Color(255, 0, 0));
+
+                return embed.Build();
+            }
+            catch (Exception ex)
+            {
+                throw ex;  //todo
+            }
+        }
+
+        public static Embed BuildRemoveDisciplinaryEmbed(string action, string targetName)
+        {
+            try
+            {
+                var seymourEmote = DiscordContext.GetEmoteAyySeymour();
+
+                var embed = new EmbedBuilder();
+                embed.WithTitle($"{action} {targetName} {seymourEmote.ToString()} ");
+                embed.WithColor(new Color(0, 255, 0));
 
                 return embed.Build();
             }
@@ -170,7 +186,7 @@ namespace Toolbox.Utils
             }
         }
 
-        public static bool IsDigitsOnly(string str)
+        private static bool IsDigitsOnly(string str)
         {
             foreach (char c in str)
             {
@@ -181,7 +197,7 @@ namespace Toolbox.Utils
             return true;
         }
 
-        public static string SAppend(int amount)
+        private static string SAppend(int amount)
         {
             if (amount > 1)
             {
@@ -193,7 +209,7 @@ namespace Toolbox.Utils
             }
         }
 
-        public static string SAppend(double amount)
+        private static string SAppend(double amount)
         {
             if (amount > 1)
             {
