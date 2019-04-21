@@ -8,7 +8,9 @@ using SeymourBot.Storage;
 using SeymourBot.Storage.User;
 using SeymourBot.TimedEvent;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Toolbox.Config;
 using Toolbox.DiscordUtilities;
 using Toolbox.Exceptions;
 using Toolbox.Utils;
@@ -66,6 +68,12 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    return;
+                }
+
                 if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
                 var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
@@ -144,6 +152,12 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    return;
+                }
+
                 if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
                 var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
@@ -224,6 +238,12 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    return;
+                }
+
                 if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
                 var limitedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
@@ -302,6 +322,12 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    return;
+                }
+
                 if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
                 var limitedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
@@ -330,6 +356,128 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             catch (Exception ex)
             {
                 ExceptionManager.HandleException("", ex); //todo
+            }
+        }
+
+        [Command("unlimit")]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        [DevOrAdmin]
+        private async Task UnlimitUserAsync(ulong userID)
+        {
+            try
+            {
+                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    return;
+                }
+
+                var role = user.Roles.FirstOrDefault(x => x.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_LimitedUser));
+
+                if (role != null)
+                {
+                    await Context.Channel.SendMessageAsync("Cannot see limited role on that user");
+                    return;
+                }
+
+                await user.RemoveRoleAsync(role);
+                var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unlimited", user.Username);
+                await Context.Channel.SendMessageAsync("", false, embed);
+
+                await StorageManager.RemoveDisciplinaryEventAsync(userID);
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
+        [Command("unlimit")]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        [DevOrAdmin]
+        private async Task UnlimitUserAsync(SocketGuildUser user)
+        {
+            try
+            {
+                var role = user.Roles.FirstOrDefault(x => x.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_LimitedUser));
+
+                if (role == null)
+                {
+                    await Context.Channel.SendMessageAsync("Cannot see limited role on that user");
+                    return;
+                }
+
+                await user.RemoveRoleAsync(role);
+                var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unlimited", user.Username);
+                await Context.Channel.SendMessageAsync("", false, embed);
+
+                await StorageManager.RemoveDisciplinaryEventAsync(user.Id);
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
+        [Command("unmute")]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        [DevOrAdmin]
+        private async Task UnmuteUserAsync(ulong userID)
+        {
+            try
+            {
+                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    return;
+                }
+
+                var role = user.Roles.FirstOrDefault(x => x.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Muted));
+
+                if (role != null)
+                {
+                    await Context.Channel.SendMessageAsync("Cannot see muted role on that user");
+                    return;
+                }
+
+                await user.RemoveRoleAsync(role);
+                var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unmuted", user.Username);
+                await Context.Channel.SendMessageAsync("", false, embed);
+
+                await StorageManager.RemoveDisciplinaryEventAsync(userID);
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
+        [Command("unmute")]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        [DevOrAdmin]
+        private async Task UnmuteUserAsync(SocketGuildUser user)
+        {
+            try
+            {
+                var role = user.Roles.FirstOrDefault(x => x.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Muted));
+
+                if (role == null)
+                {
+                    await Context.Channel.SendMessageAsync("Cannot see muted role on that user");
+                    return;
+                }
+
+                await user.RemoveRoleAsync(role);
+                var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unmuted", user.Username);
+                await Context.Channel.SendMessageAsync("", false, embed);
+
+                await StorageManager.RemoveDisciplinaryEventAsync(user.Id);
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
             }
         }
 

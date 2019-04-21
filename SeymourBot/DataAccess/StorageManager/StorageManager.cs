@@ -9,6 +9,7 @@ using SeymourBot.Storage;
 using SeymourBot.Storage.Information.Tables;
 using SeymourBot.Storage.User;
 using SeymourBot.Storage.User.Tables;
+using SeymourBot.TimedEvent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -152,6 +153,41 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
+        public static async Task RemoveDisciplinaryEventAsync(ulong userID)
+        {
+            try
+            {
+                using (var db = new UserContext())
+                {
+                    var existingEvent = await db.UserDisciplinaryEventStorageTable.FirstOrDefaultAsync(x => x.UserID == userID);
+
+                    if (existingEvent != null)
+                    {
+
+                        await TimedEventManager.RemoveEvent(existingEvent.DisciplineEventID);
+                        db.UserDisciplinaryEventStorageTable.Remove(existingEvent);
+                        await db.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        var existingPermaEvent = await db.UserDisciplinaryPermanentStorageTable.FirstOrDefaultAsync(x => x.UserID == userID);
+
+                        if (existingPermaEvent != null)
+                        {
+                            await TimedEventManager.RemoveEvent(existingPermaEvent.DisciplineEventID);
+                            db.UserDisciplinaryPermanentStorageTable.Remove(existingPermaEvent);
+                            await db.SaveChangesAsync();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
+
         public static List<string> GetInfoCommands()
         {
             List<string> result = new List<string>();
@@ -219,6 +255,31 @@ namespace SeymourBot.DataAccess.StorageManager
                         await db.SaveChangesAsync();
                         return false;
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
+                throw;
+            }
+        }
+
+        public static async Task<bool> RemoveBlacklist(ulong userID)
+        {
+            try
+            {
+                using (UserContext db = new UserContext())
+                {
+                    var blacklistedUser = await db.BlackListedTable.FirstOrDefaultAsync(x => x.UserID == userID);
+
+                    if (blacklistedUser != null)
+                    {
+                        db.BlackListedTable.Remove(blacklistedUser);
+                        await db.SaveChangesAsync();
+                        return true;
+                    }
+
+                    return false;
                 }
             }
             catch (Exception ex)
@@ -411,6 +472,8 @@ namespace SeymourBot.DataAccess.StorageManager
                 throw ex; //todo
             }
         }
+
+
     }
 }
 

@@ -8,6 +8,8 @@ using SeymourBot.Storage;
 using SeymourBot.Storage.User;
 using SeymourBot.TimedEvent;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Toolbox.DiscordUtilities;
 using Toolbox.Utils;
@@ -70,6 +72,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    return;
+                }
                 string kickTargetName = user.Username;
                 if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
@@ -158,6 +165,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    return;
+                }
                 string kickTargetName = user.Username;
                 if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
@@ -248,6 +260,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    return;
+                }
                 string kickTargetName = user.Username;
                 if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
@@ -293,6 +310,12 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    return;
+                }
+
                 string kickTargetName = user.Username;
                 if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
@@ -417,6 +440,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    return;
+                }
 
                 string kickTargetName = user.Username;
                 if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
@@ -449,6 +477,79 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             {
                 throw ex; //todo
             }
+
         }
+
+
+        [Command("searchban")]
+        [DevOrAdmin]
+        private async Task SearchBannedUsersAsync([Remainder]string input = null)
+        {
+            if (input == null) return;
+
+            var bans = await Context.Guild.GetBansAsync();
+            List<Discord.Rest.RestBan> matchedBans = new List<Discord.Rest.RestBan>();
+            foreach (var ban in bans)
+            {
+                if (ban.User.Username.ToLower().Contains(input.ToLower()))
+                {
+                    matchedBans.Add(ban);
+                }
+            }
+
+            if (bans.Count == 0 || matchedBans.Count == 0)
+            {
+                await Context.Channel.SendMessageAsync("Unable to find a banned user of that name");
+                return;
+            }
+
+            var bannedUserNames = string.Join("\n", matchedBans.Select(x => x.User.Username).ToArray());
+
+            var embed = new EmbedBuilder();
+            embed.WithTitle($"Banned user names matching \"{input}\" ");
+            embed.AddField("Username", bannedUserNames, true);
+            embed.AddField("User ID: ", string.Join("\n", matchedBans.Select(x => x.User.Id)), true);
+            embed.AddField("Reason for ban: ", string.Join("\n", matchedBans.Select(x => x.Reason)), true);
+            await Context.Channel.SendMessageAsync("", false, embed.Build());
+        }
+
+        [Command("unban")]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        [DevOrAdmin]
+        private async Task UnbanUserAsync(ulong userID)
+        {
+            try
+            {
+                bool existing = false;
+                string bannedUserName = "";
+
+                var bans = await Context.Guild.GetBansAsync();
+                foreach (var ban in bans)
+                {
+                    if (ban.User.Id == userID)
+                    {
+                        existing = true;
+                        bannedUserName = ban.User.Username;
+                        break;
+                    }
+                }
+
+                if (!existing)
+                {
+                    await Context.Channel.SendMessageAsync("Unable to locate a user of that ID");
+                    return;
+                }
+
+                await Context.Guild.RemoveBanAsync(userID);
+                var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unbanned", bannedUserName);
+                await Context.Channel.SendMessageAsync("", false, embed);
+
+                await StorageManager.RemoveDisciplinaryEventAsync(userID);
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }     
     }
 }
