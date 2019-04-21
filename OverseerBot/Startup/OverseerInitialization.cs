@@ -45,6 +45,7 @@ namespace OverseerBot.Startup
 
             _client.MessageUpdated += MessageLogger.EditedMessageEvent;
             _client.MessageDeleted += MessageLogger.DeletedMessageEvent;
-        }     
+            _client.MessageReceived += MessageLogger.ReceivedMessageEvent;
+        }
     }
 }

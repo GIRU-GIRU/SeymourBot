@@ -20,6 +20,7 @@ namespace Toolbox.Config
 
         MaxWarns,
         WarnDuration,
+        ImageCacheSize,
 
         Guild_Mordhau,
         Role_Muted,

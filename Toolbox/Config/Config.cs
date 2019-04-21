@@ -40,7 +40,6 @@ namespace Toolbox.Config
     {
         private readonly static IDictionary<PropertyItem, string> DefaultConfiguration = new Dictionary<PropertyItem, string>()
         {
-            {PropertyItem.SeymourBotToken, ""},
             {PropertyItem.SeymourBotToken, "" },
             {PropertyItem.MessageCacheSize, ""},
             {PropertyItem.CommandPrefix, ""},
@@ -52,7 +51,8 @@ namespace Toolbox.Config
             {PropertyItem.Role_Moderator, ""},
             {PropertyItem.Role_Developer, ""},
             {PropertyItem.Channel_Logging, ""},
-            {PropertyItem.Channel_Main, ""}
+            {PropertyItem.Channel_Main, ""},
+            {PropertyItem.ImageCacheSize, ""}
         };
 
         public static Config InitConfiguration()
