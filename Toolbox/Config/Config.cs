@@ -34,42 +34,21 @@ namespace Toolbox.Config
         {
             return properties;
         }
-    }
 
-    public static class ConfigInitializer
-    {
-        private readonly static IDictionary<PropertyItem, string> DefaultConfiguration = new Dictionary<PropertyItem, string>()
+        public void Verify()
         {
-            {PropertyItem.SeymourBotToken, "" },
-            {PropertyItem.MessageCacheSize, ""},
-            {PropertyItem.CommandPrefix, ""},
-            {PropertyItem.Guild_Mordhau, ""},
-            {PropertyItem.Role_Muted, ""},
-            {PropertyItem.Role_LimitedUser, ""},
-            {PropertyItem.Role_ContentCreator, ""},
-            {PropertyItem.Role_Private, ""},
-            {PropertyItem.Role_Moderator, ""},
-            {PropertyItem.Role_Developer, ""},
-            {PropertyItem.Channel_Logging, ""},
-            {PropertyItem.Channel_Main, ""},
-            {PropertyItem.ImageCacheSize, ""}
-        };
-
-        public static Config InitConfiguration()
-        {
-            Config config = new Config();
-            Property property;
-
-            foreach (var item in DefaultConfiguration)
+            if (Enum.GetValues(typeof(PropertyItem)).Length != properties.Count)
             {
-                property = new Property
+                Property property;
+                foreach (PropertyItem item in Enum.GetValues(typeof(PropertyItem)))
                 {
-                    Item = item.Key,
-                    Value = item.Value
-                };
-                config.Properties.Add(property);
+                    property = properties.FirstOrDefault(x => x.Item == item);
+                    if (property == null)
+                    {
+                        properties.Add(new Property() { Item = item, Value = "" });
+                    }
+                }
             }
-            return config;
         }
     }
 }

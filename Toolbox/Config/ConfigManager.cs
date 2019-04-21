@@ -34,9 +34,15 @@ namespace Toolbox.Config
             configuration = LoadConfig();
             if (configuration == null)
             {
-                configuration = ConfigInitializer.InitConfiguration();
+                configuration = new Config();
+                configuration.Verify();
                 SaveConfig();
                 _ = ExceptionManager.LogExceptionAsync(ErrMessages.NoConfigException);
+            }
+            else
+            {
+                configuration.Verify();
+                SaveConfig();
             }
         }
 

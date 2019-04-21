@@ -26,7 +26,6 @@
         Channel_Main,
         Channel_Logging,
         Channel_DeletedMessageLog,
-        Channel_DeletedMessageLog,
         Channel_NoobGate,
         NoobGateMessage,
     }
