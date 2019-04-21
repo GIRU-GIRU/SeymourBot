@@ -18,12 +18,28 @@ namespace Toolbox.DiscordUtilities
     public static class DiscordContext
     {
         private static DiscordSocketClient _client;
-        public static SocketGuild MordhauGuild;
+        private static SocketGuild MordhauGuild;
+        private static IUserMessage NoobGateWelcomeMessage;
 
         public static void InitContext(DiscordSocketClient client)
         {
             _client = client;
             MordhauGuild = _client.GetGuild(ConfigManager.GetUlongProperty(PropertyItem.Guild_Mordhau));
+        }
+
+        public static void ReAssignNoobGateWelcome(IUserMessage noobGateWelcomeMessage)
+        {
+            NoobGateWelcomeMessage = noobGateWelcomeMessage;
+        }
+
+        public static IUserMessage GetNoobGateWelcome()
+        {
+            return NoobGateWelcomeMessage;
+        }
+
+        public static SocketGuild GetGuild()
+        {
+            return MordhauGuild;
         }
 
 
@@ -44,6 +60,7 @@ namespace Toolbox.DiscordUtilities
                 throw;
             }
         }
+
         public static ITextChannel GetDeletedMessageLog()
         {
             try
@@ -54,7 +71,18 @@ namespace Toolbox.DiscordUtilities
             {
                 throw ex; //todo
             }
+        }
 
+        public static ITextChannel GetNoobGateChannel()
+        {
+            try
+            {
+                return MordhauGuild.GetTextChannel(ConfigManager.GetUlongProperty(PropertyItem.Channel_NoobGate));
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
         }
 
         public static async Task<bool> IsUserDevOrAdmin(ulong userId)
@@ -115,6 +143,11 @@ namespace Toolbox.DiscordUtilities
         public static Emote GetEmoteReee()
         {
             return MordhauGuild.Emotes.Where(x => x.Name.ToLower() == "reee").FirstOrDefault(); // todo
+        }
+
+        public static Emote GetEmotePommel()
+        {
+            return MordhauGuild.Emotes.Where(x => x.Name.ToLower() == "pommel").FirstOrDefault(); // todo
         }
 
 

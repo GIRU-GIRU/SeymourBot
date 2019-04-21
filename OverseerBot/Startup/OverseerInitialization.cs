@@ -1,10 +1,9 @@
-﻿using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
+using OverseerBot.UserJoinedServer;
 using OverseerBot.UserMessageLogging;
 using System;
-using System.Reflection;
 using System.Threading.Tasks;
 using Toolbox.Config;
 
@@ -46,6 +45,7 @@ namespace OverseerBot.Startup
             _client.MessageUpdated += MessageLogger.EditedMessageEvent;
             _client.MessageDeleted += MessageLogger.DeletedMessageEvent;
             _client.MessageReceived += MessageLogger.ReceivedMessageEvent;
+            _client.UserJoined += RoleApplication.ApplyPeasantRoleAsync;
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Toolbox.Config
+﻿namespace Toolbox.Config
 {
     /// <summary>
     /// The enum listing the names of properties stored in the configuration.
@@ -31,6 +25,9 @@ namespace Toolbox.Config
         Role_Developer,
         Channel_Main,
         Channel_Logging,
-        Channel_DeletedMessageLog
+        Channel_DeletedMessageLog,
+        Channel_DeletedMessageLog,
+        Channel_NoobGate,
+        NoobGateMessage,
     }
 }

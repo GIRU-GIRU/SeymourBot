@@ -50,8 +50,14 @@ namespace SeymourBot.Startup
             _client.UserJoined += UserJoinedChecker.SanitizeJoinedUser;
             _client.Ready += BotReady;
             _client.MessageUpdated += MessageUpdatedEvent;
+            _client.ReactionAdded += MessageReactionHandler;
 
             await RegisterCommandAsync();
+        }
+
+        private async Task MessageReactionHandler(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            await NoobGate.VerifyUserAsync(message, channel, reaction);
         }
 
         private async Task BotReady()

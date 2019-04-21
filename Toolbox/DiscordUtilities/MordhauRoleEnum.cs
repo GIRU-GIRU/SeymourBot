@@ -8,6 +8,7 @@
         Private,
         Moderator,
         Developer,
+        Peasant,
 
     }
 }
