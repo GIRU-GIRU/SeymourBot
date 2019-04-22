@@ -15,7 +15,7 @@ namespace SeymourBot.Modules.ConfigurationCommands
         [Command("addmultiplefilters")]
         [Alias("addfilters")]
         [DevOrAdmin]
-        private async Task AddFilterAsync([Remainder]string words)
+        private async Task AddMultipleFiltersAsync([Remainder]string words)
         {
             try
             {
@@ -23,7 +23,7 @@ namespace SeymourBot.Modules.ConfigurationCommands
 
                 foreach (string splitword in splitWords)
                 {
-                    await AutoModeratorManager.AddBannedWord(new ModeratedElement() { Dialog = "", Pattern = splitword.ToLower() });
+                    await AutoModeratorManager.AddBannedWordAsync(new ModeratedElement() { Dialog = "", Pattern = splitword.ToLower() });
                 }
             }
             catch (Exception ex)
@@ -32,9 +32,25 @@ namespace SeymourBot.Modules.ConfigurationCommands
             }
         }
 
+        [Command("addfilter")]
+        [Alias("addfilter")]
+        [DevOrAdmin]
+        private async Task AddFilterAsync(string word)
+        {
+            try
+            {
+                await AutoModeratorManager.AddBannedWordAsync(new ModeratedElement() { Dialog = "", Pattern = word.ToLower() });
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.FilterException, ex);
+            }
+        }
+
+
         [Command("addcustomfilter")]
         [DevOrAdmin]
-        private async Task AddCustomFilter([Remainder]string words)
+        private async Task AddCustomFilterAsync([Remainder]string words)
         {
             try
             {
@@ -43,9 +59,37 @@ namespace SeymourBot.Modules.ConfigurationCommands
                     string cmdPrefix = ConfigManager.GetProperty(PropertyItem.CommandPrefix);
                     await Context.Channel.SendMessageAsync($"Invalid syntax - must be {cmdPrefix}addcustomfilter word | custom message when automoderated");
                 }
-                string pattern = words.Substring(0, words.IndexOf('|'));
-                string message = words.Substring(words.IndexOf('|'));
-                await AutoModeratorManager.AddBannedWord(new ModeratedElement() { Dialog = message, Pattern = pattern.ToLower() });
+                string pattern = words.Substring(0, words.IndexOf('|')).Trim();
+                string message = words.Substring(words.IndexOf('|') + 1).Trim();
+                await AutoModeratorManager.AddBannedWordAsync(new ModeratedElement() { Dialog = message, Pattern = pattern.ToLower() });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //todo
+            }
+        }
+
+        [Command("removecustomfilter")]
+        [Alias("removefilter")]
+        [DevOrAdmin]
+        private async Task RemoveFilterAsync(string name)
+        {
+            try
+            {
+
+                bool existing = await AutoModeratorManager.RemoveBannedWordAsync(name);
+
+                if (existing)
+                {
+                    await Context.Channel.SendMessageAsync($"Succesfully removed \"{name}\" as a banned word");
+                }
+                else
+                {
+                    await Context.Channel.SendMessageAsync($"Was unable to locate \"{name}\" as a banned word");
+
+
+                }
             }
             catch (Exception ex)
             {

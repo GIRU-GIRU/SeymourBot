@@ -5,6 +5,7 @@ using SeymourBot.Storage.User;
 using SeymourBot.TimedEvent;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Toolbox.Config;
@@ -46,7 +47,7 @@ namespace SeymourBot.AutoModeration
             }
             foreach (ModeratedElement element in bannedWords)
             {
-                if (context.Message.Content.ToLower().Contains(element.Pattern))
+                if (context.Message.Content.ToLower().Contains(element.Pattern.Trim()))
                 {
                     await context.Message.DeleteAsync();
                     string reason;
@@ -65,10 +66,22 @@ namespace SeymourBot.AutoModeration
             }
         }
 
-        public static async Task AddBannedWord(ModeratedElement newBannedWord)
+        public static async Task AddBannedWordAsync(ModeratedElement newBannedWord)
         {
             bannedWords.Add(newBannedWord);
             await StorageManager.AddFilterAsync(newBannedWord.Dialog, newBannedWord.Pattern, FilterTypeEnum.ContainFilter);
+        }
+
+        public static async Task<bool> RemoveBannedWordAsync(string name)
+        {
+            var itemToRemove = bannedWords.FirstOrDefault(x => x.Pattern.ToLower() == name.ToLower());
+            if (itemToRemove != null)
+            {
+                bannedWords.Remove(itemToRemove);
+                await StorageManager.RemoveFilterAsync(name, FilterTypeEnum.ContainFilter);
+                return true;
+            }
+            return false;
         }
 
         public static async Task CheckForWarnThreshold(SocketCommandContext context, int warnCount)
