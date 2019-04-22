@@ -14,11 +14,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Resources\DBPaths.Designer.cs">
-      <DependentUpon>DBPaths.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Update="Resources\ErrMessages.Designer.cs">
       <DependentUpon>ErrMessages.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -29,10 +24,6 @@
   <ItemGroup>
     <EmbeddedResource Update="Resources\BotDialogs.resx">
       <LastGenOutput>BotDialogs.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\DBPaths.resx">
-      <LastGenOutput>DBPaths.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\ErrMessages.resx">

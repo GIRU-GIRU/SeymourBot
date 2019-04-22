@@ -23,6 +23,7 @@
         Role_Private,
         Role_Moderator,
         Role_Developer,
+        Role_Peasant,
         Channel_Main,
         Channel_Logging,
         Channel_DeletedMessageLog,

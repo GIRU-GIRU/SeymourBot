@@ -11,4 +11,16 @@
     <ProjectReference Include="..\Toolbox\Toolbox.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Database\SeymourFilterDB.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Database\SeymourInfoDB.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Database\SeymourUserDB.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
