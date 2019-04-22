@@ -55,7 +55,7 @@ namespace SeymourBot.TimedEvent
 
         public async static Task<bool> CreateEvent(UserDisciplinaryEventStorage newEvent, UserStorage newUser)
         {
-           return await HandleEventCreated(newEvent, newUser);
+            return await HandleEventCreated(newEvent, newUser);
         }
 
         public async static Task CreateEvent(DisciplinaryEventEnum eventType, ulong moderatorId, string reason, ulong userId, string userName, DateTime end)
@@ -108,7 +108,7 @@ namespace SeymourBot.TimedEvent
                 var result = await StorageManager.StoreTimedEventAsync(newEvent, newUser);
                 newActiveEvent.DisciplinaryEventId = result.Key;
 
-                return result.Value;      
+                return result.Value;
             }
             catch (Exception ex)
             {
@@ -139,7 +139,7 @@ namespace SeymourBot.TimedEvent
             }
             catch (Exception ex)
             {
-                ExceptionManager.LogExceptionAsync(ex);
+                await ExceptionManager.LogExceptionAsync(ex);
             }
         }
     }

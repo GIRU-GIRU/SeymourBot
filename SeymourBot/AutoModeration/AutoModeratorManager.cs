@@ -1,4 +1,5 @@
 ﻿using Discord.Commands;
+using Discord.WebSocket;
 using SeymourBot.DataAccess.Storage.Filter;
 using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Storage.User;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Toolbox.Config;
+using Toolbox.DiscordUtilities;
 using Toolbox.Resources;
 
 namespace SeymourBot.AutoModeration
@@ -90,11 +92,13 @@ namespace SeymourBot.AutoModeration
             {
                 if (warnCount >= (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns))) //more or equal the warn thresold
                 {
+                    await DiscordContext.AddRole(DiscordContext.GrabRole(MordhauRoleEnum.Muted), context.Message.Author.Id);
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent, context.Client.CurrentUser.Id, "User has been warned " + warnCount + " times, exceeding the " + ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) + " warn thresold", context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddMinutes(30));
                     await context.Channel.SendMessageAsync("I have had enough of your behaviour"); //todo externalize strings
                 }
                 else if (warnCount > (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) / 2)) //more than half the warn thresold
                 {
+                    await DiscordContext.AddRole(DiscordContext.GrabRole(MordhauRoleEnum.Muted), context.Message.Author.Id);
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent, context.Client.CurrentUser.Id, "User has been warned " + warnCount + " times, exceeding half of the " + ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) + " warn thresold", context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddDays(1));
                     await context.Channel.SendMessageAsync("Your foolish behaviour shant go unpunished !"); //todo externalize strings
                 }

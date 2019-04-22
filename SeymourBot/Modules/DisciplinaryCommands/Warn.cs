@@ -1,6 +1,7 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Attributes;
+using SeymourBot.AutoModeration;
 using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
 using SeymourBot.Storage;
@@ -53,6 +54,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     await Context.Channel.SendMessageAsync(ResourceUtils.BuildString(BotDialogs.WarnMessageReason, user.Mention, reason, Environment.NewLine, warnCount.ToString(), ConfigManager.GetProperty(PropertyItem.MaxWarns)));
                 }
+                await AutoModeratorManager.CheckForWarnThreshold(Context, warnCount);
             }
             catch (Exception ex)
             {
@@ -74,7 +76,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     return;
                 }
                 if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
-              
+
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
                 {
                     DateInserted = DateTime.UtcNow,
@@ -97,12 +99,13 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 if (string.IsNullOrEmpty(reason))
                 {
-                   await DiscordContext.GetMainChannel().SendMessageAsync($"🚫 {user.Mention} {BotDialogs.WarnMessageNoReason}🚫\n{warnCount}/5 warnings ");
+                    await DiscordContext.GetMainChannel().SendMessageAsync($"🚫 {user.Mention} {BotDialogs.WarnMessageNoReason}🚫\n{warnCount}/5 warnings ");
                 }
                 else
                 {
                     await DiscordContext.GetMainChannel().SendMessageAsync(ResourceUtils.BuildString(BotDialogs.WarnMessageReason, user.Mention, reason, Environment.NewLine, warnCount.ToString(), ConfigManager.GetProperty(PropertyItem.MaxWarns)));
                 }
+                await AutoModeratorManager.CheckForWarnThreshold(Context, warnCount);
             }
             catch (Exception ex)
             {

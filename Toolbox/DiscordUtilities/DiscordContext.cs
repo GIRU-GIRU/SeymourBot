@@ -135,6 +135,11 @@ namespace Toolbox.DiscordUtilities
             return MordhauGuild.Emotes.Where(x => x.Name.ToLower() == emoteName.ToLower()).FirstOrDefault();
         }
 
+        public static void AddRole(object discordRoleEnum)
+        {
+            throw new NotImplementedException();
+        }
+
         public static Emote GetEmoteAyySeymour()
         {
             return MordhauGuild.Emotes.Where(x => x.Name.ToLower() == "ayyseymour").FirstOrDefault(); // todo
