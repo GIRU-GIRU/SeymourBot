@@ -8,14 +8,14 @@ using SeymourBot.DataAccess.Storage.Filter;
 namespace SeymourBot.Migrations.Filter
 {
     [DbContext(typeof(FilterContext))]
-    [Migration("20190405162622_FilterContextInitialCreate")]
-    partial class FilterContextInitialCreate
+    [Migration("20190422161055_InitialFilterContext")]
+    partial class InitialFilterContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854");
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
 
             modelBuilder.Entity("SeymourBot.DataAccess.Storage.Filter.Tables.FilterTable", b =>
                 {

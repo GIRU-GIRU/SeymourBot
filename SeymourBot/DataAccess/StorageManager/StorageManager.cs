@@ -96,7 +96,7 @@ namespace SeymourBot.DataAccess.StorageManager
 
                     var existingDisciplinaryEvent = await db.UserDisciplinaryEventStorageTable.FirstOrDefaultAsync(x => x.UserID == newUser.UserID);
 
-                    if (existingDisciplinaryEvent != null)
+                    if (existingDisciplinaryEvent != null && newEvent.DiscipinaryEventType != DisciplinaryEventEnum.WarnEvent)
                     {
                         existingDisciplinaryEvent = newEvent;
                         await db.SaveChangesAsync();
@@ -359,9 +359,10 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (UserContext db = new UserContext())
                 {
+                    var warnDuration = ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration);
                     int warnCount = await db.UserDisciplinaryEventStorageTable.Where(x => x.DiscipinaryEventType == DisciplinaryEventEnum.WarnEvent)
                                                                                 .Where(x => x.UserID == userID)
-                                                                                    .Where(x => x.DateToRemove <= DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)))
+                                                                                    .Where(x => x.DateToRemove <= DateTime.UtcNow.AddDays(warnDuration))
                                                                                         .CountAsync();
                     return warnCount;
                 }
@@ -385,6 +386,28 @@ namespace SeymourBot.DataAccess.StorageManager
                         FilterPattern = pattern,
                         FilterType = type
                     });
+                    await db.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
+                throw;
+            }
+        }
+
+
+        public static async Task RemoveFilterAsync(string name, FilterTypeEnum type)
+        {
+            try
+            {
+                using (FilterContext db = new FilterContext())
+                {
+                    var itemToRemove = await db.filterTables.FirstOrDefaultAsync(x => x.FilterName.ToLower() == name.ToLower() 
+                                                                                                                & x.FilterType == type);
+
+                    db.filterTables.Remove(itemToRemove);
+
                     await db.SaveChangesAsync();
                 }
             }

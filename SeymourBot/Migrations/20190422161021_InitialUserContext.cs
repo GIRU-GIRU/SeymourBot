@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SeymourBot.Migrations.User
+namespace SeymourBot.Migrations
 {
-    public partial class UserStorageInitialCreate : Migration
+    public partial class InitialUserContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

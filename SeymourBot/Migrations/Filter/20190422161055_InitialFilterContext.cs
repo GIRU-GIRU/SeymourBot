@@ -1,30 +1,31 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SeymourBot.Migrations
+namespace SeymourBot.Migrations.Filter
 {
-    public partial class InitialCreateInfoCommandContext : Migration
+    public partial class InitialFilterContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "InfoCommandTable",
+                name: "filterTables",
                 columns: table => new
                 {
-                    CommandID = table.Column<int>(nullable: false)
+                    FilterId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    CommandName = table.Column<string>(nullable: true),
-                    CommandContent = table.Column<string>(nullable: true)
+                    FilterPattern = table.Column<string>(nullable: true),
+                    FilterName = table.Column<string>(nullable: true),
+                    FilterType = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InfoCommandTable", x => x.CommandID);
+                    table.PrimaryKey("PK_filterTables", x => x.FilterId);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "InfoCommandTable");
+                name: "filterTables");
         }
     }
 }

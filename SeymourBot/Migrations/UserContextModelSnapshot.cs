@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeymourBot.Storage.User;
 
-namespace SeymourBot.Migrations.User
+namespace SeymourBot.Migrations
 {
     [DbContext(typeof(UserContext))]
     partial class UserContextModelSnapshot : ModelSnapshot
@@ -14,7 +14,7 @@ namespace SeymourBot.Migrations.User
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854");
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
 
             modelBuilder.Entity("SeymourBot.Storage.User.Tables.BlacklistUserStorage", b =>
                 {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeymourBot.DataAccess.Storage.Information;
 
-namespace SeymourBot.Migrations
+namespace SeymourBot.Migrations.InfoCommand
 {
     [DbContext(typeof(InfoCommandContext))]
     partial class InfoCommandContextModelSnapshot : ModelSnapshot
@@ -13,9 +13,9 @@ namespace SeymourBot.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854");
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
 
-            modelBuilder.Entity("SeymourBot.Storage.Information.InfoCommandTable", b =>
+            modelBuilder.Entity("SeymourBot.Storage.Information.Tables.InfoCommandTable", b =>
                 {
                     b.Property<int>("CommandID")
                         .ValueGeneratedOnAdd();

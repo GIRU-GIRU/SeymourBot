@@ -14,7 +14,7 @@ namespace SeymourBot.Modules
         ImageFormat png = ImageFormat.Png;
         [Command("info")]
         [DevOrAdmin]
-        public async Task GetInfoAsync(IGuildUser user = null)
+        private async Task GetInfoAsync(IGuildUser user = null)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace SeymourBot.Modules
 
         [Command("help")]
         [DevOrAdmin]
-        public async Task ModeratorHelp()
+        private async Task ModeratorHelp()
         {
             try
             {
@@ -65,7 +65,7 @@ namespace SeymourBot.Modules
 
         [Command("avatar")]
         [DevOrAdmin]
-        public async Task PullAvatarAsync(IGuildUser user)
+        private async Task PullAvatarAsync(IGuildUser user)
         {
             try
             {
