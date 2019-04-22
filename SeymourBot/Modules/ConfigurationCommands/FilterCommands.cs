@@ -23,7 +23,7 @@ namespace SeymourBot.Modules.ConfigurationCommands
 
                 foreach (string splitword in splitWords)
                 {
-                    await AutoModeratorManager.AddBannedWordAsync(new ModeratedElement() { Dialog = "", Pattern = splitword.ToLower() });
+                    await AutoModeratorManager.AddBannedWordAsync(new ModeratedElement() { Dialog = "", Pattern = splitword.ToLower().Trim() });
                 }
             }
             catch (Exception ex)
@@ -39,7 +39,7 @@ namespace SeymourBot.Modules.ConfigurationCommands
         {
             try
             {
-                await AutoModeratorManager.AddBannedWordAsync(new ModeratedElement() { Dialog = "", Pattern = word.ToLower() });
+                await AutoModeratorManager.AddBannedWordAsync(new ModeratedElement() { Dialog = "", Pattern = word.ToLower().Trim() });
             }
             catch (Exception ex)
             {
@@ -59,9 +59,9 @@ namespace SeymourBot.Modules.ConfigurationCommands
                     string cmdPrefix = ConfigManager.GetProperty(PropertyItem.CommandPrefix);
                     await Context.Channel.SendMessageAsync($"Invalid syntax - must be {cmdPrefix}addcustomfilter word | custom message when automoderated");
                 }
-                string pattern = words.Substring(0, words.IndexOf('|')).Trim();
+                string pattern = words.Substring(0, words.IndexOf('|')).Trim().ToLower();
                 string message = words.Substring(words.IndexOf('|') + 1).Trim();
-                await AutoModeratorManager.AddBannedWordAsync(new ModeratedElement() { Dialog = message, Pattern = pattern.ToLower() });
+                await AutoModeratorManager.AddBannedWordAsync(new ModeratedElement() { Dialog = message, Pattern = pattern });
             }
             catch (Exception ex)
             {
@@ -87,8 +87,6 @@ namespace SeymourBot.Modules.ConfigurationCommands
                 else
                 {
                     await Context.Channel.SendMessageAsync($"Was unable to locate \"{name}\" as a banned word");
-
-
                 }
             }
             catch (Exception ex)

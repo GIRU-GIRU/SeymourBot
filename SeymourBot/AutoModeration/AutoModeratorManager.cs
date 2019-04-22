@@ -74,7 +74,7 @@ namespace SeymourBot.AutoModeration
 
         public static async Task<bool> RemoveBannedWordAsync(string name)
         {
-            var itemToRemove = bannedWords.FirstOrDefault(x => x.Pattern.ToLower() == name.ToLower());
+            var itemToRemove = bannedWords.FirstOrDefault(x => x.Pattern.ToLower().Trim() == name.ToLower().Trim());
             if (itemToRemove != null)
             {
                 bannedWords.Remove(itemToRemove);
