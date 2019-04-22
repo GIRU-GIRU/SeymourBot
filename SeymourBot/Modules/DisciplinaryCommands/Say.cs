@@ -18,7 +18,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
     {
         [Command("say")]
         [DevOrAdmin]
-        public async Task SeymourSayCustomMessage([Remainder]string input)
+        private async Task SeymourSayCustomMessage([Remainder]string input)
         {
             try
             {

@@ -22,7 +22,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [RequireBotPermission(GuildPermission.BanMembers)]
         [DevOrAdmin]
         [Priority(1)]
-        public async Task BanUserAsync(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        private async Task BanUserAsync(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -67,7 +67,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [RequireBotPermission(GuildPermission.BanMembers)]
         [DevOrAdmin]
         [Priority(2)]
-        public async Task BanUserAsync(ulong userID, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        private async Task BanUserAsync(ulong userID, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -118,7 +118,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [Command("ban")]
         [RequireBotPermission(GuildPermission.BanMembers)]
         [DevOrAdmin]
-        public async Task PermaBanUserAsync(SocketGuildUser user, [Remainder]string reason = "no reason specified")
+        private async Task PermaBanUserAsync(SocketGuildUser user, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -160,7 +160,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [Command("ban")]
         [RequireBotPermission(GuildPermission.BanMembers)]
         [DevOrAdmin]
-        public async Task PermaBanUserAsync(ulong userID, [Remainder]string reason = "no reason specified")
+        private async Task PermaBanUserAsync(ulong userID, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -210,7 +210,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [RequireBotPermission(GuildPermission.BanMembers)]
         [DevOrAdmin]
         [Priority(1)]
-        public async Task BanCleanseUser(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        private async Task BanCleanseUser(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -255,7 +255,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [RequireBotPermission(GuildPermission.BanMembers)]
         [DevOrAdmin]
         [Priority(2)]
-        public async Task BanCleanseUserAsync(ulong userID, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        private async Task BanCleanseUserAsync(ulong userID, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -305,7 +305,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [Command("bancleanse")]
         [RequireBotPermission(GuildPermission.BanMembers)]
         [DevOrAdmin]
-        public async Task PermaBanCleanseUser(ulong userID, [Remainder]string reason = "no reason specified")
+        private async Task PermaBanCleanseUser(ulong userID, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -354,7 +354,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [Command("bancleanse")]
         [RequireBotPermission(GuildPermission.BanMembers)]
         [DevOrAdmin]
-        public async Task BanCleanseUser(SocketGuildUser user, [Remainder]string reason = "no reason specified")
+        private async Task BanCleanseUser(SocketGuildUser user, [Remainder]string reason = "no reason specified")
         {
             try
             {

@@ -23,7 +23,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [DevOrAdmin]
         [RequireBotPermission(GuildPermission.ManageRoles)]
         [Priority(1)]
-        public async Task MuteUserAsync(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        private async Task MuteUserAsync(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -63,7 +63,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [DevOrAdmin]
         [RequireBotPermission(GuildPermission.ManageRoles)]
         [Priority(2)]
-        public async Task MuteUserAsync(ulong userID, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        private async Task MuteUserAsync(ulong userID, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -109,7 +109,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [Command("Mute")]
         [DevOrAdmin]
         [RequireBotPermission(GuildPermission.ManageRoles)]
-        public async Task PermaMuteUserAsync(SocketGuildUser user, [Remainder]string reason = "no reason specified")
+        private async Task PermaMuteUserAsync(SocketGuildUser user, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -147,7 +147,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [Command("Mute")]
         [DevOrAdmin]
         [RequireBotPermission(GuildPermission.ManageRoles)]
-        public async Task PermaMuteUserAsync(ulong userID, [Remainder]string reason = "no reason specified")
+        private async Task PermaMuteUserAsync(ulong userID, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -193,7 +193,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [DevOrAdmin]
         [RequireBotPermission(GuildPermission.ManageRoles)]
         [Priority(1)]
-        public async Task LimitUserAsync(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        private async Task LimitUserAsync(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -233,7 +233,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [DevOrAdmin]
         [RequireBotPermission(GuildPermission.ManageRoles)]
         [Priority(2)]
-        public async Task LimitUserAsync(ulong userID, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        private async Task LimitUserAsync(ulong userID, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -279,7 +279,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [Command("limit")]
         [DevOrAdmin]
         [RequireBotPermission(GuildPermission.ManageRoles)]
-        public async Task PermaLimitUserAsync(SocketGuildUser user, [Remainder]string reason = "no reason specified")
+        private async Task PermaLimitUserAsync(SocketGuildUser user, [Remainder]string reason = "no reason specified")
         {
             try
             {
@@ -317,7 +317,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [Command("limit")]
         [DevOrAdmin]
         [RequireBotPermission(GuildPermission.ManageRoles)]
-        public async Task PermaLimitUserAsync(ulong userID, [Remainder]string reason = "no reason specified")
+        private async Task PermaLimitUserAsync(ulong userID, [Remainder]string reason = "no reason specified")
         {
             try
             {

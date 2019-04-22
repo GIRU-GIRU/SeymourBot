@@ -33,11 +33,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
-                    UserID = Context.Message.Author.Id
+                    UserID = user.Id
                 };
                 UserStorage newUser = new UserStorage()
                 {
-                    UserID = Context.Message.Author.Id,
+                    UserID = user.Id,
                     UserName = Context.Message.Author.Username
                 };
 
@@ -83,12 +83,12 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
-                    UserID = Context.Message.Author.Id
+                    UserID = user.Id
                 };
                 UserStorage newUser = new UserStorage()
                 {
-                    UserID = Context.Message.Author.Id,
-                    UserName = Context.Message.Author.Username
+                    UserID = user.Id,
+                    UserName = user.Username
                 };
 
                 await TimedEventManager.CreateEvent(obj, newUser);

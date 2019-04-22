@@ -17,7 +17,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [Command("blacklist")]
         [DevOrAdmin]
         [Priority(1)]
-        public async Task BlacklistUserAsync(SocketGuildUser user, TimeSpan timeSpan)
+        private async Task BlacklistUserAsync(SocketGuildUser user, TimeSpan timeSpan)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [Command("blacklist")]
         [DevOrAdmin]
         [Priority(1)]
-        public async Task BlacklistUserAsync(ulong userID, TimeSpan timeSpan)
+        private async Task BlacklistUserAsync(ulong userID, TimeSpan timeSpan)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
         [Command("blacklist")]
         [DevOrAdmin]
-        public async Task MonthBlacklistUserAsync(ulong userID)
+        private async Task MonthBlacklistUserAsync(ulong userID)
         {
             try
             {
@@ -123,7 +123,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
         [Command("blacklist")]
         [DevOrAdmin]
-        public async Task MonthBlacklistUserAsync(SocketGuildUser user)
+        private async Task MonthBlacklistUserAsync(SocketGuildUser user)
         {
             try
             {
@@ -154,7 +154,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
         [Command("unblacklist")]
         [DevOrAdmin]
-        public async Task UnblacklistUserAsync(SocketGuildUser user)
+        private async Task UnblacklistUserAsync(SocketGuildUser user)
         {
             try
             {
@@ -178,7 +178,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
         [Command("unblacklist")]
         [DevOrAdmin]
-        public async Task UnblacklistUserAsync(ulong userID)
+        private async Task UnblacklistUserAsync(ulong userID)
         {
             try
             {
