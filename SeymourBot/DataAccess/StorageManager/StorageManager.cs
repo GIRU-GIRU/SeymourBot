@@ -403,12 +403,13 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (FilterContext db = new FilterContext())
                 {
-                    var itemToRemove = await db.filterTables.FirstOrDefaultAsync(x => x.FilterName.ToLower() == name.ToLower() 
+                    var itemToRemove = await db.filterTables.FirstOrDefaultAsync(x => x.FilterPattern.ToLower() == name.ToLower() 
                                                                                                                 & x.FilterType == type);
-
-                    db.filterTables.Remove(itemToRemove);
-
-                    await db.SaveChangesAsync();
+                    if (itemToRemove != null)
+                    {
+                        db.filterTables.Remove(itemToRemove);
+                        await db.SaveChangesAsync();
+                    }                  
                 }
             }
             catch (Exception ex)
