@@ -63,6 +63,7 @@ namespace SeymourBot.Startup
         private async Task BotReady()
         {
             DiscordContext.InitContext(_client);
+            await NoobGate.CreateNoobGate();
         }
 
         private async Task MessageUpdatedEvent(Cacheable<IMessage, ulong> oldMsg, SocketMessage newMsg, ISocketMessageChannel channel)

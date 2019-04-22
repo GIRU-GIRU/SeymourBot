@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Toolbox.Config;
 using Toolbox.DiscordUtilities;
@@ -18,17 +19,15 @@ namespace SeymourBot.AutoModeration
                 var msgs = await noobGateChannel.GetMessagesAsync(100).FlattenAsync();
                 await noobGateChannel.DeleteMessagesAsync(msgs);
 
-
                 string welcome = ConfigManager.GetProperty(PropertyItem.NoobGateMessage);
                 var noobGateWelcomeMessage = await noobGateChannel.SendMessageAsync(welcome);
                 DiscordContext.ReAssignNoobGateWelcome(noobGateWelcomeMessage);
 
-               await noobGateWelcomeMessage.AddReactionAsync(DiscordContext.GetEmotePommel() as IEmote);
+                await noobGateWelcomeMessage.AddReactionAsync(DiscordContext.GetEmotePommel() as IEmote);
 
             }
             catch (Exception ex)
             {
-
                 throw ex; //todo
             }
         }
@@ -47,7 +46,11 @@ namespace SeymourBot.AutoModeration
 
                             if (user != null)
                             {
-                              await  user.RemoveRoleAsync(DiscordContext.GrabRole(MordhauRoleEnum.Peasant));
+                                var roleToRemove = DiscordContext.GrabRole(MordhauRoleEnum.Peasant);
+                                if (user.Roles.Any(x => x == roleToRemove) || roleToRemove != null)
+                                {
+                                    await user.RemoveRoleAsync(roleToRemove);
+                                }
                             }
                         }
                     }
