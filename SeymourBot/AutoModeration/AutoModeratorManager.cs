@@ -44,7 +44,7 @@ namespace SeymourBot.AutoModeration
                     }
                     await context.Channel.SendMessageAsync(context.User.Mention + reason);
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : " + reason, context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
-                    await CheckForWarnThreshold(context, await StorageManager.GetRecentWarningsAsync(context.Message.Author.Id));
+                    await CheckForWarnThreshold(context.Message.Author as SocketGuildUser, context, await StorageManager.GetRecentWarningsAsync(context.Message.Author.Id));
                 }
             }
             foreach (ModeratedElement element in bannedWords)
@@ -63,15 +63,21 @@ namespace SeymourBot.AutoModeration
                     }
                     await context.Channel.SendMessageAsync(context.User.Mention + reason);
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : " + reason, context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
-                    await CheckForWarnThreshold(context, await StorageManager.GetRecentWarningsAsync(context.Message.Author.Id));
+                    await CheckForWarnThreshold(context.Message.Author as SocketGuildUser, context, await StorageManager.GetRecentWarningsAsync(context.Message.Author.Id));
                 }
             }
         }
 
-        public static async Task AddBannedWordAsync(ModeratedElement newBannedWord)
+
+        public static async Task<bool> AddBannedWordAsync(ModeratedElement newBannedWord)
         {
-            bannedWords.Add(newBannedWord);
-            await StorageManager.AddFilterAsync(newBannedWord.Dialog, newBannedWord.Pattern, FilterTypeEnum.ContainFilter);
+            if (!bannedWords.Any(x => x.Pattern.ToLower().Trim() == newBannedWord.Pattern.ToLower().Trim()))
+            {
+                bannedWords.Add(newBannedWord);
+                await StorageManager.AddFilterAsync(newBannedWord.Dialog, newBannedWord.Pattern, FilterTypeEnum.ContainFilter);
+                return true;
+            }
+            return false;
         }
 
         public static async Task<bool> RemoveBannedWordAsync(string name)
@@ -86,21 +92,34 @@ namespace SeymourBot.AutoModeration
             return false;
         }
 
-        public static async Task CheckForWarnThreshold(SocketCommandContext context, int warnCount)
+
+        public static async Task CheckForWarnThreshold(SocketGuildUser target, SocketCommandContext context, int warnCount)
         {
             try
             {
                 if (warnCount >= (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns))) //more or equal the warn thresold
                 {
-                    await DiscordContext.AddRole(DiscordContext.GrabRole(MordhauRoleEnum.Muted), context.Message.Author.Id);
-                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent, context.Client.CurrentUser.Id, "User has been warned " + warnCount + " times, exceeding the " + ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) + " warn thresold", context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddMinutes(30));
-                    await context.Channel.SendMessageAsync("I have had enough of your behaviour"); //todo externalize strings
+                    await DiscordContext.AddRole(DiscordContext.GrabRole(MordhauRoleEnum.Muted), target.Id);
+                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
+                                          target.Id,
+                                          $"User has been warned {warnCount} times, exceeding the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn thresold",
+                                          context.Message.Author.Id,
+                                          context.Message.Author.Username,
+                                          DateTime.UtcNow.AddMinutes(30));
+
+                    await context.Channel.SendMessageAsync($"Silence. {target.Mention}");
                 }
                 else if (warnCount > (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) / 2)) //more than half the warn thresold
                 {
-                    await DiscordContext.AddRole(DiscordContext.GrabRole(MordhauRoleEnum.Muted), context.Message.Author.Id);
-                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent, context.Client.CurrentUser.Id, "User has been warned " + warnCount + " times, exceeding half of the " + ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) + " warn thresold", context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddDays(1));
-                    await context.Channel.SendMessageAsync("Your foolish behaviour shant go unpunished !"); //todo externalize strings
+                    await DiscordContext.AddRole(DiscordContext.GrabRole(MordhauRoleEnum.Muted), target.Id);
+                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
+                                          target.Id,
+                                          $"User has been warned {warnCount} times, exceeding half of the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn thresold",
+                                          context.Message.Author.Id,
+                                          context.Message.Author.Username,
+                                          DateTime.UtcNow.AddDays(1));
+
+                    await context.Channel.SendMessageAsync($"{target.Mention}, enough.");
                 }
             }
             catch (Exception ex)
