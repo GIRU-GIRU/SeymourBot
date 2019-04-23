@@ -123,9 +123,9 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (var db = new UserContext())
                 {
-                    var currentEvents = await db.UserDisciplinaryEventArchiveTable.Where(x => x.UserID == user.Id).ToListAsync();
+                    var currentEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == user.Id).ToListAsync();
                     var archivedEvents = await db.UserDisciplinaryEventArchiveTable.Where(x => x.UserID == user.Id).ToListAsync();
-                  //  var permaEvents = await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == user.Id).ToListAsync();
+                    var permaEvents = await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == user.Id).ToListAsync();
 
                     var dict = new Dictionary<string, string>();
                     int index = 0;
@@ -135,7 +135,7 @@ namespace SeymourBot.DataAccess.StorageManager
                     {
                         foreach (var item in currentEvents)
                         {
-                            type = item.DisciplineType.ToString().Replace("Event", String.Empty);
+                            type = item.DiscipinaryEventType.ToString().Replace("Event", String.Empty);
                             if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
 
                             dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"{type}{reason}");
@@ -153,17 +153,17 @@ namespace SeymourBot.DataAccess.StorageManager
                             index++;
                         }
                     }
-                    //if (permaEvents != null)
-                    //{
-                    //    foreach (var item in permaEvents)
-                    //    {
-                    //        type = item.DiscipinaryEventType.ToString().Replace("Event", String.Empty);
-                    //        if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
+                   if (permaEvents != null)
+                   {
+                       foreach (var item in permaEvents)
+                       {
+                           type = item.DiscipinaryEventType.ToString().Replace("Event", String.Empty);
+                           if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
 
-                    //        dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"{type}{reason}");
-                    //        index++;
-                    //    }
-                    //}
+                           dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"{type}{reason}");
+                           index++;
+                       }
+                   }
 
                     return dict;
                 }
