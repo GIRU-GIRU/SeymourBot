@@ -1,10 +1,7 @@
 ﻿using Discord;
-using Discord.Commands;
 using Discord.WebSocket;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Toolbox.Config;
 using Toolbox.Exceptions;
@@ -127,7 +124,16 @@ namespace Toolbox.DiscordUtilities
 
         public static async Task AddRole(IRole role, ulong userId)
         {
-            await MordhauGuild.GetUser(userId).AddRoleAsync(role);
+            try
+            {
+                var user = MordhauGuild.GetUser(userId);
+                await user.AddRoleAsync(role);
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+
         }
 
         public static Emote GetEmote(string emoteName)

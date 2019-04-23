@@ -56,7 +56,7 @@ namespace Toolbox.Utils
                 }
                 else if (timeSpan.TotalHours >= 1)
                 {
-                    duration = $"{Math.Round(timeSpan.TotalMinutes, 2)} hour{SAppend(timeSpan.TotalHours)}.";
+                    duration = $"{Math.Round(timeSpan.TotalHours, 2)} hour{SAppend(timeSpan.TotalHours)}.";
                 }
                 else if (timeSpan.TotalMinutes >= 1)
                 {
@@ -100,7 +100,7 @@ namespace Toolbox.Utils
                 }
                 else if (timeSpan.TotalHours >= 1)
                 {
-                    duration = $"{Math.Round(timeSpan.TotalMinutes, 2)} hour{SAppend(timeSpan.TotalHours)}.";
+                    duration = $"{Math.Round(timeSpan.TotalHours, 2)} hour{SAppend(timeSpan.TotalHours)}.";
                 }
                 else if (timeSpan.TotalMinutes >= 1)
                 {

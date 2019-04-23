@@ -54,7 +54,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     await Context.Channel.SendMessageAsync(ResourceUtils.BuildString(BotDialogs.WarnMessageReason, user.Mention, reason, Environment.NewLine, warnCount.ToString(), ConfigManager.GetProperty(PropertyItem.MaxWarns)));
                 }
-                await AutoModeratorManager.CheckForWarnThreshold(Context, warnCount);
+                await AutoModeratorManager.CheckForWarnThreshold(user, Context, warnCount);
             }
             catch (Exception ex)
             {
@@ -105,7 +105,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     await DiscordContext.GetMainChannel().SendMessageAsync(ResourceUtils.BuildString(BotDialogs.WarnMessageReason, user.Mention, reason, Environment.NewLine, warnCount.ToString(), ConfigManager.GetProperty(PropertyItem.MaxWarns)));
                 }
-                await AutoModeratorManager.CheckForWarnThreshold(Context, warnCount);
+                await AutoModeratorManager.CheckForWarnThreshold(user, Context, warnCount);
             }
             catch (Exception ex)
             {

@@ -544,7 +544,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unbanned", bannedUserName);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
-                await StorageManager.RemoveDisciplinaryEventAsync(userID);
+                await StorageManager.RemoveDisciplinaryEventAsync(userID, DisciplinaryEventEnum.BanEvent);
             }
             catch (Exception ex)
             {

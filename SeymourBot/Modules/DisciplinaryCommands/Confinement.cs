@@ -385,7 +385,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unlimited", user.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
-                await StorageManager.RemoveDisciplinaryEventAsync(userID);
+                await StorageManager.RemoveDisciplinaryEventAsync(userID, DisciplinaryEventEnum.LimitedUserEvent);
             }
             catch (Exception ex)
             {
@@ -412,7 +412,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unlimited", user.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
-                await StorageManager.RemoveDisciplinaryEventAsync(user.Id);
+                await StorageManager.RemoveDisciplinaryEventAsync(user.Id, DisciplinaryEventEnum.LimitedUserEvent);
             }
             catch (Exception ex)
             {
@@ -446,7 +446,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unmuted", user.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
-                await StorageManager.RemoveDisciplinaryEventAsync(userID);
+                await StorageManager.RemoveDisciplinaryEventAsync(userID, DisciplinaryEventEnum.BanEvent);
             }
             catch (Exception ex)
             {
@@ -473,7 +473,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unmuted", user.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
-                await StorageManager.RemoveDisciplinaryEventAsync(user.Id);
+                await StorageManager.RemoveDisciplinaryEventAsync(user.Id, DisciplinaryEventEnum.MuteEvent);
             }
             catch (Exception ex)
             {

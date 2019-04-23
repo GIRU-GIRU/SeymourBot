@@ -141,10 +141,6 @@ namespace SeymourBot.DataAccess.StorageManager
                         await db.UserDisciplinaryEventArchiveTable.AddAsync(archivedEvent);
                         await db.SaveChangesAsync();
                     }
-                    else
-                    {
-                        ExceptionManager.HandleException(ErrMessages.StorageException, new Exception());
-                    }
                 }
             }
             catch (Exception ex)
@@ -153,29 +149,36 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        public static async Task RemoveDisciplinaryEventAsync(ulong userID)
+        public static async Task RemoveDisciplinaryEventAsync(ulong userID, DisciplinaryEventEnum type)
         {
             try
             {
                 using (var db = new UserContext())
                 {
-                    var existingEvent = await db.UserDisciplinaryEventStorageTable.FirstOrDefaultAsync(x => x.UserID == userID);
+                    var existingEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == userID).ToArrayAsync();
 
-                    if (existingEvent != null)
+                    if (existingEvents.Count() > 0)
                     {
+                        foreach (var item in existingEvents)
+                        {
+                            await TimedEventManager.RemoveEvent(item.DisciplineEventID);
+                        }
 
-                        await TimedEventManager.RemoveEvent(existingEvent.DisciplineEventID);
-                        db.UserDisciplinaryEventStorageTable.Remove(existingEvent);
+                        db.UserDisciplinaryEventStorageTable.RemoveRange(existingEvents);
                         await db.SaveChangesAsync();
                     }
                     else
                     {
-                        var existingPermaEvent = await db.UserDisciplinaryPermanentStorageTable.FirstOrDefaultAsync(x => x.UserID == userID);
+                        var existingPermaEvents = await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == userID).ToArrayAsync();
 
-                        if (existingPermaEvent != null)
+                        if (existingPermaEvents.Count() > 0)
                         {
-                            await TimedEventManager.RemoveEvent(existingPermaEvent.DisciplineEventID);
-                            db.UserDisciplinaryPermanentStorageTable.Remove(existingPermaEvent);
+                            foreach (var item in existingPermaEvents)
+                            {
+                                await TimedEventManager.RemoveEvent(item.DisciplineEventID);
+                            }
+
+                            db.UserDisciplinaryPermanentStorageTable.RemoveRange(existingPermaEvents);
                             await db.SaveChangesAsync();
                         }
                     }
