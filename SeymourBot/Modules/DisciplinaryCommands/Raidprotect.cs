@@ -24,10 +24,9 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 var chnl = Context.Channel as ITextChannel;
-                var permOverride = new OverwritePermissions();
-                permOverride.Modify(sendMessages: PermValue.Deny);
-
+                var permOverride = new OverwritePermissions(sendMessages: PermValue.Deny);
                 await chnl.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, permOverride);
+
                 await Context.Channel.SendMessageAsync($"This channel is now silenced. {DiscordContext.GetEmoteReee()}");
             }
             catch (Exception ex)
@@ -43,9 +42,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 var chnl = Context.Channel as ITextChannel;
-                var permOverride = new OverwritePermissions();
-                permOverride.Modify(sendMessages: PermValue.Allow);
-
+                var permOverride = new OverwritePermissions(sendMessages: PermValue.Allow);
                 await chnl.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, permOverride);
 
                 await Context.Channel.SendMessageAsync($"The silence has been lifted. {DiscordContext.GetEmoteAyySeymour()}");

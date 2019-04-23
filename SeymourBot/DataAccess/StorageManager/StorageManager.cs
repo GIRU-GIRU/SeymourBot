@@ -138,7 +138,7 @@ namespace SeymourBot.DataAccess.StorageManager
                             type = item.DiscipinaryEventType.ToString().Replace("Event", String.Empty);
                             if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
 
-                            dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"{type}{reason}");
+                            dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"CURRENT - {type}{reason}");
                             index++;
                         }
                     }
@@ -149,7 +149,7 @@ namespace SeymourBot.DataAccess.StorageManager
                             type = item.DisciplineType.ToString().Replace("Event", String.Empty);
                             if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
 
-                            dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"{type}{reason}");
+                            dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"ARCHIVED - {type}{reason}");
                             index++;
                         }
                     }
@@ -160,7 +160,7 @@ namespace SeymourBot.DataAccess.StorageManager
                             type = item.DiscipinaryEventType.ToString().Replace("Event", String.Empty);
                             if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
 
-                            dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"{type}{reason}");
+                            dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"PERMA - {type}{reason}");
                             index++;
                         }
                     }
