@@ -42,7 +42,20 @@ namespace Toolbox.DiscordUtilities
 
         public static async Task RemoveRoleAsync(ulong userId, ulong roleId)
         {
-            await MordhauGuild.GetUser(userId).RemoveRoleAsync(MordhauGuild.GetRole(roleId));
+            try
+            {
+                var user = MordhauGuild.GetUser(userId);
+                var roleToRemove = MordhauGuild.GetRole(roleId);
+
+                if (user != null && user.Roles.Any(x => x.Id == roleId))
+                {
+                    await user.RemoveRoleAsync(roleToRemove);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;//todo
+            }
         }
 
         public static IRole GrabRole(MordhauRoleEnum role)
@@ -180,7 +193,7 @@ namespace Toolbox.DiscordUtilities
         /// <returns></returns>
         public static async Task LogErrorAsync(string message, string command)
         {
-            await GetLoggingChannel().SendMessageAsync($" \"{command}\" threw a Exception : ```{message}```");
+            await GetLoggingChannel().SendMessageAsync($" \"{command}\" failed: ```{message}```");
         }
 
         public static ITextChannel GetMainChannel()

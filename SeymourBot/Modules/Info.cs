@@ -2,9 +2,9 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Attributes;
+using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SeymourBot.Modules
@@ -83,6 +83,34 @@ namespace SeymourBot.Modules
                 embed.WithImageUrl(avatarURL);
 
                 await Context.Channel.SendMessageAsync("", false, embed.Build());
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;// todo
+            }
+        }
+
+        [Command("disciplinaries")]
+        [DevOrAdmin]
+        private async Task GetUserDisciplinariesAsync(SocketGuildUser user)
+        {
+            try
+            {
+                var disciplinaries = await StorageManager.GetDisciplinariesAsync(user);
+                if (disciplinaries.Keys.Count > 0)
+                {
+                    var embed = new EmbedBuilder();
+                    embed.WithTitle($"Disciplinaries for \"{user.Username}#{user.Discriminator}\" ");
+                    embed.AddField("Date", String.Join("\n", disciplinaries.Keys), true);
+                    embed.AddField("Type and Reason: ", String.Join("\n", disciplinaries.Values), true);
+
+                    await Context.Channel.SendMessageAsync("", false, embed.Build());
+                }
+                else
+                {
+                    await Context.Channel.SendMessageAsync("Could not find any disciplinaries for this user");
+                }
             }
             catch (Exception ex)
             {

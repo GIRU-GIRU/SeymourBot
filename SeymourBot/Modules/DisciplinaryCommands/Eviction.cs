@@ -536,7 +536,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 if (!existing)
                 {
-                    await Context.Channel.SendMessageAsync("Unable to locate a user of that ID");
+                    await Context.Channel.SendMessageAsync("Unable to locate a ban correlating to a user of that ID");
                     return;
                 }
 

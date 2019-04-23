@@ -47,6 +47,8 @@ namespace Toolbox.Exceptions
 
         private static void HandleExceptionHelper(Exception ex, string message)
         {
+            ex = GetInnermostException(ex);
+
             if (ex.GetType() == typeof(SeymourException))
             {
                 throw ex;
@@ -55,6 +57,19 @@ namespace Toolbox.Exceptions
             {
                 throw new SeymourException(message + " Caused by " + ex.Message);
             }
+        }
+
+        private static Exception GetInnermostException(Exception ex)
+        {
+            Exception result = ex;
+
+            while (result.InnerException != null)
+            {
+                result = result.InnerException;
+            }
+
+            return result;
+
         }
     }
 }

@@ -104,7 +104,7 @@ namespace SeymourBot.DataAccess.StorageManager
                     }
                     else
                     {
-                        await db.AddAsync(newEvent);
+                        await db.UserDisciplinaryEventStorageTable.AddAsync(newEvent);
                         await db.SaveChangesAsync();
                         return new KeyValuePair<ulong, bool>(newEvent.DisciplineEventID, false);
                     }
@@ -114,6 +114,64 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 ExceptionManager.HandleException(ErrMessages.StorageException, ex);
                 throw;
+            }
+        }
+
+        public static async Task<Dictionary<string, string>> GetDisciplinariesAsync(SocketGuildUser user)
+        {
+            try
+            {
+                using (var db = new UserContext())
+                {
+                    var currentEvents = await db.UserDisciplinaryEventArchiveTable.Where(x => x.UserID == user.Id).ToListAsync();
+                    var archivedEvents = await db.UserDisciplinaryEventArchiveTable.Where(x => x.UserID == user.Id).ToListAsync();
+                  //  var permaEvents = await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == user.Id).ToListAsync();
+
+                    var dict = new Dictionary<string, string>();
+                    int index = 0;
+                    string type = string.Empty;
+                    string reason = string.Empty;
+                    if (currentEvents != null)
+                    {
+                        foreach (var item in currentEvents)
+                        {
+                            type = item.DisciplineType.ToString().Replace("Event", String.Empty);
+                            if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
+
+                            dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"{type}{reason}");
+                            index++;
+                        }
+                    }
+                    if (archivedEvents != null)
+                    {
+                        foreach (var item in archivedEvents)
+                        {
+                            type = item.DisciplineType.ToString().Replace("Event", String.Empty);
+                            if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
+
+                            dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"{type}{reason}");
+                            index++;
+                        }
+                    }
+                    //if (permaEvents != null)
+                    //{
+                    //    foreach (var item in permaEvents)
+                    //    {
+                    //        type = item.DiscipinaryEventType.ToString().Replace("Event", String.Empty);
+                    //        if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
+
+                    //        dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"{type}{reason}");
+                    //        index++;
+                    //    }
+                    //}
+
+                    return dict;
+                }
+            }
+            catch (Exception ex)
+            {
+                //todo
+                throw ex;
             }
         }
 
@@ -155,7 +213,18 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (var db = new UserContext())
                 {
-                    var existingEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == userID).ToArrayAsync();
+                    //check event table first
+                    UserDisciplinaryEventStorage[] existingEvents;
+
+                    if (type == DisciplinaryEventEnum.BanEvent)
+                    {
+                        existingEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == userID).ToArrayAsync();
+                    }
+                    else
+                    {
+                        existingEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == userID
+                                                                                            && x.DiscipinaryEventType == type).ToArrayAsync();
+                    }
 
                     if (existingEvents.Count() > 0)
                     {
@@ -164,12 +233,20 @@ namespace SeymourBot.DataAccess.StorageManager
                             await TimedEventManager.RemoveEvent(item.DisciplineEventID);
                         }
 
-                        db.UserDisciplinaryEventStorageTable.RemoveRange(existingEvents);
-                        await db.SaveChangesAsync();
                     }
-                    else
+                    else //check permanent event table if can't find
                     {
-                        var existingPermaEvents = await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == userID).ToArrayAsync();
+                        UserDisciplinaryPermanentStorage[] existingPermaEvents;
+
+                        if (type == DisciplinaryEventEnum.BanEvent)
+                        {
+                            existingPermaEvents = await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == userID).ToArrayAsync();
+                        }
+                        else
+                        {
+                            existingPermaEvents = await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == userID
+                                                                                                && x.DiscipinaryEventType == type).ToArrayAsync();
+                        }
 
                         if (existingPermaEvents.Count() > 0)
                         {
@@ -177,9 +254,6 @@ namespace SeymourBot.DataAccess.StorageManager
                             {
                                 await TimedEventManager.RemoveEvent(item.DisciplineEventID);
                             }
-
-                            db.UserDisciplinaryPermanentStorageTable.RemoveRange(existingPermaEvents);
-                            await db.SaveChangesAsync();
                         }
                     }
                 }
@@ -406,13 +480,13 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (FilterContext db = new FilterContext())
                 {
-                    var itemToRemove = await db.filterTables.FirstOrDefaultAsync(x => x.FilterPattern.ToLower() == name.ToLower() 
+                    var itemToRemove = await db.filterTables.FirstOrDefaultAsync(x => x.FilterPattern.ToLower() == name.ToLower()
                                                                                                                 & x.FilterType == type);
                     if (itemToRemove != null)
                     {
                         db.filterTables.Remove(itemToRemove);
                         await db.SaveChangesAsync();
-                    }                  
+                    }
                 }
             }
             catch (Exception ex)
