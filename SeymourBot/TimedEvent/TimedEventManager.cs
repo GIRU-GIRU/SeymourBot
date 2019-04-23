@@ -65,7 +65,6 @@ namespace SeymourBot.TimedEvent
                 DateInserted = DateTime.UtcNow,
                 DateToRemove = end,
                 DiscipinaryEventType = eventType,
-                DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                 ModeratorID = moderatorId,
                 Reason = reason,
                 UserID = userId

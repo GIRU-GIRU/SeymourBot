@@ -94,7 +94,7 @@ namespace SeymourBot.DataAccess.StorageManager
                         await db.UserStorageTable.AddAsync(newUser);
                     }
 
-                    var existingDisciplinaryEvent = await db.UserDisciplinaryEventStorageTable.FirstOrDefaultAsync(x => x.UserID == newUser.UserID);
+                    var existingDisciplinaryEvent = await db.UserDisciplinaryEventStorageTable.FirstOrDefaultAsync(x => x.UserID == newUser.UserID && x.DiscipinaryEventType == newEvent.DiscipinaryEventType);
 
                     if (existingDisciplinaryEvent != null && newEvent.DiscipinaryEventType != DisciplinaryEventEnum.WarnEvent)
                     {
@@ -153,17 +153,17 @@ namespace SeymourBot.DataAccess.StorageManager
                             index++;
                         }
                     }
-                   if (permaEvents != null)
-                   {
-                       foreach (var item in permaEvents)
-                       {
-                           type = item.DiscipinaryEventType.ToString().Replace("Event", String.Empty);
-                           if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
+                    if (permaEvents != null)
+                    {
+                        foreach (var item in permaEvents)
+                        {
+                            type = item.DiscipinaryEventType.ToString().Replace("Event", String.Empty);
+                            if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
 
-                           dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"{type}{reason}");
-                           index++;
-                       }
-                   }
+                            dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"{type}{reason}");
+                            index++;
+                        }
+                    }
 
                     return dict;
                 }

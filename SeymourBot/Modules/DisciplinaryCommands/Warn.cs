@@ -31,7 +31,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     DateInserted = DateTime.UtcNow,
                     DateToRemove = DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)),
                     DiscipinaryEventType = DisciplinaryEventEnum.WarnEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = user.Id
@@ -82,7 +81,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     DateInserted = DateTime.UtcNow,
                     DateToRemove = DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)),
                     DiscipinaryEventType = DisciplinaryEventEnum.WarnEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = user.Id

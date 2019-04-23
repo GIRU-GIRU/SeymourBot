@@ -44,7 +44,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     DateInserted = DateTime.UtcNow,
                     DateToRemove = (DateTimeOffset.UtcNow + timeSpan).DateTime,
                     DiscipinaryEventType = DisciplinaryEventEnum.BanEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = Context.Message.Author.Id
@@ -95,7 +94,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     DateInserted = DateTime.UtcNow,
                     DateToRemove = (DateTimeOffset.UtcNow + timeSpan).DateTime,
                     DiscipinaryEventType = DisciplinaryEventEnum.BanEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = Context.Message.Author.Id
@@ -139,7 +137,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     DateInserted = DateTime.UtcNow,
                     DiscipinaryEventType = DisciplinaryEventEnum.BanEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = Context.Message.Author.Id
@@ -187,7 +184,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     DateInserted = DateTime.UtcNow,
                     DiscipinaryEventType = DisciplinaryEventEnum.BanEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = Context.Message.Author.Id
@@ -232,7 +228,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     DateInserted = DateTime.UtcNow,
                     DateToRemove = (DateTimeOffset.UtcNow + timeSpan).DateTime,
                     DiscipinaryEventType = DisciplinaryEventEnum.BanCleanseEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = Context.Message.Author.Id
@@ -283,7 +278,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     DateInserted = DateTime.UtcNow,
                     DateToRemove = (DateTimeOffset.UtcNow + timeSpan).DateTime,
                     DiscipinaryEventType = DisciplinaryEventEnum.BanCleanseEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = Context.Message.Author.Id
@@ -333,7 +327,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     DateInserted = DateTime.UtcNow,
                     DiscipinaryEventType = DisciplinaryEventEnum.BanCleanseEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = Context.Message.Author.Id
@@ -375,7 +368,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     DateInserted = DateTime.UtcNow,
                     DiscipinaryEventType = DisciplinaryEventEnum.BanCleanseEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = Context.Message.Author.Id
@@ -413,7 +405,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     DateInserted = DateTime.UtcNow,
                     DiscipinaryEventType = DisciplinaryEventEnum.KickEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = Context.Message.Author.Id
@@ -460,7 +451,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     DateInserted = DateTime.UtcNow,
                     DiscipinaryEventType = DisciplinaryEventEnum.KickEvent,
-                    DisciplineEventID = (ulong)DateTime.UtcNow.Millisecond,
                     ModeratorID = Context.Message.Author.Id,
                     Reason = reason,
                     UserID = Context.Message.Author.Id
@@ -550,6 +540,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             {
                 throw ex; //todo
             }
-        }     
+        }
     }
 }
