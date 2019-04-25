@@ -93,7 +93,7 @@ namespace SeymourBot.TimedEvent
         {
             var activeEvent = new ActiveTimedEvent();
             activeEvent.DisciplinaryEvent = eventStorage.DiscipinaryEventType;
-            activeEvent.TimeToTrigger = eventStorage.DateToRemove.Subtract(eventStorage.DateInserted).Minutes;
+            activeEvent.TimeToTrigger = eventStorage.DateToRemove.Subtract(eventStorage.DateInserted).TotalMinutes;
             activeEvent.UserId = eventStorage.UserID;
             return activeEvent;
         }
