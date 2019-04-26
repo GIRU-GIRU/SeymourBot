@@ -2,13 +2,12 @@
 using Discord.WebSocket;
 using OverseerBot.Caching.Images;
 using System;
-using System.Threading.Tasks;
-using Toolbox.Config;
-using Toolbox.DiscordUtilities;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Toolbox.DiscordUtilities;
 
 namespace OverseerBot.UserMessageLogging
 {
@@ -21,42 +20,45 @@ namespace OverseerBot.UserMessageLogging
                 if (string.IsNullOrEmpty(msgAfter.Content)) return;
                 if (msgBefore.Value.Content == msgAfter.Content) return;
 
-                var logChannel = DiscordContext.GetDeletedMessageLog();
+                var logChannel = DiscordContextOverseer.GetDeletedMessageLog();
                 var message = await msgBefore.GetOrDownloadAsync();
 
-                List<byte[]> imagesData = null;
-                bool hasImages = false;
-
-                string time = msgAfter.Timestamp.DateTime.ToLongDateString() + " " + msgAfter.Timestamp.DateTime.ToLongTimeString();
-
-                var embed = new EmbedBuilder();
-                if (hasImages)
+                if (message != null)
                 {
-                    if (imagesData != null)
+                    List<byte[]> imagesData = null;
+                    bool hasImages = false;
+
+                    string time = msgAfter.Timestamp.DateTime.ToLongDateString() + " " + msgAfter.Timestamp.DateTime.ToLongTimeString();
+
+                    var embed = new EmbedBuilder();
+                    if (hasImages)
                     {
-                        embed.WithTitle($"✍️ {msgAfter.Author.Username}#{msgAfter.Author.Discriminator} edited messageID {message.Id} at {time} containing {imagesData.Count} image{((imagesData.Count > 1) ? "" : "s") }");
+                        if (imagesData != null)
+                        {
+                            embed.WithTitle($"✍️ {msgAfter.Author.Username}#{msgAfter.Author.Discriminator} edited messageID {message.Id} at {time} containing {imagesData.Count} image{((imagesData.Count > 1) ? "" : "s") }");
+                        }
+                        else
+                        {
+                            embed.WithTitle($"✍️ {msgAfter.Author.Username}#{msgAfter.Author.Discriminator} edited messageID {message.Id} at {time} containing images that weren't cached");
+                        }
                     }
                     else
                     {
-                        embed.WithTitle($"✍️ {msgAfter.Author.Username}#{msgAfter.Author.Discriminator} edited messageID {message.Id} at {time} containing images that weren't cached");
+                        embed.WithTitle($"🗑 {message.Author.Username}#{message.Author.Discriminator} deleted message in {message.Channel.Name}. UserID = {message.Author.Id}");
                     }
-                }
-                else
-                {
-                    embed.WithTitle($"🗑 {message.Author.Username}#{message.Author.Discriminator} deleted message in {message.Channel.Name}. UserID = {message.Author.Id}");
-                }
-                embed.WithTitle($"✍️ {msgAfter.Author.Username}#{msgAfter.Author.Discriminator} edited messageID {message.Id} at {time}");
-                embed.WithDescription($"in #{channel.Name}, Original: " + msgBefore.Value.Content);
-                embed.WithColor(new Color(250, 255, 0));
+                    embed.WithTitle($"✍️ {msgAfter.Author.Username}#{msgAfter.Author.Discriminator} edited messageID {message.Id} at {time}");
+                    embed.WithDescription($"in #{channel.Name}, Original: " + msgBefore.Value.Content);
+                    embed.WithColor(new Color(250, 255, 0));
 
-                await logChannel.SendMessageAsync("", false, embed.Build());
-                if (imagesData != null)
-                {
-                    foreach (byte[] image in imagesData)
+                    await logChannel.SendMessageAsync("", false, embed.Build());
+                    if (imagesData != null)
                     {
-                        using (var ms = new MemoryStream(image))
+                        foreach (byte[] image in imagesData)
                         {
-                            await logChannel.SendFileAsync(ms, "cached.png");
+                            using (var ms = new MemoryStream(image))
+                            {
+                                await logChannel.SendFileAsync(ms, "cached.png");
+                            }
                         }
                     }
                 }
@@ -71,45 +73,55 @@ namespace OverseerBot.UserMessageLogging
         {
             try
             {
-                var logChannel = DiscordContext.GetDeletedMessageLog();
+                var logChannel = DiscordContextOverseer.GetDeletedMessageLog();
                 var message = await msg.GetOrDownloadAsync();
-                var embed = new EmbedBuilder();
-                List<CachedFile> filesData = null;
-                bool hasImages = false;
 
-                //if at least one image (embedded or attached) was in the deleted message, look for it in the cache
-                if ((message.Embeds.Count > 0 && message.Embeds.Select(x => x.Image.GetValueOrDefault()).Count() > 0)
-                    || (message.Attachments.Count > 0 && message.Attachments.Where(x => x.Url != null && x.Url.Count() > 0).Count() > 0))
+                if (message != null)
                 {
-                    hasImages = true;
-                    filesData = ImageCacheManager.FindImagesInCache(message.Id);
-                }
-                if (hasImages)
-                {
+                    var embed = new EmbedBuilder();
+                    List<CachedFile> filesData = null;
+                    bool hasImages = false;
+
+                    //if at least one image (embedded or attached) was in the deleted message, look for it in the cache
+                    bool imageExists = CheckForImageWithinEmbeds(message);
+                    bool hasURLs = CheckForURLs(message);
+                    if ((message.Embeds.Count > 0 && imageExists) || (message.Attachments.Count > 0 && hasURLs))
+                    {
+                        hasImages = true;
+                        filesData = ImageCacheManager.FindImagesInCache(message.Id);
+                    }
+                    if (hasImages)
+                    {
+                        if (filesData != null)
+                        {
+                            embed.WithTitle($"🗑 {message.Author.Username}#{message.Author.Discriminator} deleted message containing {filesData.Count} image{((filesData.Count > 1) ? "" : "s") } in {message.Channel.Name}. UserID = {message.Author.Id}");
+                        }
+                        else
+                        {
+                            embed.WithTitle($"🗑 {message.Author.Username}#{message.Author.Discriminator} deleted message containing images that weren't cached in {message.Channel.Name}. UserID = {message.Author.Id}");
+                        }
+                    }
+                    else //it's just a message
+                    {
+
+                        embed.WithTitle($"🗑 {message.Author.Username}#{message.Author.Discriminator} deleted message in {message.Channel.Name}. UserID = {message.Author.Id}");
+                    }
+
+                    //check for other types of embeds
+                    string extraMessageContent = SearchForOtherEmbedTypes(message);
+
+                    embed.WithDescription(message.Content + extraMessageContent);
+                    embed.WithColor(new Color(255, 0, 0));
+
+                    await logChannel.SendMessageAsync("", false, embed.Build());
                     if (filesData != null)
                     {
-                        embed.WithTitle($"🗑 {message.Author.Username}#{message.Author.Discriminator} deleted message containing {filesData.Count} image{((filesData.Count > 1) ? "" : "s") } in {message.Channel.Name}. UserID = {message.Author.Id}");
-                    }
-                    else
-                    {
-                        embed.WithTitle($"🗑 {message.Author.Username}#{message.Author.Discriminator} deleted message containing images that weren't cached in {message.Channel.Name}. UserID = {message.Author.Id}");
-                    }
-                }
-                else
-                {
-                    embed.WithTitle($"🗑 {message.Author.Username}#{message.Author.Discriminator} deleted message in {message.Channel.Name}. UserID = {message.Author.Id}");
-                }
-                embed.WithDescription(message.Content);
-                embed.WithColor(new Color(255, 0, 0));
-
-                await logChannel.SendMessageAsync("", false, embed.Build());
-                if (filesData != null)
-                {
-                    foreach (var file in filesData)
-                    {
-                        using (var ms = new MemoryStream(file.File))
+                        foreach (var file in filesData)
                         {
-                            await logChannel.SendFileAsync(ms, file.FileName);
+                            using (var ms = new MemoryStream(file.File))
+                            {
+                                await logChannel.SendFileAsync(ms, file.FileName);
+                            }
                         }
                     }
                 }
@@ -120,9 +132,73 @@ namespace OverseerBot.UserMessageLogging
             }
         }
 
+        private static string SearchForOtherEmbedTypes(IMessage message)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+
+                if (message.Embeds.Any(x => x.Type == EmbedType.Rich))
+                {
+                    var msgOtherEmbeds = message.Embeds.Where(x => x.Type == EmbedType.Article ||
+                                                                      x.Type == EmbedType.Tweet ||
+                                                                       x.Type == EmbedType.Link).ToList();
+                    foreach (var item in msgOtherEmbeds)
+                    {
+                        if (string.IsNullOrEmpty(item.Url))
+                        {
+                            stringBuilder.AppendLine("URL not found" + "\n");
+                        }
+                        else
+                        {
+                            stringBuilder.AppendLine(item.Url + "\n");
+                        }
+                    }
+                }
+
+                if (stringBuilder.Length > 0)
+                {
+                    return stringBuilder.ToString();
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
+        private static bool CheckForURLs(IMessage message)
+        {
+            try
+            {
+                return message.Attachments.Where(x => x.Url != null && x.Url.Count() > 0).Count() > 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
+        private static bool CheckForImageWithinEmbeds(IMessage message)
+        {
+            try
+            {
+                return message.Embeds.Select(x => x.Type != EmbedType.Rich).Any();
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+
+        }
+
         public static async Task ReceivedMessageEvent(SocketMessage arg)
         {
-            if (arg.Channel.Id != DiscordContext.GetLoggingChannel().Id) //avoid caching images the bot is posting
+            if (arg.Channel.Id != DiscordContextOverseer.GetLoggingChannel().Id) //avoid caching images the bot is posting
             {
                 var names = new List<string>();
                 var result = GetImageUrls(arg, out names);

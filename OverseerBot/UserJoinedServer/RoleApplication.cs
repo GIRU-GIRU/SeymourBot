@@ -11,7 +11,7 @@ namespace OverseerBot.UserJoinedServer
         {
             try
             {
-                await user.AddRoleAsync(DiscordContext.GrabRole(MordhauRoleEnum.Peasant));
+                await user.AddRoleAsync(DiscordContextOverseer.GrabRole(MordhauRoleEnum.Peasant));
             }
             catch (Exception ex)
             {

@@ -27,7 +27,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 string kickTargetName = user.Username;
-                if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
                     await user.BanAsync(reason: reason);
                 }
@@ -73,11 +73,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
                 string kickTargetName = user.Username;
-                if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
                     await user.BanAsync(reason: reason);
                 }
@@ -121,7 +121,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 string kickTargetName = user.Username;
-                if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
                     await user.BanAsync(reason: reason);
                 }
@@ -164,11 +164,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
                 string kickTargetName = user.Username;
-                if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
                     await user.BanAsync(reason: reason);
                 }
@@ -178,7 +178,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 }
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanEvent, new TimeSpan(), reason, kickTargetName, false);
-                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
 
                 await StorageManager.StoreDisciplinaryPermanentEventAsync(new UserDisciplinaryPermanentStorage()
                 {
@@ -211,7 +211,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 string kickTargetName = user.Username;
-                if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
                     await user.BanAsync(7, reason);
                 }
@@ -257,11 +257,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
                 string kickTargetName = user.Username;
-                if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
                     await user.BanAsync(7, reason);
                 }
@@ -271,7 +271,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 }
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, timeSpan, reason, kickTargetName, false);
-                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
 
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
                 {
@@ -306,12 +306,12 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 
                 string kickTargetName = user.Username;
-                if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
                     await user.BanAsync(7, reason);
                 }
@@ -321,7 +321,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 }
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.BanCleanseEvent, new TimeSpan(), reason, kickTargetName, false);
-                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
 
                 await StorageManager.StoreDisciplinaryPermanentEventAsync(new UserDisciplinaryPermanentStorage()
                 {
@@ -352,7 +352,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 string kickTargetName = user.Username;
-                if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
                     await user.BanAsync(7, reason);
                 }
@@ -392,7 +392,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 string kickTargetName = user.Username;
-                if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
                     await user.KickAsync();
                 }
@@ -433,12 +433,12 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 
                 string kickTargetName = user.Username;
-                if (!await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
                 {
                     await user.KickAsync();
                 }
@@ -461,7 +461,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 });
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.KickEvent, new TimeSpan(), reason, kickTargetName, false);
-                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
             {

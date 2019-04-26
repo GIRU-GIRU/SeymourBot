@@ -31,11 +31,11 @@ namespace SeymourBot.Modules
 
                 if (existing)
                 {
-                    await Context.Channel.SendMessageAsync($"Updated {command.CommandName} {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Updated {command.CommandName} {DiscordContextSeymour.GetEmoteAyySeymour()}");
                 }
                 else
                 {
-                    await Context.Channel.SendMessageAsync($"Added {command.CommandName} {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Added {command.CommandName} {DiscordContextSeymour.GetEmoteAyySeymour()}");
                 }
             }
             catch (Exception ex)

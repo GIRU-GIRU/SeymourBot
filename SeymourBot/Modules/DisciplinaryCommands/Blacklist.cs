@@ -21,7 +21,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
                 bool existing = await StorageManager.StoreBlacklistReturnIfExisting(new BlacklistUserStorage()
                 {
@@ -56,10 +56,10 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
                 bool existing = await StorageManager.StoreBlacklistReturnIfExisting(new BlacklistUserStorage()
                 {
@@ -76,7 +76,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     });
 
                 var embed = Utilities.BuildBlacklistEmbed(timeSpan, user.Username, existing);
-                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
             {
@@ -93,10 +93,10 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
                 bool existing = await StorageManager.StoreBlacklistReturnIfExisting(new BlacklistUserStorage()
                 {
@@ -113,7 +113,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     });
 
                 var embed = Utilities.BuildBlacklistEmbed(new TimeSpan(), user.Username, existing);
-                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
             {
@@ -127,7 +127,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
                 bool existing = await StorageManager.StoreBlacklistReturnIfExisting(new BlacklistUserStorage()
                 {
@@ -185,7 +185,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 

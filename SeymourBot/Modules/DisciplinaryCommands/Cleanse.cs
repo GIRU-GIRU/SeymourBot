@@ -23,7 +23,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             await chnl.DeleteMessagesAsync(messages);
 
             var embed = new EmbedBuilder();
-            embed.WithTitle($"Cleansed {amount} messages {DiscordContext.GetEmoteAyySeymour().ToString()}");
+            embed.WithTitle($"Cleansed {amount} messages {DiscordContextSeymour.GetEmoteAyySeymour().ToString()}");
             embed.WithColor(new Color(0, 255, 0));
 
             await Context.Channel.SendMessageAsync("", false, embed.Build());
@@ -41,7 +41,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             var chnl = Context.Channel as ITextChannel;
             await chnl.DeleteMessagesAsync(messages);
 
-            await Context.Channel.SendMessageAsync($"{DiscordContext.GetEmoteAyySeymour().ToString()}");
+            await Context.Channel.SendMessageAsync($"{DiscordContextSeymour.GetEmoteAyySeymour().ToString()}");
         }
 
         [Command("cleanse")]
@@ -62,7 +62,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             await chnl.DeleteMessagesAsync(result);
 
             var embed = new EmbedBuilder();
-            embed.WithTitle($"Cleansed {amountOfMessages} messages from {user.Username} {DiscordContext.GetEmoteAyySeymour().ToString()}");
+            embed.WithTitle($"Cleansed {amountOfMessages} messages from {user.Username} {DiscordContextSeymour.GetEmoteAyySeymour().ToString()}");
             embed.WithColor(new Color(0, 255, 0));
 
             await Context.Channel.SendMessageAsync("", false, embed.Build());
@@ -87,7 +87,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             var totalToDelete = result.Take(amountToDelete);
             await chnl.DeleteMessagesAsync(totalToDelete);
             var embed = new EmbedBuilder();
-            embed.WithTitle($"Cleansed {totalToDelete.Count()} messages from {user.Username} {DiscordContext.GetEmoteAyySeymour().ToString()}");
+            embed.WithTitle($"Cleansed {totalToDelete.Count()} messages from {user.Username} {DiscordContextSeymour.GetEmoteAyySeymour().ToString()}");
             embed.WithColor(new Color(0, 255, 0));
 
             await Context.Channel.SendMessageAsync("", false, embed.Build());

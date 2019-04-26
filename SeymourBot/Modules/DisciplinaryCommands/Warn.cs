@@ -24,7 +24,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
                 {
@@ -71,10 +71,10 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
                 {
@@ -97,11 +97,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 if (string.IsNullOrEmpty(reason))
                 {
-                    await DiscordContext.GetMainChannel().SendMessageAsync($"🚫 {user.Mention} {BotDialogs.WarnMessageNoReason}🚫\n{warnCount}/5 warnings ");
+                    await DiscordContextSeymour.GetMainChannel().SendMessageAsync($"🚫 {user.Mention} {BotDialogs.WarnMessageNoReason}🚫\n{warnCount}/5 warnings ");
                 }
                 else
                 {
-                    await DiscordContext.GetMainChannel().SendMessageAsync(ResourceUtils.BuildString(BotDialogs.WarnMessageReason, user.Mention, reason, Environment.NewLine, warnCount.ToString(), ConfigManager.GetProperty(PropertyItem.MaxWarns)));
+                    await DiscordContextSeymour.GetMainChannel().SendMessageAsync(ResourceUtils.BuildString(BotDialogs.WarnMessageReason, user.Mention, reason, Environment.NewLine, warnCount.ToString(), ConfigManager.GetProperty(PropertyItem.MaxWarns)));
                 }
                 await AutoModeratorManager.CheckForWarnThreshold(user, Context, warnCount);
             }

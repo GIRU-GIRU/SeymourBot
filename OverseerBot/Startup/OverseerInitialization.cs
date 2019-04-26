@@ -6,6 +6,7 @@ using OverseerBot.UserMessageLogging;
 using System;
 using System.Threading.Tasks;
 using Toolbox.Config;
+using Toolbox.DiscordUtilities;
 
 namespace OverseerBot.Startup
 {
@@ -46,6 +47,20 @@ namespace OverseerBot.Startup
             _client.MessageDeleted += MessageLogger.DeletedMessageEvent;
             _client.MessageReceived += MessageLogger.ReceivedMessageEvent;
             _client.UserJoined += RoleApplication.ApplyPeasantRoleAsync;
+            _client.Ready += InitializeContext;
+        }
+
+        private async Task InitializeContext()
+        {
+            try
+            {
+                DiscordContextOverseer.InitContext(_client);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Unable to intialize Overseer's discord context: ", ex.Message);
+                throw;
+            }
         }
     }
 }

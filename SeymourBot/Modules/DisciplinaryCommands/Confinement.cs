@@ -27,9 +27,9 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
-                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
+                var mutedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted);
                 await user.AddRoleAsync(mutedRole);
 
                 UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
@@ -69,13 +69,13 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
-                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
+                var mutedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted);
                 await user.AddRoleAsync(mutedRole);
 
                 UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
@@ -96,7 +96,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 bool existing = await TimedEventManager.CreateEvent(newEvent, newUser);
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, timeSpan, reason, user.Username, existing);
-                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
             {
@@ -111,9 +111,9 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
-                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
+                var mutedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted);
                 await user.AddRoleAsync(mutedRole);
 
                 UserDisciplinaryPermanentStorage newEvent = new UserDisciplinaryPermanentStorage()
@@ -151,13 +151,13 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
-                var mutedRole = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
+                var mutedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted);
                 await user.AddRoleAsync(mutedRole);
 
                 UserDisciplinaryPermanentStorage newEvent = new UserDisciplinaryPermanentStorage()
@@ -177,7 +177,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 bool existing = await StorageManager.StoreDisciplinaryPermanentEventAsync(newEvent, newUser);
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, new TimeSpan(), reason, user.Username, existing);
-                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
             {
@@ -193,9 +193,9 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
-                var limitedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
+                var limitedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.LimitedUser);
                 await user.AddRoleAsync(limitedRole);
 
                 UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
@@ -235,13 +235,13 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
-                var limitedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
+                var limitedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.LimitedUser);
                 await user.AddRoleAsync(limitedRole);
 
                 UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
@@ -262,7 +262,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 bool existing = await TimedEventManager.CreateEvent(newEvent, newUser);
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, timeSpan, reason, user.Username, existing);
-                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
             {
@@ -277,9 +277,9 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
-                var limitedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
+                var limitedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.LimitedUser);
                 await user.AddRoleAsync(limitedRole);
 
                 UserDisciplinaryPermanentStorage newEvent = new UserDisciplinaryPermanentStorage()
@@ -317,13 +317,13 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 
-                if (await DiscordContext.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
 
-                var limitedRole = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
+                var limitedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.LimitedUser);
                 await user.AddRoleAsync(limitedRole);
 
                 UserDisciplinaryPermanentStorage newEvent = new UserDisciplinaryPermanentStorage()
@@ -343,7 +343,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 bool existing = await StorageManager.StoreDisciplinaryPermanentEventAsync(newEvent, newUser);
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, new TimeSpan(), reason, user.Username, existing);
-                await DiscordContext.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
             {
@@ -361,7 +361,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 
@@ -422,7 +422,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
                 if (user == null)
                 {
-                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContext.GetEmoteAyySeymour()}");
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 

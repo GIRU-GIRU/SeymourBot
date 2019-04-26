@@ -62,7 +62,7 @@ namespace SeymourBot.Startup
 
         private async Task BotReady()
         {
-            DiscordContext.InitContext(_client);
+            DiscordContextSeymour.InitContext(_client);
             await NoobGate.CreateNoobGate();
         }
 
@@ -96,7 +96,7 @@ namespace SeymourBot.Startup
         {
             if (!string.IsNullOrEmpty(result.ErrorReason) && result.ErrorReason != "Unauthorized" && result.ErrorReason != "You are currently in Timeout.")
             {
-                await DiscordContext.LogErrorAsync(result.ErrorReason, context.Message.Content);
+                await DiscordContextSeymour.LogErrorAsync(result.ErrorReason, context.Message.Content);
             }
         }
     }

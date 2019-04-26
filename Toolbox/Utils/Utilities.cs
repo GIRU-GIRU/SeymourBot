@@ -67,7 +67,7 @@ namespace Toolbox.Utils
                     duration = $"{Math.Round(timeSpan.TotalSeconds, 2)} sec{SAppend(timeSpan.TotalSeconds)}.";
                 }
 
-                Emote emote = duration == "Permanent" ? DiscordContext.GetEmoteReee() : DiscordContext.GetEmoteAyySeymour();
+                Emote emote = duration == "Permanent" ? DiscordContextSeymour.GetEmoteReee() : DiscordContextSeymour.GetEmoteAyySeymour();
 
                 string existingDisciplinary = String.Empty;
                 if (existing)
@@ -107,7 +107,7 @@ namespace Toolbox.Utils
                     duration = $"{Math.Round(timeSpan.TotalMinutes, 2)} min{SAppend(timeSpan.TotalMinutes)}.";
                 }
 
-                Emote emote = duration == "Permanent" ? DiscordContext.GetEmoteReee() : DiscordContext.GetEmoteAyySeymour();
+                Emote emote = duration == "Permanent" ? DiscordContextSeymour.GetEmoteReee() : DiscordContextSeymour.GetEmoteAyySeymour();
 
                 string existingDisciplinary = String.Empty;
                 if (existing)
@@ -132,7 +132,7 @@ namespace Toolbox.Utils
         {
             try
             {
-                var seymourEmote = DiscordContext.GetEmoteAyySeymour();
+                var seymourEmote = DiscordContextSeymour.GetEmoteAyySeymour();
 
                 var embed = new EmbedBuilder();
                 embed.WithTitle($"{author} booted {targetName} {seymourEmote.ToString()} ");
@@ -151,7 +151,7 @@ namespace Toolbox.Utils
         {
             try
             {
-                var seymourEmote = DiscordContext.GetEmoteAyySeymour();
+                var seymourEmote = DiscordContextSeymour.GetEmoteAyySeymour();
 
                 var embed = new EmbedBuilder();
                 embed.WithTitle($"{action} {targetName} {seymourEmote.ToString()} ");

@@ -9,7 +9,7 @@ namespace SeymourBot.AutoModeration
     {
         internal static async Task AutoModerateMessage(SocketCommandContext context)
         {
-            if (!await DiscordContext.IsUserDevOrAdmin(context.Message.Author as SocketGuildUser))
+            if (!await DiscordContextSeymour.IsUserDevOrAdmin(context.Message.Author as SocketGuildUser))
             {
                 _ = Task.Run(() => MessageContainsAsync(context));
             }

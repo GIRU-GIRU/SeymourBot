@@ -14,16 +14,16 @@ namespace SeymourBot.AutoModeration
         {
             try
             {
-                var noobGateChannel = DiscordContext.GetNoobGateChannel();
+                var noobGateChannel = DiscordContextSeymour.GetNoobGateChannel();
 
                 var msgs = await noobGateChannel.GetMessagesAsync(100).FlattenAsync();
                 await noobGateChannel.DeleteMessagesAsync(msgs);
 
                 string welcome = ConfigManager.GetProperty(PropertyItem.NoobGateMessage);
                 var noobGateWelcomeMessage = await noobGateChannel.SendMessageAsync(welcome);
-                DiscordContext.ReAssignNoobGateWelcome(noobGateWelcomeMessage);
+                DiscordContextSeymour.ReAssignNoobGateWelcome(noobGateWelcomeMessage);
 
-                await noobGateWelcomeMessage.AddReactionAsync(DiscordContext.GetEmotePommel() as IEmote);
+                await noobGateWelcomeMessage.AddReactionAsync(DiscordContextSeymour.GetEmotePommel() as IEmote);
 
             }
             catch (Exception ex)
@@ -36,18 +36,18 @@ namespace SeymourBot.AutoModeration
         {
             try
             {
-                if (DiscordContext.GetNoobGateChannel().Id == channel.Id)
+                if (DiscordContextOverseer.GetNoobGateChannel().Id == channel.Id)
                 {
-                    if (message.Id == DiscordContext.GetNoobGateWelcome().Id)
+                    if (message.Id == DiscordContextSeymour.GetNoobGateWelcome().Id)
                     {
-                        if (reaction.Emote.Name == DiscordContext.GetEmotePommel().Name)
+                        if (reaction.Emote.Name == DiscordContextOverseer.GetEmotePommel().Name)
                         {
                             SocketGuildUser user = reaction.User.Value as SocketGuildUser;
 
                             if (user != null)
                             {
-                                var roleToRemove = DiscordContext.GrabRole(MordhauRoleEnum.Peasant);
-                                if (user.Roles.Any(x => x == roleToRemove) || roleToRemove != null)
+                                var roleToRemove = DiscordContextOverseer.GrabRole(MordhauRoleEnum.Peasant);
+                                if (user.Roles.Any(x => x.Id == roleToRemove.Id) || roleToRemove != null)
                                 {
                                     await user.RemoveRoleAsync(roleToRemove);
                                 }

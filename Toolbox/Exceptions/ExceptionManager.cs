@@ -42,7 +42,7 @@ namespace Toolbox.Exceptions
 
         public static async Task LogExceptionAsync(Exception ex)
         {
-            await DiscordContext.LogError(ex.Message);
+            await DiscordContextSeymour.LogError(ex.Message);
         }
 
         private static void HandleExceptionHelper(Exception ex, string message)

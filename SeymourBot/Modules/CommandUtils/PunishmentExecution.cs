@@ -35,11 +35,11 @@ namespace SeymourBot.Modules.CommandUtils
                 switch (eventType)
                 {
                     case DisciplinaryEventEnum.MuteEvent:
-                        role = DiscordContext.GrabRole(MordhauRoleEnum.Muted);
+                        role = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted);
                         await user.AddRoleAsync(role);
                         break;
                     case DisciplinaryEventEnum.LimitedUserEvent:
-                        role = DiscordContext.GrabRole(MordhauRoleEnum.LimitedUser);
+                        role = DiscordContextSeymour.GrabRole(MordhauRoleEnum.LimitedUser);
                         await user.AddRoleAsync(role);
                         break;
                     default:

@@ -125,7 +125,7 @@ namespace SeymourBot.TimedEvent
                     case Storage.User.DisciplinaryEventEnum.MuteEvent:
                         ActiveEvents.Remove(activeEvent);
                         //todo
-                        await DiscordContext.RemoveRoleAsync(activeEvent.UserId, ConfigManager.GetUlongProperty(PropertyItem.Role_Muted));
+                        await DiscordContextSeymour.RemoveRoleAsync(activeEvent.UserId, ConfigManager.GetUlongProperty(PropertyItem.Role_Muted));
                         await StorageManager.ArchiveTimedEventAsync(activeEvent.DisciplinaryEventId);
                         break;
                     case Storage.User.DisciplinaryEventEnum.WarnEvent:
