@@ -15,9 +15,21 @@ namespace Toolbox.Exceptions
             {
                 HandleExceptionHelper(new Exception(), message);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                await LogExceptionAsync(message);
+                await DiscordContextOverseer.LogErrorAsync(e.Message);
+            }
+        }
+
+        public static async Task LogExceptionAsync(string message, Exception ex)
+        {
+            try
+            {
+                HandleExceptionHelper(ex, message);
+            }
+            catch (Exception e)
+            {
+                await DiscordContextOverseer.LogErrorAsync(e.Message);
             }
         }
 
@@ -69,7 +81,7 @@ namespace Toolbox.Exceptions
                 {
                     result = result.InnerException;
                 }
-            }          
+            }
 
             return result;
 

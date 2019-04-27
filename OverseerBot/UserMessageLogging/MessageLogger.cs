@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Toolbox.DiscordUtilities;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 
 namespace OverseerBot.UserMessageLogging
 {
@@ -65,7 +67,7 @@ namespace OverseerBot.UserMessageLogging
             }
             catch (System.Exception ex)
             {
-                throw ex;//todo
+                await ExceptionManager.LogExceptionAsync(ErrMessages.EditedMessageException);
             }
         }
 
@@ -128,7 +130,7 @@ namespace OverseerBot.UserMessageLogging
             }
             catch (System.Exception ex)
             {
-                throw ex; //todo
+                await ExceptionManager.LogExceptionAsync(ErrMessages.DeletedMessageException, ex);
             }
         }
 
@@ -167,7 +169,7 @@ namespace OverseerBot.UserMessageLogging
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(, ex);
             }
         }
 

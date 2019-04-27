@@ -62,7 +62,7 @@ namespace Toolbox.DiscordUtilities
         {
             try
             {
-               return MordhauGuild.GetChannel(id) as ITextChannel;
+                return MordhauGuild.GetChannel(id) as ITextChannel;
             }
             catch (Exception ex)
             {
@@ -193,7 +193,7 @@ namespace Toolbox.DiscordUtilities
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static async Task LogError(string message)
+        public static async Task LogErrorAsync(string message)
         {
             await GetLoggingChannel().SendMessageAsync($" Exception thrown : ```{message}```");
         }

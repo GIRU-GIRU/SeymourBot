@@ -123,8 +123,14 @@
   <data name="ConfigManagerException" xml:space="preserve">
     <value>Error in configuration manager</value>
   </data>
+  <data name="DeletedMessageException" xml:space="preserve">
+    <value>Error logging deleted message</value>
+  </data>
   <data name="DiscordContextException" xml:space="preserve">
     <value>Error in discord context</value>
+  </data>
+  <data name="EditedMessageException" xml:space="preserve">
+    <value>Error logging edited message</value>
   </data>
   <data name="FileIOException" xml:space="preserve">
     <value>IO error</value>
@@ -143,5 +149,8 @@
   </data>
   <data name="StorageException" xml:space="preserve">
     <value>Error in storage manager</value>
+  </data>
+  <data name="WarnException" xml:space="preserve">
+    <value>Error in warning command</value>
   </data>
 </root>

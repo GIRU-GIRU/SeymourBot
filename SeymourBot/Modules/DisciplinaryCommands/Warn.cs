@@ -57,8 +57,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                //todo
-                ExceptionManager.HandleException("", ex);
+                ExceptionManager.HandleException(ErrMessages.WarnException, ex);
             }
         }
 
@@ -90,7 +89,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     UserID = user.Id,
                     UserName = user.Username
                 };
-
                 await TimedEventManager.CreateEvent(obj, newUser);
 
                 int warnCount = await StorageManager.GetRecentWarningsAsync(user.Id);
@@ -107,8 +105,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                //todo
-                ExceptionManager.HandleException("", ex);
+                ExceptionManager.HandleException(ErrMessages.WarnException, ex);
             }
         }
     }
