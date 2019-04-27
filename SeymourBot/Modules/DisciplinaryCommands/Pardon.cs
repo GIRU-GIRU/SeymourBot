@@ -26,14 +26,15 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     ulong mutedRoleID = ConfigManager.GetUlongProperty(PropertyItem.Role_Muted);
                     ulong limitedRoleID = ConfigManager.GetUlongProperty(PropertyItem.Role_LimitedUser);
 
-                    var roles = user.Roles.Where(x => x.Id == mutedRoleID || x.Id == limitedRoleID) as IRole[];
+                    var roles = user.Roles.Where(x => x.Id == mutedRoleID && x.Id == limitedRoleID).Cast<IRole>().ToArray();
 
-                    await user.RemoveRolesAsync(roles);
-                    await Context.Channel.SendMessageAsync($"{user.Mention} has been pardoned for their crimes");
+                    if (roles.Count() > 0) await user.RemoveRolesAsync(roles);                    
+                  
+                    await Context.Channel.SendMessageAsync($"{user.Mention} has been pardoned for their crimes.");
                 }
                 else
                 {
-                    await Context.Channel.SendMessageAsync($"Could not find active punishments for {user.Mention}");
+                    await Context.Channel.SendMessageAsync($"Could not find active punishments for {user.Mention}.");
                 }
             }
             catch (Exception ex)
@@ -60,7 +61,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                         var roles = user.Roles.Where(x => x.Id == mutedRoleID || x.Id == limitedRoleID) as IRole[];
 
-                        await user.RemoveRolesAsync(roles);
+                        if (roles.Count() > 0) await user.RemoveRolesAsync(roles);
                         await Context.Channel.SendMessageAsync($"{user.Mention} has been pardoned for their crimes");
                     }
                     else

@@ -473,5 +473,64 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
         }
 
+
+        [Command("exile")]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        [DevOrAdmin]
+        private async Task ExileUserAsync(SocketGuildUser user)
+        {
+            try
+            {
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
+
+                ulong peasantRoleID = ConfigManager.GetUlongProperty(PropertyItem.Role_Peasant);
+                var roleToApply = Context.Guild.GetRole(peasantRoleID);
+                var rolesToRemove = user.Roles.Where(x => x.IsEveryone == false);
+
+                
+                var embed = new EmbedBuilder();
+             
+                embed.WithTitle($"{user.Username} has been stripped of their lands and titles, and banished to the gate {DiscordContextSeymour.GetEmoteReee()}");
+                embed.WithColor(new Color(255, 0, 0));
+                await Context.Channel.SendMessageAsync("", false, embed.Build());
+
+                await user.RemoveRolesAsync(rolesToRemove);
+                await user.AddRoleAsync(roleToApply);   
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
+        [Command("exile")]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        [DevOrAdmin]
+        private async Task ExileUserAsync(ulong userID)
+        {
+            try
+            {
+                SocketGuildUser user = Context.Guild.GetUser(userID);
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
+
+                ulong peasantRoleID = ConfigManager.GetUlongProperty(PropertyItem.Role_Peasant);
+                var roleToApply = Context.Guild.GetRole(peasantRoleID);
+                var rolesToRemove = user.Roles.Where(x => x.IsEveryone == false);
+
+
+                var embed = new EmbedBuilder();
+
+                embed.WithTitle($"{user.Username} has been stripped of their lands and titles, and banished to the gate {DiscordContextSeymour.GetEmoteReee()}");
+                embed.WithColor(new Color(255, 0, 0));
+                await Context.Channel.SendMessageAsync("", false, embed.Build());
+
+                await user.RemoveRolesAsync(rolesToRemove);
+                await user.AddRoleAsync(roleToApply);
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
     }
 }

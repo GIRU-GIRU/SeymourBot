@@ -25,9 +25,9 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             {
                 var chnl = Context.Channel as ITextChannel;
                 var permOverride = new OverwritePermissions(sendMessages: PermValue.Deny);
-                await chnl.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, permOverride);
 
                 await Context.Channel.SendMessageAsync($"This channel is now silenced. {DiscordContextSeymour.GetEmoteReee()}");
+                await chnl.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, permOverride);              
             }
             catch (Exception ex)
             {

@@ -22,6 +22,33 @@ namespace SeymourBot.DataAccess.StorageManager
 {
     static class StorageManager
     {
+        public static async Task<bool> DeleteInfoCommandAsync(string name)
+        {
+            try
+            {
+                using (InfoCommandContext db = new InfoCommandContext())
+                {
+                    var cmd = await db.InfoCommandTable.Where(x => x.CommandName.ToLower() == name).FirstOrDefaultAsync();
+
+                    if (cmd != null)
+                    {
+                        db.InfoCommandTable.Remove(cmd);
+                        await db.SaveChangesAsync();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+
+        }
+
         public static async Task<bool> StoreInfoCommandAsync(Command command)
         {
             try
@@ -71,8 +98,14 @@ namespace SeymourBot.DataAccess.StorageManager
                                                         x.CommandName.ToLower() == command.CommandName.ToLower())
                                                            .FirstOrDefaultAsync();
 
-
-                    return result.CommandName;
+                    if (result != null)
+                    {
+                        return result.CommandContent;
+                    }
+                    else
+                    {
+                        return string.Empty;
+                    }            
                 }
             }
             catch (Exception ex)
@@ -213,11 +246,11 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (var db = new UserContext())
                 {
-                    var activeDisciplinaries = db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == userID);
+                    var activeDisciplinaries = await db.UserDisciplinaryEventStorageTable.AnyAsync(x => x.UserID == userID);
 
-                    if (activeDisciplinaries != null)
+                    if (activeDisciplinaries)
                     {
-                        var itemsToRemove = await activeDisciplinaries.ToListAsync();
+                        var itemsToRemove = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == userID).ToListAsync();
 
                         db.RemoveRange(itemsToRemove);
                         await db.SaveChangesAsync();

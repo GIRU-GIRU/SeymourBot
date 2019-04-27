@@ -13,10 +13,11 @@ using Toolbox.Resources;
 
 namespace SeymourBot.Modules
 {
-    public class InfoCommands : ModuleBase<SocketCommandContext>
+    public class CustomCommands : ModuleBase<SocketCommandContext>
     {
 
-        [Command("addinfo")]
+        [Command("addcommand")]
+        [Alias("addcmd")]
         [DevOrAdmin]
         private async Task StoreInfoCommandTest([Remainder]string UserInput)
         {
@@ -42,10 +43,34 @@ namespace SeymourBot.Modules
             {
                 throw ex;
             }
-
         }
 
-        [Command("infolist")]
+        [Command("deletecommand")]
+        [Alias("delcommand", "delcmd")]
+        [DevOrAdmin]
+        private async Task DeleteInfoCommand([Remainder]string UserInput)
+        {
+            try
+            {
+                bool existing = await StorageManager.DeleteInfoCommandAsync(UserInput.ToLower());
+
+                if (existing)
+                {
+                    await Context.Channel.SendMessageAsync($"Deleted \"{UserInput}\" {DiscordContextSeymour.GetEmoteAyySeymour()}");
+                }
+                else
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to find \"{UserInput}\" {DiscordContextSeymour.GetEmoteAyySeymour()}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [Command("commandlist")]
+        [Alias("cmdlist")]
         [DevOrAdmin]
         private async Task ListInfoCommandsTest()
         {
@@ -68,7 +93,7 @@ namespace SeymourBot.Modules
         }
 
         [Command("c")]
-        [Alias("i", "info")]
+        [Alias("command")]
         [Ratelimit(5, 10, Measure.Minutes)]
         private async Task PostInfoCommand(string cmdName)
         {
@@ -83,7 +108,15 @@ namespace SeymourBot.Modules
                 if (!command.Error)
                 {
                     string commandContent = await StorageManager.GetInfoCommandAsync(command);
-                    await Context.Channel.SendMessageAsync(commandContent);
+                    if (!string.IsNullOrEmpty(commandContent))
+                    {
+                        await Context.Channel.SendMessageAsync(commandContent);
+                    }
+                    else
+                    {
+                        await Context.Channel.SendMessageAsync("Unable to find that command");
+                    }
+                    
                 }
             }
             catch (Exception ex)

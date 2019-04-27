@@ -45,7 +45,7 @@ namespace SeymourBot.AutoModeration
                         {
                             reason = element.Dialog;
                         }
-                        await context.Channel.SendMessageAsync(context.User.Mention + reason);
+                        await context.Channel.SendMessageAsync(context.User.Mention + ", " + reason);
                         await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : " + reason, context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
                         await CheckForWarnThreshold(context.Message.Author as SocketGuildUser, context, await StorageManager.GetRecentWarningsAsync(context.Message.Author.Id));
                     }
@@ -64,7 +64,7 @@ namespace SeymourBot.AutoModeration
                     {
                         reason = element.Dialog;
                     }
-                    await context.Channel.SendMessageAsync(context.User.Mention + reason);
+                    await context.Channel.SendMessageAsync(context.User.Mention + ", " + reason);
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : " + reason, context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
                     await CheckForWarnThreshold(context.Message.Author as SocketGuildUser, context, await StorageManager.GetRecentWarningsAsync(context.Message.Author.Id));
 
