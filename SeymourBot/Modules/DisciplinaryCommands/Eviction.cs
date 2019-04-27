@@ -27,7 +27,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 string kickTargetName = user.Username;
-                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser))
                 {
                     await user.BanAsync(reason: reason);
                 }
@@ -70,14 +70,14 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                SocketGuildUser user = Context.Guild.GetUser(userID);
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
                 string kickTargetName = user.Username;
-                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser))
                 {
                     await user.BanAsync(reason: reason);
                 }
@@ -121,7 +121,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 string kickTargetName = user.Username;
-                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser))
                 {
                     await user.BanAsync(reason: reason);
                 }
@@ -161,14 +161,14 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                SocketGuildUser user = Context.Guild.GetUser(userID);
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
                 string kickTargetName = user.Username;
-                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser))
                 {
                     await user.BanAsync(reason: reason);
                 }
@@ -211,7 +211,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 string kickTargetName = user.Username;
-                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser))
                 {
                     await user.BanAsync(7, reason);
                 }
@@ -254,14 +254,14 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                SocketGuildUser user = Context.Guild.GetUser(userID);
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
                 string kickTargetName = user.Username;
-                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser))
                 {
                     await user.BanAsync(7, reason);
                 }
@@ -303,7 +303,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                SocketGuildUser user = Context.Guild.GetUser(userID);
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
@@ -311,7 +311,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 }
 
                 string kickTargetName = user.Username;
-                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser))
                 {
                     await user.BanAsync(7, reason);
                 }
@@ -352,7 +352,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 string kickTargetName = user.Username;
-                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser))
                 {
                     await user.BanAsync(7, reason);
                 }
@@ -392,7 +392,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             try
             {
                 string kickTargetName = user.Username;
-                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser))
                 {
                     await user.KickAsync();
                 }
@@ -430,7 +430,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                SocketGuildUser user = Context.Guild.GetUser(userID);
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
@@ -438,7 +438,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 }
 
                 string kickTargetName = user.Username;
-                if (!await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser))
+                if (!await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser))
                 {
                     await user.KickAsync();
                 }
@@ -542,10 +542,6 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 await Context.Channel.SendMessageAsync(bannedUserIDs[i].ToString());
 
             }
-
-
-
-
         }
 
 

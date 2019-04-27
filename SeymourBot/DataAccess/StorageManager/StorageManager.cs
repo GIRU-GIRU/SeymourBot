@@ -207,6 +207,36 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
+        public static async Task<bool> RemoveActiveDisciplinaries(ulong userID)
+        {
+            try
+            {
+                using (var db = new UserContext())
+                {
+                    var activeDisciplinaries = db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == userID);
+
+                    if (activeDisciplinaries != null)
+                    {
+                        var itemsToRemove = await activeDisciplinaries.ToListAsync();
+
+                        db.RemoveRange(itemsToRemove);
+                        await db.SaveChangesAsync();
+
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;//todo
+            }
+        }
+
         public static async Task RemoveDisciplinaryEventAsync(ulong userID, DisciplinaryEventEnum type)
         {
             try

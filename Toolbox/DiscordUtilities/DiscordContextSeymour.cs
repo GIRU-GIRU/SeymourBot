@@ -101,8 +101,8 @@ namespace Toolbox.DiscordUtilities
             {
                 var userRoles = MordhauGuild.Users.Where(x => x.Id == userId).FirstOrDefault().Roles;
 
-                if (userRoles.Any(x => x.Name.ToLower() == MordhauRoleEnum.Developer.ToString().ToLower() ||
-                userRoles.Any(y => y.Name.ToLower() == MordhauRoleEnum.Moderator.ToString().ToLower())))
+                if (userRoles.Any(x => x.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Developer) ||
+                userRoles.Any(y => y.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Moderator))))
                 {
                     return true;
                 }
@@ -116,12 +116,12 @@ namespace Toolbox.DiscordUtilities
             }
         }
 
-        public static async Task<bool> IsUserDevOrAdmin(SocketGuildUser user)
+        public static async Task<bool> IsUserDevOrAdminAsync(SocketGuildUser user)
         {
             try
             {
-                if (user.Roles.Any(x => x.Name.ToLower() == MordhauRoleEnum.Developer.ToString().ToLower() ||
-                user.Roles.Any(y => y.Name.ToLower() == MordhauRoleEnum.Moderator.ToString().ToLower())))
+                 if (user.Roles.Any(x => x.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Developer) ||
+                 user.Roles.Any(y => y.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Moderator))))
                 {
                     return true;
                 }

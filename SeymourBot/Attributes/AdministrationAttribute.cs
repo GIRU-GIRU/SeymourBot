@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Toolbox.Config;
 using Toolbox.DiscordUtilities;
 
 namespace SeymourBot.Attributes
@@ -17,7 +18,10 @@ namespace SeymourBot.Attributes
 
             var user = context.Message.Author as SocketGuildUser;
 
-            if (user.Roles.Where(x => x.Name.ToLower() == MordhauRoleEnum.Developer.ToString().ToLower()).Any())
+            ulong modRoleID = ConfigManager.GetUlongProperty(PropertyItem.Role_Moderator);
+            ulong devRoleID = ConfigManager.GetUlongProperty(PropertyItem.Role_Developer);
+
+            if (user.Roles.Any(x => x.Id == devRoleID || x.Id == modRoleID))
                 return PreconditionResult.FromSuccess();
             else
                 return PreconditionResult.FromError("Unauthorized");

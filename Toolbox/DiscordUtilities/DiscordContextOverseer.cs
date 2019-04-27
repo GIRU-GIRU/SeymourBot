@@ -58,6 +58,19 @@ namespace Toolbox.DiscordUtilities
             }
         }
 
+        public static ITextChannel GetChannel(ulong id)
+        {
+            try
+            {
+               return MordhauGuild.GetChannel(id) as ITextChannel;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;//todo
+            }
+        }
+
         public static IRole GrabRole(MordhauRoleEnum role)
         {
             try

@@ -27,7 +27,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
 
                 var mutedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted);
                 await user.AddRoleAsync(mutedRole);
@@ -66,14 +66,14 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                SocketGuildUser user = Context.Guild.GetUser(userID);
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 
-                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
 
                 var mutedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted);
                 await user.AddRoleAsync(mutedRole);
@@ -111,7 +111,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
 
                 var mutedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted);
                 await user.AddRoleAsync(mutedRole);
@@ -148,14 +148,14 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                SocketGuildUser user = Context.Guild.GetUser(userID);
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 
-                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
 
                 var mutedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted);
                 await user.AddRoleAsync(mutedRole);
@@ -193,7 +193,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
 
                 var limitedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.LimitedUser);
                 await user.AddRoleAsync(limitedRole);
@@ -232,14 +232,14 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                SocketGuildUser user = Context.Guild.GetUser(userID);
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 
-                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
 
                 var limitedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.LimitedUser);
                 await user.AddRoleAsync(limitedRole);
@@ -277,7 +277,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
 
                 var limitedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.LimitedUser);
                 await user.AddRoleAsync(limitedRole);
@@ -314,14 +314,14 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                SocketGuildUser user = Context.Guild.GetUser(userID);
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
 
-                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
 
                 var limitedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.LimitedUser);
                 await user.AddRoleAsync(limitedRole);
@@ -358,7 +358,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                SocketGuildUser user = Context.Guild.GetUser(userID);
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
@@ -419,7 +419,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                SocketGuildUser user = Context.Guild.GetUser(userID);
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
@@ -447,7 +447,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         }
 
         [Command("unmute")]
-        [RequireBotPermission(GuildPermission.BanMembers)]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
         [DevOrAdmin]
         private async Task UnmuteUserAsync(SocketGuildUser user)
         {

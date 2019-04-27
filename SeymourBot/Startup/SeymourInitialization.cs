@@ -96,7 +96,10 @@ namespace SeymourBot.Startup
         {
             if (!string.IsNullOrEmpty(result.ErrorReason) && result.ErrorReason != "Unauthorized" && result.ErrorReason != "You are currently in Timeout.")
             {
-                await DiscordContextSeymour.LogErrorAsync(result.ErrorReason, context.Message.Content);
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(context.Message.Author as SocketGuildUser))
+                {
+                    await DiscordContextSeymour.LogErrorAsync(result.ErrorReason, context.Message.Content);
+                }               
             }
         }
     }

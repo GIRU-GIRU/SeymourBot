@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Toolbox.Config;
 using Toolbox.DiscordUtilities;
+using Toolbox.Exceptions;
 using Toolbox.Resources;
 
 namespace SeymourBot.AutoModeration
@@ -28,34 +29,36 @@ namespace SeymourBot.AutoModeration
 
         public static async Task FilterMessage(SocketCommandContext context)
         {
-            foreach (ModeratedElement element in bannedRegex)
+            if (bannedRegex.Count > 0)
             {
-                if (new Regex(element.Pattern).Match(context.Message.Content).Success)
+                foreach (ModeratedElement element in bannedRegex)
                 {
-                    await context.Message.DeleteAsync();
-                    string reason;
-                    if (element.Dialog.Length == 0)
+                    if (new Regex(element.Pattern).Match(context.Message.Content).Success)
                     {
-                        reason = BotDialogs.DefaultRegexFilterMessage;
+                        await context.Message.DeleteAsync();
+                        string reason;
+                        if (element.Dialog.Length == 0)
+                        {
+                            reason = BotDialogs.DefaultRegexFilterMessage;
+                        }
+                        else
+                        {
+                            reason = element.Dialog;
+                        }
+                        await context.Channel.SendMessageAsync(context.User.Mention + reason);
+                        await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : " + reason, context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
+                        await CheckForWarnThreshold(context.Message.Author as SocketGuildUser, context, await StorageManager.GetRecentWarningsAsync(context.Message.Author.Id));
                     }
-                    else
-                    {
-                        reason = element.Dialog;
-                    }
-                    await context.Channel.SendMessageAsync(context.User.Mention + reason);
-                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : " + reason, context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
-                    await CheckForWarnThreshold(context.Message.Author as SocketGuildUser, context, await StorageManager.GetRecentWarningsAsync(context.Message.Author.Id));
                 }
             }
             foreach (ModeratedElement element in bannedWords)
             {
                 if (context.Message.Content.ToLower().Contains(element.Pattern.Trim()))
                 {
-                    await context.Message.DeleteAsync();
                     string reason;
                     if (element.Dialog.Length == 0)
                     {
-                        reason = BotDialogs.DefaultContainFilterMessage;
+                        reason = "Do not use such disgusting language in my presence";
                     }
                     else
                     {
@@ -64,10 +67,19 @@ namespace SeymourBot.AutoModeration
                     await context.Channel.SendMessageAsync(context.User.Mention + reason);
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : " + reason, context.Message.Author.Id, context.Message.Author.Username, DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
                     await CheckForWarnThreshold(context.Message.Author as SocketGuildUser, context, await StorageManager.GetRecentWarningsAsync(context.Message.Author.Id));
+
+
+                    try
+                    {
+                        await context.Message.DeleteAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        await ExceptionManager.LogExceptionAsync(ex.Message);
+                    }
                 }
             }
         }
-
 
         public static async Task<bool> AddBannedWordAsync(ModeratedElement newBannedWord)
         {
@@ -102,24 +114,24 @@ namespace SeymourBot.AutoModeration
                     await DiscordContextSeymour.AddRole(DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted), target.Id);
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
                                           target.Id,
-                                          $"User has been warned {warnCount} times, exceeding the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn thresold",
+                                          $"User has been warned {warnCount} times, exceeding the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold",
                                           context.Message.Author.Id,
                                           context.Message.Author.Username,
                                           DateTime.UtcNow.AddMinutes(30));
 
-                    await context.Channel.SendMessageAsync($"Silence. {target.Mention}");
+                    await DiscordContextOverseer.GetChannel(context.Channel.Id).SendMessageAsync($"Silence. {target.Mention}");
                 }
                 else if (warnCount > (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) / 2)) //more than half the warn thresold
                 {
                     await DiscordContextSeymour.AddRole(DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted), target.Id);
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
                                           target.Id,
-                                          $"User has been warned {warnCount} times, exceeding half of the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn thresold",
+                                          $"User has been warned {warnCount} times, exceeding half of the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold",
                                           context.Message.Author.Id,
                                           context.Message.Author.Username,
                                           DateTime.UtcNow.AddDays(1));
 
-                    await context.Channel.SendMessageAsync($"{target.Mention}, enough.");
+                     await DiscordContextOverseer.GetChannel(context.Channel.Id).SendMessageAsync($"{target.Mention}, enough.");
                 }
             }
             catch (Exception ex)

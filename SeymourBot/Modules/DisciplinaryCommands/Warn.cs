@@ -24,7 +24,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
 
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
                 {
@@ -68,13 +68,13 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         {
             try
             {
-                SocketGuildUser user = await Context.Channel.GetUserAsync(userID) as SocketGuildUser;
+                SocketGuildUser user = Context.Guild.GetUser(userID);
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
                     return;
                 }
-                if (await DiscordContextSeymour.IsUserDevOrAdmin(user as SocketGuildUser)) return;
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
 
                 UserDisciplinaryEventStorage obj = new UserDisciplinaryEventStorage()
                 {

@@ -63,10 +63,13 @@ namespace Toolbox.Exceptions
         {
             Exception result = ex;
 
-            while (result.InnerException != null)
+            for (int i = 0; i < 10; i++)
             {
-                result = result.InnerException;
-            }
+                if (result.InnerException != null)
+                {
+                    result = result.InnerException;
+                }
+            }          
 
             return result;
 
