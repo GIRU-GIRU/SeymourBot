@@ -20,7 +20,7 @@ namespace SeymourBot.Modules.CommandUtils
             {
                 string[] splitInput = userInput.Split(' ');
                 CommandName = splitInput[0];
-                CommandContent = String.Join(' ', splitInput.Skip(0));
+                CommandContent = String.Join(' ', splitInput.Skip(1));
                 CommandParameters = CommandContent.Split(' ');
             }
             catch (Exception e)
