@@ -349,6 +349,30 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
+        public static List<string> GetFilters()
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                using (var db = new FilterContext())
+                {
+                    foreach (var element in db.filterTables)
+                    {
+                        if (element.FilterType != FilterTypeEnum.RegexFilter)
+                        {
+                            result.Add(element.FilterPattern);
+                        }
+                    }
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.StorageException, ex);
+                throw;
+            }
+        }
+
         public static async Task<List<UserDisciplinaryEventStorage>> GetTimedEvents()
         {
             List<UserDisciplinaryEventStorage> result = new List<UserDisciplinaryEventStorage>();
