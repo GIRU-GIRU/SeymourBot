@@ -1,6 +1,8 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using SeymourBot.Attributes;
 using SeymourBot.AutoModeration;
+using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
 using System;
 using System.Collections.Generic;
@@ -136,6 +138,27 @@ namespace SeymourBot.Modules.ConfigurationCommands
                 throw ex;
                 //todo
             }
+        }
+
+        [Command("filterlist")]
+        [DevOrAdmin]
+        private async Task ListFilterCommandsAsync()
+        {
+            try
+            {
+                List<string> filters = StorageManager.GetFilters();
+                var embed = new EmbedBuilder();
+                embed.WithTitle("Currently Active Filters");
+                
+                embed.AddField("Banned word", string.Join("\n", filters), false);
+                
+                await Context.Channel.SendMessageAsync("", false, embed.Build());
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.InfoCommandException, ex);
+            }
+
         }
     }
 }
