@@ -8,6 +8,8 @@ using SeymourBot.Storage.User.Tables;
 using System;
 using System.Threading.Tasks;
 using Toolbox.DiscordUtilities;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 using Toolbox.Utils;
 
 namespace SeymourBot.Modules.DisciplinaryCommands
@@ -42,7 +44,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.BlacklistException, ex);
             }
         }
 
@@ -80,7 +82,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.BlacklistException, ex);
             }
         }
 
@@ -117,7 +119,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.BlacklistException, ex);
             }
         }
 
@@ -148,7 +150,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.BlacklistException, ex);
             }
         }
 
@@ -172,7 +174,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.UnblacklistException, ex);
             }
         }
 
@@ -203,7 +205,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.UnblacklistException, ex);
             }
         }
     }

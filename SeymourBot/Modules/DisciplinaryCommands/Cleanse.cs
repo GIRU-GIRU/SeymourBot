@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Toolbox.DiscordUtilities;
 using Toolbox.Exceptions;
+using Toolbox.Resources;
 
 namespace SeymourBot.Modules.DisciplinaryCommands
 {
@@ -36,7 +37,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (System.Exception ex)
             {
-                ExceptionManager.HandleException("", ex);
+                ExceptionManager.HandleException(ErrMessages.CleanseException, ex);
             }
         }
 
@@ -58,7 +59,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (System.Exception ex)
             {
-                ExceptionManager.HandleException("", ex);
+                ExceptionManager.HandleException(ErrMessages.CleanseException, ex);
             }
         }
 
@@ -89,7 +90,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (System.Exception ex)
             {
-                ExceptionManager.HandleException("", ex);
+                ExceptionManager.HandleException(ErrMessages.CleanseException, ex);
             }
         }
 
@@ -123,7 +124,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (System.Exception ex)
             {
-                ExceptionManager.HandleException("", ex);
+                ExceptionManager.HandleException(ErrMessages.CleanseException, ex);
             }
         }
     }

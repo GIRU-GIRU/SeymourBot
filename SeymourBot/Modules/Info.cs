@@ -6,6 +6,8 @@ using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
 using System;
 using System.Threading.Tasks;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 
 namespace SeymourBot.Modules
 {
@@ -39,7 +41,7 @@ namespace SeymourBot.Modules
             }
             catch (Exception ex)
             {
-                throw ex; // todo
+                ExceptionManager.HandleException(ErrMessages.UserinfoException, ex);
             }
         }
 
@@ -78,7 +80,7 @@ namespace SeymourBot.Modules
             }
             catch (Exception ex)
             {
-                throw ex; // todo
+                ExceptionManager.HandleException(ErrMessages.UserinfoException, ex);
             }
         }
 
@@ -111,7 +113,7 @@ namespace SeymourBot.Modules
             }
             catch (Exception ex)
             {
-                throw ex; // todo
+                ExceptionManager.HandleException(ErrMessages.UserinfoException, ex);
             }
         }
 
@@ -138,8 +140,7 @@ namespace SeymourBot.Modules
             }
             catch (Exception ex)
             {
-
-                throw ex;// todo
+                ExceptionManager.HandleException(ErrMessages.UserinfoException, ex);
             }
         }
 
@@ -166,8 +167,7 @@ namespace SeymourBot.Modules
             }
             catch (Exception ex)
             {
-
-                throw ex;// todo
+                ExceptionManager.HandleException(ErrMessages.DisciplinariesException, ex);
             }
         }
     }

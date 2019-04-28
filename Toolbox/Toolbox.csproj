@@ -31,7 +31,7 @@
   <ItemGroup>
     <EmbeddedResource Update="Resources\BotDialogs.resx">
       <LastGenOutput>BotDialogs.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\ErrMessages.resx">
       <LastGenOutput>ErrMessages.Designer.cs</LastGenOutput>

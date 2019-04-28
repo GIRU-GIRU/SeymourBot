@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Toolbox.DiscordUtilities;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 using Toolbox.Utils;
 
 namespace SeymourBot.Modules.DisciplinaryCommands
@@ -58,7 +60,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.BanException, ex);
             }
         }
 
@@ -108,7 +110,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.BanException, ex);
             }
         }
 
@@ -150,7 +152,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.BanException, ex);
             }
         }
 
@@ -197,7 +199,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.BanException, ex);
             }
         }
 
@@ -242,7 +244,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.BancleanseException, ex);
             }
         }
 
@@ -292,7 +294,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.BancleanseException, ex);
             }
         }
 
@@ -339,7 +341,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.BancleanseException, ex);
             }
         }
 
@@ -380,7 +382,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.BancleanseException, ex);
             }
         }
 
@@ -419,7 +421,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.KickException, ex);
             }
         }
 
@@ -465,7 +467,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.KickException, ex);
             }
 
         }
@@ -475,73 +477,89 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         [DevOrAdmin]
         private async Task SearchBannedUsersAsync([Remainder]string input = null)
         {
-            if (input == null) return;
-
-            var bans = await Context.Guild.GetBansAsync();
-            List<Discord.Rest.RestBan> matchedBans = new List<Discord.Rest.RestBan>();
-            foreach (var ban in bans)
+            try
             {
-                if (ban.User.Username.ToLower().Contains(input.ToLower()))
+                if (input == null) return;
+
+                var bans = await Context.Guild.GetBansAsync();
+                List<Discord.Rest.RestBan> matchedBans = new List<Discord.Rest.RestBan>();
+                foreach (var ban in bans)
                 {
-                    matchedBans.Add(ban);
+                    if (ban.User.Username.ToLower().Contains(input.ToLower()))
+                    {
+                        matchedBans.Add(ban);
+                    }
                 }
-            }
 
-            if (bans.Count == 0 || matchedBans.Count == 0)
+                if (bans.Count == 0 || matchedBans.Count == 0)
+                {
+                    await Context.Channel.SendMessageAsync("Unable to find a banned user of that name");
+                    return;
+                }
+
+                var bannedUserNames = string.Join("\n", matchedBans.Select(x => x.User.Username).ToArray());
+                var bannedUserReasons = matchedBans.Select(x => x.Reason).ToArray();
+                string listOfReasons = string.Empty;
+                if (bannedUserReasons.Count() > 0)
+                {
+                    listOfReasons = string.Join("\n", bannedUserReasons);
+                }
+
+                var embed = new EmbedBuilder();
+                embed.WithTitle($"Banned user names matching \"{input}\" ");
+                embed.AddField("Username", bannedUserNames, true);
+                embed.AddField("User ID: ", string.Join("\n", matchedBans.Select(x => x.User.Id)), true);
+                if (!string.IsNullOrEmpty(listOfReasons)) embed.AddField("Reason for ban: ", listOfReasons, true);
+                await Context.Channel.SendMessageAsync("", false, embed.Build());
+
+            }
+            catch (Exception ex)
             {
-                await Context.Channel.SendMessageAsync("Unable to find a banned user of that name");
-                return;
+                ExceptionManager.HandleException(ErrMessages.SearchbanException, ex);
             }
-
-            var bannedUserNames = string.Join("\n", matchedBans.Select(x => x.User.Username).ToArray());
-            var bannedUserReasons = matchedBans.Select(x => x.Reason).ToArray();
-            string listOfReasons = string.Empty;
-            if (bannedUserReasons.Count() > 0)
-            {
-                listOfReasons = string.Join("\n", bannedUserReasons);
-            }
-
-            var embed = new EmbedBuilder();
-            embed.WithTitle($"Banned user names matching \"{input}\" ");
-            embed.AddField("Username", bannedUserNames, true);
-            embed.AddField("User ID: ", string.Join("\n", matchedBans.Select(x => x.User.Id)), true);
-            if (!string.IsNullOrEmpty(listOfReasons)) embed.AddField("Reason for ban: ", listOfReasons, true);            
-            await Context.Channel.SendMessageAsync("", false, embed.Build());
         }
+            
 
         [Command("returnban")]
         [DevOrAdmin]
         private async Task ReturnBannedUserIDAsync([Remainder]string input = null)
         {
-            if (input == null) return;
-
-            var bans = await Context.Guild.GetBansAsync();
-            List<Discord.Rest.RestBan> matchedBans = new List<Discord.Rest.RestBan>();
-            foreach (var ban in bans)
+            try
             {
-                if (ban.User.Username.ToLower().Contains(input.ToLower()))
+                if (input == null) return;
+
+                var bans = await Context.Guild.GetBansAsync();
+                List<Discord.Rest.RestBan> matchedBans = new List<Discord.Rest.RestBan>();
+                foreach (var ban in bans)
                 {
-                    matchedBans.Add(ban);
+                    if (ban.User.Username.ToLower().Contains(input.ToLower()))
+                    {
+                        matchedBans.Add(ban);
+                    }
+                }
+
+                if (bans.Count == 0 || matchedBans.Count == 0)
+                {
+                    await Context.Channel.SendMessageAsync("Unable to find a banned user of that name");
+                    return;
+                }
+
+                var bannedUserNames = matchedBans.Select(x => x.User.Username + "#" + x.User.Discriminator).ToArray();
+                var bannedUserIDs = matchedBans.Select(x => x.User.Id).ToArray();
+
+                int count = bannedUserNames.Count() > bannedUserIDs.Count() ? bannedUserIDs.Count() : bannedUserNames.Count();
+
+                for (int i = 0; i < count; i++)
+                {
+                    await Context.Channel.SendMessageAsync(bannedUserNames[i]);
+                    await Context.Channel.SendMessageAsync(bannedUserIDs[i].ToString());
+
                 }
             }
-
-            if (bans.Count == 0 || matchedBans.Count == 0)
+            catch (Exception ex)
             {
-                await Context.Channel.SendMessageAsync("Unable to find a banned user of that name");
-                return;
-            }
-
-            var bannedUserNames = matchedBans.Select(x => x.User.Username + "#" + x.User.Discriminator).ToArray();
-            var bannedUserIDs = matchedBans.Select(x => x.User.Id).ToArray();
-
-            int count = bannedUserNames.Count() > bannedUserIDs.Count() ? bannedUserIDs.Count() : bannedUserNames.Count();
-
-            for (int i = 0; i < count; i++)
-            {
-                await Context.Channel.SendMessageAsync(bannedUserNames[i]);
-                await Context.Channel.SendMessageAsync(bannedUserIDs[i].ToString());
-
-            }
+                ExceptionManager.HandleException(ErrMessages.ReturnbanException, ex);
+            }            
         }
 
 
@@ -580,7 +598,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.UnbanException, ex);
             }
         }
     }

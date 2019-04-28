@@ -169,7 +169,8 @@ namespace OverseerBot.UserMessageLogging
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException(, ex);
+                ExceptionManager.HandleException("SearchForOtherEmbedTypes error", ex);
+                throw;
             }
         }
 

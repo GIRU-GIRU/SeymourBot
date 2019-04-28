@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Toolbox.Config;
 using Toolbox.DiscordUtilities;
 using Toolbox.Exceptions;
+using Toolbox.Resources;
 using Toolbox.Utils;
 
 namespace SeymourBot.Modules.DisciplinaryCommands
@@ -54,7 +55,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.MuteException, ex); 
             }
         }
 
@@ -100,7 +101,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.MuteException, ex);
             }
         }
 
@@ -137,7 +138,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.MuteException, ex);
             }
         }
 
@@ -181,7 +182,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.MuteException, ex);
             }
         }
 
@@ -220,7 +221,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.LimitException, ex);
             }
         }
 
@@ -266,7 +267,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.LimitException, ex);
             }
         }
 
@@ -303,7 +304,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.LimitException, ex);
             }
         }
 
@@ -347,7 +348,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException("", ex); //todo
+                ExceptionManager.HandleException(ErrMessages.LimitException, ex);
             }
         }
 
@@ -381,7 +382,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.UnlimitException, ex);
             }
         }
 
@@ -442,7 +443,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.UnmuteException, ex);
             }
         }
 
@@ -469,7 +470,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.UnmuteException, ex);
             }
         }
 
@@ -499,7 +500,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.ExileException, ex);
             }
         }
 
@@ -529,7 +530,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.ExileException, ex);
             }
         }
     }

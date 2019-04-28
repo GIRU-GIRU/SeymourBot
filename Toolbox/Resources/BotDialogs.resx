@@ -130,6 +130,6 @@
     <value>has recieved a warning</value>
   </data>
   <data name="WarnMessageReason" xml:space="preserve">
-    <value>🚫 | has recieved a warning for | 🚫||/| warnings</value>
+    <value>has recieved a warning</value>
   </data>
 </root>

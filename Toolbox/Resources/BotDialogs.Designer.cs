@@ -29,7 +29,7 @@ namespace Toolbox.Resources {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public BotDialogs() {
+        internal BotDialogs() {
         }
         
         /// <summary>
@@ -95,9 +95,9 @@ namespace Toolbox.Resources {
                 return ResourceManager.GetString("WarnMessageNoReason", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to 🚫 | has recieved a warning for | 🚫||/| warnings.
+        ///   Looks up a localized string similar to has recieved a warning.
         /// </summary>
         public static string WarnMessageReason {
             get {

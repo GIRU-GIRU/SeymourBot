@@ -1,18 +1,12 @@
 ﻿using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
 using SeymourBot.Attributes;
-using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
-using SeymourBot.Storage;
-using SeymourBot.Storage.User;
-using SeymourBot.TimedEvent;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Toolbox.DiscordUtilities;
-using Toolbox.Utils;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 namespace SeymourBot.Modules.DisciplinaryCommands
 {
     public class Raidprotect : ModuleBase<SocketCommandContext>
@@ -27,11 +21,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 var permOverride = new OverwritePermissions(sendMessages: PermValue.Deny);
 
                 await Context.Channel.SendMessageAsync($"This channel is now silenced. {DiscordContextSeymour.GetEmoteReee()}");
-                await chnl.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, permOverride);              
+                await chnl.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, permOverride);
             }
             catch (Exception ex)
             {
-                throw ex; // todo
+                ExceptionManager.HandleException(ErrMessages.RaidprotectException, ex);
             }
         }
 
@@ -49,8 +43,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-
-                throw ex; // todo
+                ExceptionManager.HandleException(ErrMessages.RaidprotectException, ex);
             }
         }
 

@@ -45,15 +45,20 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 int warnCount = await StorageManager.GetRecentWarningsAsync(user.Id);
 
+                string maxWarns = ConfigManager.GetProperty(PropertyItem.MaxWarns);
                 if (string.IsNullOrEmpty(reason))
                 {
-                    await Context.Channel.SendMessageAsync($"🚫 {user.Mention} {BotDialogs.WarnMessageNoReason}🚫\n{warnCount}/5 warnings ");
+                    await Context.Channel.SendMessageAsync($"{user.Mention} {BotDialogs.WarnMessageNoReason}🚫\n{warnCount}/{maxWarns} warnings.");
                 }
                 else
                 {
-                    await Context.Channel.SendMessageAsync(ResourceUtils.BuildString(BotDialogs.WarnMessageReason, user.Mention, reason, Environment.NewLine, warnCount.ToString(), ConfigManager.GetProperty(PropertyItem.MaxWarns)));
+                    await Context.Channel.SendMessageAsync($"{user.Mention} {BotDialogs.WarnMessageReason} 🚫\n{warnCount}/{maxWarns} warnings.\n{reason}");
                 }
+
+
                 await AutoModeratorManager.CheckForWarnThreshold(user, Context, warnCount);
+
+
             }
             catch (Exception ex)
             {

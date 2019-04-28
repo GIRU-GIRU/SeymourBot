@@ -8,6 +8,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Toolbox.Config;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 
 namespace SeymourBot.Modules.DisciplinaryCommands
 {
@@ -39,7 +41,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.PardonException, ex);
             }
         }
 
@@ -76,7 +78,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.PardonException, ex);
             }
         }
     }

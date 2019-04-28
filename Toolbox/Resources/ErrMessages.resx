@@ -117,14 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BancleanseException" xml:space="preserve">
+    <value>Error in bancleanse command</value>
+  </data>
+  <data name="BanException" xml:space="preserve">
+    <value>Error in ban command</value>
+  </data>
+  <data name="BlacklistException" xml:space="preserve">
+    <value>Error in blacklist command</value>
+  </data>
+  <data name="CleanseException" xml:space="preserve">
+    <value>Error in cleanse command</value>
+  </data>
   <data name="CommandParsingException" xml:space="preserve">
     <value>Error parsing command</value>
   </data>
   <data name="ConfigManagerException" xml:space="preserve">
     <value>Error in configuration manager</value>
   </data>
+  <data name="CustomCommand" xml:space="preserve">
+    <value>Error in custom command</value>
+  </data>
   <data name="DeletedMessageException" xml:space="preserve">
     <value>Error logging deleted message</value>
+  </data>
+  <data name="DisciplinariesException" xml:space="preserve">
+    <value>Error in disciplinaries command</value>
   </data>
   <data name="DiscordContextException" xml:space="preserve">
     <value>Error in discord context</value>
@@ -132,14 +150,23 @@
   <data name="EditedMessageException" xml:space="preserve">
     <value>Error logging edited message</value>
   </data>
+  <data name="ExileException" xml:space="preserve">
+    <value>Error in exile command</value>
+  </data>
   <data name="FileIOException" xml:space="preserve">
     <value>IO error</value>
   </data>
   <data name="FilterException" xml:space="preserve">
     <value>Error in filter command</value>
   </data>
-  <data name="InfoCommandException" xml:space="preserve">
-    <value>Error in information command</value>
+  <data name="KickException" xml:space="preserve">
+    <value>Error in kick command</value>
+  </data>
+  <data name="LimitException" xml:space="preserve">
+    <value>Error in limit command</value>
+  </data>
+  <data name="MuteException" xml:space="preserve">
+    <value>Error in mute command</value>
   </data>
   <data name="NoConfigException" xml:space="preserve">
     <value>Could not find config file</value>
@@ -147,13 +174,46 @@
   <data name="OverseerException" xml:space="preserve">
     <value>Error in overseer</value>
   </data>
+  <data name="PardonException" xml:space="preserve">
+    <value>Error in pardon command</value>
+  </data>
+  <data name="RaidprotectException" xml:space="preserve">
+    <value>Error in raidprotect command</value>
+  </data>
+  <data name="ReturnbanException" xml:space="preserve">
+    <value>Error in returnban comamnd</value>
+  </data>
+  <data name="SayException" xml:space="preserve">
+    <value>Error in say command</value>
+  </data>
+  <data name="SearchbanException" xml:space="preserve">
+    <value>Error in searchban command</value>
+  </data>
   <data name="SeymourInitializationException" xml:space="preserve">
     <value>Error in seymour initialization</value>
   </data>
   <data name="StorageException" xml:space="preserve">
     <value>Error in storage manager</value>
   </data>
+  <data name="UnbanException" xml:space="preserve">
+    <value>Error in unban command</value>
+  </data>
+  <data name="UnblacklistException" xml:space="preserve">
+    <value>Error in unblacklist command</value>
+  </data>
+  <data name="UnlimitException" xml:space="preserve">
+    <value>Error in unlimit command</value>
+  </data>
+  <data name="UnmuteException" xml:space="preserve">
+    <value>Error in unmute command</value>
+  </data>
+  <data name="UserinfoException" xml:space="preserve">
+    <value>Error in userinfo command</value>
+  </data>
   <data name="WarnException" xml:space="preserve">
     <value>Error in warning command</value>
+  </data>
+  <data name="AutomaticDisciplinaryReapplication" xml:space="preserve">
+    <value>Error automatically re-adding disciplinaries to a rejoining user</value>
   </data>
 </root>

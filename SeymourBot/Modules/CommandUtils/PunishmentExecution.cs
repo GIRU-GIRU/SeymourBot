@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Toolbox.DiscordUtilities;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 
 namespace SeymourBot.Modules.CommandUtils
 {
@@ -23,7 +25,7 @@ namespace SeymourBot.Modules.CommandUtils
             }
             catch (Exception ex)
             {
-                throw ex;//todo
+                ExceptionManager.HandleException(ErrMessages.AutomaticDisciplinaryReapplication, ex);
             }
         }
 
@@ -48,7 +50,7 @@ namespace SeymourBot.Modules.CommandUtils
             }
             catch (Exception ex)
             {
-                throw ex;//todo
+                ExceptionManager.HandleException(ErrMessages.AutomaticDisciplinaryReapplication, ex);
             }
         }
     }

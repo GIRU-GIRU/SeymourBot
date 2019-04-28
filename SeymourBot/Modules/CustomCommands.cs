@@ -41,7 +41,7 @@ namespace SeymourBot.Modules
             }
             catch (Exception ex)
             {
-                throw ex;
+                ExceptionManager.HandleException(ErrMessages.CustomCommand, ex);
             }
         }
 
@@ -65,7 +65,7 @@ namespace SeymourBot.Modules
             }
             catch (Exception ex)
             {
-                throw ex;
+                ExceptionManager.HandleException(ErrMessages.CustomCommand, ex);
             }
         }
 
@@ -79,15 +79,14 @@ namespace SeymourBot.Modules
                 List<string> commands = StorageManager.GetInfoCommands();
                 var embed = new EmbedBuilder();
                 embed.WithTitle("Avaliable Information Commands");
-                foreach (var element in commands)
-                {
-                    embed.AddField("!info", element, true);
-                }
+
+                embed.AddField("Calling names", string.Join("\n", commands), false);
+
                 await Context.Channel.SendMessageAsync("", false, embed.Build());
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException(ErrMessages.InfoCommandException, ex);
+                ExceptionManager.HandleException(ErrMessages.CustomCommand, ex);
             }
 
         }
@@ -116,12 +115,12 @@ namespace SeymourBot.Modules
                     {
                         await Context.Channel.SendMessageAsync("Unable to find that command");
                     }
-                    
+
                 }
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.CustomCommand, ex);
             }
         }
     }
