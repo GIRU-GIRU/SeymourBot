@@ -39,6 +39,18 @@ namespace Toolbox.DiscordUtilities
             return MordhauGuild;
         }
 
+        //public static async void GetUsersREST(ulong userID)
+        //{
+        //    try
+        //    {
+        //      var test = await _restClient.GetGuildUserAsync(MordhauGuild.Id, userID);
+        //        test.
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         public static async Task RemoveRoleAsync(ulong userId, ulong roleId)
         {
