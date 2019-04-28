@@ -144,6 +144,9 @@
   <data name="NoConfigException" xml:space="preserve">
     <value>Could not find config file</value>
   </data>
+  <data name="OverseerException" xml:space="preserve">
+    <value>Error in overseer</value>
+  </data>
   <data name="SeymourInitializationException" xml:space="preserve">
     <value>Error in seymour initialization</value>
   </data>

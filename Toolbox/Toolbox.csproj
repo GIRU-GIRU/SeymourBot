@@ -35,7 +35,7 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\ErrMessages.resx">
       <LastGenOutput>ErrMessages.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
 
