@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Attributes;
 using SeymourBot.AutoModeration;
@@ -68,11 +69,12 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
         [Command("warn")]
         [DevOrAdmin]
-        public async Task WarnUserAsync(ulong userID, [Remainder]string reason = "")
+        public async Task WarnUserAsync(ulong userID, SocketGuildChannel chnl, [Remainder]string reason = "")
         {
             try
             {
                 SocketGuildUser user = Context.Guild.GetUser(userID);
+                var channel = chnl as ITextChannel;
                 if (user == null)
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
@@ -97,16 +99,16 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 await TimedEventManager.CreateEvent(obj, newUser);
 
                 int warnCount = await StorageManager.GetRecentWarningsAsync(user.Id);
-
+                string maxWarns = ConfigManager.GetProperty(PropertyItem.MaxWarns);
                 if (string.IsNullOrEmpty(reason))
                 {
-                    await DiscordContextSeymour.GetMainChannel().SendMessageAsync($"🚫 {user.Mention} {BotDialogs.WarnMessageNoReason}🚫\n{warnCount}/5 warnings ");
+                    await channel.SendMessageAsync($"{user.Mention} {BotDialogs.WarnMessageNoReason}🚫\n{warnCount}/{maxWarns} warnings.");
                 }
                 else
                 {
-                    await DiscordContextSeymour.GetMainChannel().SendMessageAsync(ResourceUtils.BuildString(BotDialogs.WarnMessageReason, user.Mention, reason, Environment.NewLine, warnCount.ToString(), ConfigManager.GetProperty(PropertyItem.MaxWarns)));
+                    await channel.SendMessageAsync($"{user.Mention} {BotDialogs.WarnMessageReason} 🚫\n{warnCount}/{maxWarns} warnings.\n{reason}");
                 }
-                await AutoModeratorManager.CheckForWarnThreshold(user, Context, warnCount);
+                await AutoModeratorManager.CheckForWarnThreshold(user, Context, warnCount, channel);
             }
             catch (Exception ex)
             {

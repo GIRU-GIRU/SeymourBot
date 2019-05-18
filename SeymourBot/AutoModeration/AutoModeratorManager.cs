@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.DataAccess.Storage.Filter;
 using SeymourBot.DataAccess.StorageManager;
@@ -105,7 +106,7 @@ namespace SeymourBot.AutoModeration
         }
 
 
-        public static async Task CheckForWarnThreshold(SocketGuildUser target, SocketCommandContext context, int warnCount)
+        public static async Task CheckForWarnThreshold(SocketGuildUser target, SocketCommandContext context, int warnCount, ITextChannel chnl = null)
         {
             try
             {
@@ -119,7 +120,15 @@ namespace SeymourBot.AutoModeration
                                           context.Message.Author.Username,
                                           DateTime.UtcNow.AddMinutes(30));
 
-                    await DiscordContextOverseer.GetChannel(context.Channel.Id).SendMessageAsync($"Silence. {target.Mention}");
+                    if (chnl == null)
+                    {
+                        await DiscordContextOverseer.GetChannel(context.Channel.Id).SendMessageAsync($"Silence. {target.Mention}");
+                    }
+                    else
+                    {
+                      await DiscordContextOverseer.GetChannel(chnl.Id).SendMessageAsync($"Silence. {target.Mention}");
+                    }
+
                 }
                 else if (warnCount > (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) / 2)) //more than half the warn thresold
                 {
@@ -131,7 +140,17 @@ namespace SeymourBot.AutoModeration
                                           context.Message.Author.Username,
                                           DateTime.UtcNow.AddDays(1));
 
-                     await DiscordContextOverseer.GetChannel(context.Channel.Id).SendMessageAsync($"{target.Mention}, enough.");
+
+                    if (chnl == null) //channel specified check
+                    {
+                        await DiscordContextOverseer.GetChannel(context.Channel.Id).SendMessageAsync($"{target.Mention}, enough.");
+                    }
+                    else
+                    {
+                        await DiscordContextOverseer.GetChannel(chnl.Id).SendMessageAsync($"{target.Mention}, enough.");
+                    }
+
+
                 }
             }
             catch (Exception ex)

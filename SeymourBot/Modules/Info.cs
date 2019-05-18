@@ -5,7 +5,9 @@ using SeymourBot.Attributes;
 using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Toolbox.Config;
 using Toolbox.Exceptions;
 using Toolbox.Resources;
 
@@ -52,7 +54,7 @@ namespace SeymourBot.Modules
         {
             try
             {
-               var user = Context.Guild.GetUser(userID);
+                var user = Context.Guild.GetUser(userID);
 
                 if (user == null)
                 {
@@ -164,6 +166,33 @@ namespace SeymourBot.Modules
                 {
                     await Context.Channel.SendMessageAsync("Could not find any disciplinaries for this user");
                 }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.DisciplinariesException, ex);
+            }
+        }
+
+        [Command("peasantry")]
+        [Ratelimit(3, 10, Measure.Minutes)]
+        private async Task GetUsersWithPeasantRoleAsync()
+        {
+            try
+            {
+                var gateChannelUsers = Context.Guild.GetTextChannel(ConfigManager.GetUlongProperty(PropertyItem.Channel_NoobGate)).Users;
+                var peasantRoleID = ConfigManager.GetUlongProperty(PropertyItem.Role_Peasant);
+
+                int count = 0;
+                foreach (var user in gateChannelUsers)
+                {
+                    if (user.Roles.Any(x => x.Id == peasantRoleID))
+                    {
+                        count++;
+                    }
+                }
+
+                await Context.Channel.SendMessageAsync($"There are currently {count} members of the local peasantry");
+
             }
             catch (Exception ex)
             {

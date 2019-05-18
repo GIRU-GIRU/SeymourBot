@@ -1,10 +1,11 @@
-﻿using Discord;
+﻿ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Attributes;
 using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Toolbox.Config;
@@ -27,11 +28,18 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     ulong mutedRoleID = ConfigManager.GetUlongProperty(PropertyItem.Role_Muted);
                     ulong limitedRoleID = ConfigManager.GetUlongProperty(PropertyItem.Role_LimitedUser);
+                    var rolesToRemove = new List<IRole>();
 
-                    var roles = user.Roles.Where(x => x.Id == mutedRoleID && x.Id == limitedRoleID).Cast<IRole>().ToArray();
+                    foreach (var role in user.Roles)
+                    {
+                        if (role.Id == limitedRoleID || role.Id == mutedRoleID)
+                        {
+                            rolesToRemove.Add(role);
+                        }
+                    }
 
-                    if (roles.Count() > 0) await user.RemoveRolesAsync(roles);                    
-                  
+                    if (rolesToRemove.Count() > 0) await user.RemoveRolesAsync(rolesToRemove);
+
                     await Context.Channel.SendMessageAsync($"{user.Mention} has been pardoned for their crimes.");
                 }
                 else
@@ -60,10 +68,17 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     {
                         ulong mutedRoleID = ConfigManager.GetUlongProperty(PropertyItem.Role_Muted);
                         ulong limitedRoleID = ConfigManager.GetUlongProperty(PropertyItem.Role_LimitedUser);
+                        var rolesToRemove = new List<IRole>();
 
-                        var roles = user.Roles.Where(x => x.Id == mutedRoleID || x.Id == limitedRoleID) as IRole[];
+                        foreach (var role in user.Roles)
+                        {
+                            if (role.Id == limitedRoleID || role.Id == mutedRoleID)
+                            {
+                                rolesToRemove.Add(role);
+                            }
+                        }
 
-                        if (roles.Count() > 0) await user.RemoveRolesAsync(roles);
+                        if (rolesToRemove.Count() > 0) await user.RemoveRolesAsync(rolesToRemove);
                         await Context.Channel.SendMessageAsync($"{user.Mention} has been pardoned for their crimes");
                     }
                     else

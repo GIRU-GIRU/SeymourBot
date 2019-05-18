@@ -15,7 +15,6 @@ namespace SeymourBot.Modules
 {
     public class CustomCommands : ModuleBase<SocketCommandContext>
     {
-
         [Command("addcommand")]
         [Alias("addcmd")]
         [DevOrAdmin]
@@ -93,8 +92,9 @@ namespace SeymourBot.Modules
 
         [Command("c")]
         [Alias("command")]
-        [Ratelimit(5, 10, Measure.Minutes)]
-        private async Task PostInfoCommand(string cmdName)
+        [DevOrAdmin]
+        [Priority(1)]
+        private async Task PostInfoCommandDevOrAdminAsync(string cmdName)
         {
             try
             {
@@ -115,7 +115,39 @@ namespace SeymourBot.Modules
                     {
                         await Context.Channel.SendMessageAsync("Unable to find that command");
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.CustomCommand, ex);
+            }
+        }
 
+
+        [Command("c")]
+        [Alias("command")]
+        [Ratelimit(5, 10, Measure.Minutes)]
+        private async Task PostInfoCommandAsync(string cmdName)
+        {
+            try
+            {
+                if (await StorageManager.UserCheckAndUpdateBlacklist(Context.Message.Author as SocketGuildUser))
+                {
+                    return;
+                }
+
+                Command command = new Command(cmdName);
+                if (!command.Error)
+                {
+                    string commandContent = await StorageManager.GetInfoCommandAsync(command);
+                    if (!string.IsNullOrEmpty(commandContent))
+                    {
+                        await Context.Channel.SendMessageAsync(commandContent);
+                    }
+                    else
+                    {
+                        await Context.Channel.SendMessageAsync("Unable to find that command");
+                    }
                 }
             }
             catch (Exception ex)
