@@ -5,6 +5,7 @@ using SeymourBot.Attributes;
 using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Toolbox.Config;
@@ -26,7 +27,11 @@ namespace SeymourBot.Modules
                 string userAvatarURL = user.GetAvatarUrl(png, 1024);
                 string userStatus = user.Status.ToString();
                 var userCreatedAtString = user.CreatedAt.ToString("yyyy/MM/dd hh:mm");
-                var userJoinedAtString = user.JoinedAt.Value.ToString("yyyy/MM/dd hh:mm");
+                string userJoinedAtString = "ERR";
+                if (user.JoinedAt != null) //todo attempt to fix the date issue, seems to be similar to this https://stackoverflow.com/questions/1896185/nullable-object-must-have-a-value
+                {
+                    userJoinedAtString = user.JoinedAt.Value.ToString("yyyy/MM/dd hh:mm");
+                }
                 var userDiscriminator = user.Discriminator;
                 string userActivity = user.Activity == null ? "nothing" : user.Activity.Name;
 
@@ -152,10 +157,36 @@ namespace SeymourBot.Modules
         {
             try
             {
-                var disciplinaries = await StorageManager.GetDisciplinariesAsync(user);
-                if (disciplinaries.Keys.Count > 0)
+                var disciplinaries = await StorageManager.GetDisciplinariesAsync(user); //todo fix attempt for the "Field value length must be less than or equal to 1024" issue
+                var linesPerEmbed = 20;
+                EmbedBuilder embed;
+
+                if (disciplinaries.Keys.Count > linesPerEmbed)
                 {
-                    var embed = new EmbedBuilder();
+                    List<Dictionary<string, string>> result = new List<Dictionary<string, string>>();
+                    int i = 0;
+                    while (i < disciplinaries.Keys.Count)
+                    {
+                        result.Add(new Dictionary<string, string>());
+                        for (int n = 0; n < linesPerEmbed && i < disciplinaries.Keys.Count; n++, i++)
+                        {
+                            result[i / linesPerEmbed].Add(disciplinaries.Keys.ElementAt(i), disciplinaries[disciplinaries.Keys.ElementAt(i)]);
+                        }
+                    }
+                    i = 1;
+                    foreach (Dictionary<string, string> temp in result)
+                    {
+                        embed = new EmbedBuilder();
+                        embed.WithTitle($"Disciplinaries for \"{user.Username}#{user.Discriminator}\" page{i}/{result.Count}");
+                        embed.AddField("Date", String.Join("\n", temp.Keys), true);
+                        embed.AddField("Type and Reason: ", String.Join("\n", temp.Values), true);
+
+                        await Context.Channel.SendMessageAsync("", false, embed.Build());
+                    }
+                }
+                else if (disciplinaries.Keys.Count > 0)
+                {
+                    embed = new EmbedBuilder();
                     embed.WithTitle($"Disciplinaries for \"{user.Username}#{user.Discriminator}\" ");
                     embed.AddField("Date", String.Join("\n", disciplinaries.Keys), true);
                     embed.AddField("Type and Reason: ", String.Join("\n", disciplinaries.Values), true);
