@@ -28,7 +28,7 @@ namespace SeymourBot.Modules
                 string userStatus = user.Status.ToString();
                 var userCreatedAtString = user.CreatedAt.ToString("yyyy/MM/dd hh:mm");
                 string userJoinedAtString = "ERR";
-                if (user.JoinedAt != null) //todo attempt to fix the date issue, seems to be similar to this https://stackoverflow.com/questions/1896185/nullable-object-must-have-a-value
+                if (user.JoinedAt.HasValue) //todo attempt to fix the date issue, seems to be similar to this https://stackoverflow.com/questions/1896185/nullable-object-must-have-a-value
                 {
                     userJoinedAtString = user.JoinedAt.Value.ToString("yyyy/MM/dd hh:mm");
                 }
@@ -70,7 +70,11 @@ namespace SeymourBot.Modules
                 string userAvatarURL = user.GetAvatarUrl(png, 1024);
                 string userStatus = user.Status.ToString();
                 var userCreatedAtString = user.CreatedAt.ToString("yyyy/MM/dd hh:mm");
-                var userJoinedAtString = user.JoinedAt.Value.ToString("yyyy/MM/dd hh:mm");
+                string userJoinedAtString = "ERR";
+                if (user.JoinedAt.HasValue) //todo attempt to fix the date issue, seems to be similar to this https://stackoverflow.com/questions/1896185/nullable-object-must-have-a-value
+                {
+                    userJoinedAtString = user.JoinedAt.Value.ToString("yyyy/MM/dd hh:mm");
+                }
                 var userDiscriminator = user.Discriminator;
                 string userActivity = user.Activity == null ? "nothing" : user.Activity.Name;
 
@@ -103,7 +107,11 @@ namespace SeymourBot.Modules
                 string userAvatarURL = user.GetAvatarUrl(png, 1024);
                 string userStatus = user.Status.ToString();
                 var userCreatedAtString = user.CreatedAt.ToString("yyyy/MM/dd hh:mm");
-                var userJoinedAtString = user.JoinedAt.Value.ToString("yyyy/MM/dd hh:mm");
+                string userJoinedAtString = "ERR";
+                if (user.JoinedAt.HasValue) //todo attempt to fix the date issue, seems to be similar to this https://stackoverflow.com/questions/1896185/nullable-object-must-have-a-value
+                {
+                    userJoinedAtString = user.JoinedAt.Value.ToString("yyyy/MM/dd hh:mm");
+                }
                 var userDiscriminator = user.Discriminator;
                 string userActivity = user.Activity == null ? "nothing" : user.Activity.Name;
 
@@ -158,7 +166,7 @@ namespace SeymourBot.Modules
             try
             {
                 var disciplinaries = await StorageManager.GetDisciplinariesAsync(user); //todo fix attempt for the "Field value length must be less than or equal to 1024" issue
-                var linesPerEmbed = 20;
+                var linesPerEmbed = 10;
                 EmbedBuilder embed;
 
                 if (disciplinaries.Keys.Count > linesPerEmbed)
@@ -177,11 +185,12 @@ namespace SeymourBot.Modules
                     foreach (Dictionary<string, string> temp in result)
                     {
                         embed = new EmbedBuilder();
-                        embed.WithTitle($"Disciplinaries for \"{user.Username}#{user.Discriminator}\" page{i}/{result.Count}");
+                        embed.WithTitle($"Disciplinaries for \"{user.Username}#{user.Discriminator}\" page {i}/{result.Count}");
                         embed.AddField("Date", String.Join("\n", temp.Keys), true);
                         embed.AddField("Type and Reason: ", String.Join("\n", temp.Values), true);
 
                         await Context.Channel.SendMessageAsync("", false, embed.Build());
+                        i++;
                     }
                 }
                 else if (disciplinaries.Keys.Count > 0)
