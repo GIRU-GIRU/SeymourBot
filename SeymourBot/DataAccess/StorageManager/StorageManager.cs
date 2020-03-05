@@ -105,7 +105,7 @@ namespace SeymourBot.DataAccess.StorageManager
                     else
                     {
                         return string.Empty;
-                    }            
+                    }
                 }
             }
             catch (Exception ex)
@@ -171,7 +171,7 @@ namespace SeymourBot.DataAccess.StorageManager
                             type = item.DiscipinaryEventType.ToString().Replace("Event", String.Empty);
                             if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
 
-                            dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"CURRENT - {type}{reason}");
+                            dict.Add($"{index + 1}: {item.DateInserted.ToShortDateString()}", $"CURRENT - {type}{reason}");
                             index++;
                         }
                     }
@@ -182,7 +182,7 @@ namespace SeymourBot.DataAccess.StorageManager
                             type = item.DisciplineType.ToString().Replace("Event", String.Empty);
                             if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
 
-                            dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"ARCHIVED - {type}{reason}");
+                            dict.Add($"{index + 1}: {item.DateInserted.ToShortDateString()}", $"ARCHIVED - {type}{reason}");
                             index++;
                         }
                     }
@@ -193,7 +193,7 @@ namespace SeymourBot.DataAccess.StorageManager
                             type = item.DiscipinaryEventType.ToString().Replace("Event", String.Empty);
                             if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
 
-                            dict.Add($"{index}: {item.DateInserted.ToShortDateString()}", $"PERMA - {type}{reason}");
+                            dict.Add($"{index + 1}: {item.DateInserted.ToShortDateString()}", $"PERMA - {type}{reason}");
                             index++;
                         }
                     }
@@ -253,6 +253,23 @@ namespace SeymourBot.DataAccess.StorageManager
                         var itemsToRemove = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == userID).ToListAsync();
 
                         db.RemoveRange(itemsToRemove);
+                        List<UserDisciplinaryEventArchive> eventsToArchive = new List<UserDisciplinaryEventArchive>();
+                        foreach (UserDisciplinaryEventStorage eventToArchive in itemsToRemove)
+                        {
+                            var archivedEvent = new UserDisciplinaryEventArchive()
+                            {
+                                DateArchived = DateTime.UtcNow,
+                                DateInserted = eventToArchive.DateInserted,
+                                DateToRemove = eventToArchive.DateToRemove,
+                                DisciplineEventID = eventToArchive.DisciplineEventID,
+                                DisciplineType = eventToArchive.DiscipinaryEventType,
+                                ModeratorID = eventToArchive.ModeratorID,
+                                Reason = eventToArchive.Reason,
+                                UserID = eventToArchive.UserID
+                            };
+                            eventsToArchive.Add(archivedEvent);
+                        }
+                        await db.UserDisciplinaryEventArchiveTable.AddRangeAsync(eventsToArchive);
                         await db.SaveChangesAsync();
 
                         return true;
@@ -294,8 +311,20 @@ namespace SeymourBot.DataAccess.StorageManager
                         foreach (var item in existingEvents)
                         {
                             await TimedEventManager.RemoveEvent(item.DisciplineEventID);
+                            db.UserDisciplinaryEventStorageTable.Remove(item);
+                            var archivedEvent = new UserDisciplinaryEventArchive()
+                            {
+                                DateArchived = DateTime.UtcNow,
+                                DateInserted = item.DateInserted,
+                                DateToRemove = item.DateToRemove,
+                                DisciplineEventID = item.DisciplineEventID,
+                                DisciplineType = item.DiscipinaryEventType,
+                                ModeratorID = item.ModeratorID,
+                                Reason = item.Reason,
+                                UserID = item.UserID
+                            };
+                            await db.UserDisciplinaryEventArchiveTable.AddAsync(archivedEvent);
                         }
-
                     }
                     else //check permanent event table if can't find
                     {
@@ -316,6 +345,18 @@ namespace SeymourBot.DataAccess.StorageManager
                             foreach (var item in existingPermaEvents)
                             {
                                 await TimedEventManager.RemoveEvent(item.DisciplineEventID);
+                                db.UserDisciplinaryPermanentStorageTable.Remove(item);
+                                var archivedEvent = new UserDisciplinaryEventArchive()
+                                {
+                                    DateArchived = DateTime.UtcNow,
+                                    DateInserted = item.DateInserted,
+                                    DisciplineEventID = item.DisciplineEventID,
+                                    DisciplineType = item.DiscipinaryEventType,
+                                    ModeratorID = item.ModeratorID,
+                                    Reason = item.Reason,
+                                    UserID = item.UserID
+                                };
+                                await db.UserDisciplinaryEventArchiveTable.AddAsync(archivedEvent);
                             }
                         }
                     }
@@ -526,7 +567,6 @@ namespace SeymourBot.DataAccess.StorageManager
                     var warnDuration = ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration);
                     int warnCount = await db.UserDisciplinaryEventStorageTable.Where(x => x.DiscipinaryEventType == DisciplinaryEventEnum.WarnEvent)
                                                                                 .Where(x => x.UserID == userID)
-                                                                                    .Where(x => x.DateToRemove <= DateTime.UtcNow.AddDays(warnDuration))
                                                                                         .CountAsync();
                     return warnCount;
                 }

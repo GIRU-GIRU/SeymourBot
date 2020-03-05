@@ -165,7 +165,7 @@ namespace SeymourBot.Modules
         {
             try
             {
-                var disciplinaries = await StorageManager.GetDisciplinariesAsync(user); //todo fix attempt for the "Field value length must be less than or equal to 1024" issue
+                var disciplinaries = await StorageManager.GetDisciplinariesAsync(user);
                 var linesPerEmbed = 10;
                 EmbedBuilder embed;
 
