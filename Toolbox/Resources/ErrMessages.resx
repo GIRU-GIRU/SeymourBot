@@ -216,4 +216,10 @@
   <data name="AutomaticDisciplinaryReapplication" xml:space="preserve">
     <value>Error automatically re-adding disciplinaries to a rejoining user</value>
   </data>
+  <data name="GateMessageCreationException" xml:space="preserve">
+    <value>Error in creating the gate message</value>
+  </data>
+  <data name="UserVerifyException" xml:space="preserve">
+    <value>Error in verifying user</value>
+  </data>
 </root>

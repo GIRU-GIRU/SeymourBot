@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Toolbox.Config;
 using Toolbox.DiscordUtilities;
+using Toolbox.Exceptions;
+using Toolbox.Resources;
 
 namespace SeymourBot.AutoModeration
 {
@@ -28,7 +30,7 @@ namespace SeymourBot.AutoModeration
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.GateMessageCreationException, ex);
             }
         }
 
@@ -58,7 +60,7 @@ namespace SeymourBot.AutoModeration
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException(ErrMessages.UserVerifyException, ex);
             }
         }
     }
