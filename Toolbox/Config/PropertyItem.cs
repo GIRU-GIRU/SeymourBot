@@ -28,6 +28,7 @@
         Channel_Logging,
         Channel_DeletedMessageLog,
         Channel_NoobGate,
+        Channel_ServerShowcase,
         NoobGateMessage,
     }
 }

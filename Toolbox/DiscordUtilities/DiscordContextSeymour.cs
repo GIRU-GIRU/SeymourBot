@@ -54,7 +54,8 @@ namespace Toolbox.DiscordUtilities
             }
             catch (Exception ex)
             {
-                throw ex;//todo
+                ExceptionManager.HandleException(ErrMessages.RemoveRoleException, ex);
+                throw;
             }
         }
 
@@ -122,8 +123,8 @@ namespace Toolbox.DiscordUtilities
         {
             try
             {
-                 if (user.Roles.Any(x => x.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Developer) ||
-                 user.Roles.Any(y => y.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Moderator))))
+                if (user.Roles.Any(x => x.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Developer) ||
+                user.Roles.Any(y => y.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Moderator))))
                 {
                     return true;
                 }

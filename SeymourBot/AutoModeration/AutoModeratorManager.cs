@@ -79,6 +79,7 @@ namespace SeymourBot.AutoModeration
                     {
                         await ExceptionManager.LogExceptionAsync(ex.Message);
                     }
+                    break;
                 }
             }
         }
@@ -114,12 +115,13 @@ namespace SeymourBot.AutoModeration
                 if (warnCount >= (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns))) //more or equal the warn thresold
                 {
                     await DiscordContextSeymour.AddRole(DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted), target.Id);
+                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted");
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
                                           target.Id,
                                           $"User has been warned {warnCount} times, exceeding the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold",
                                           context.Message.Author.Id,
                                           context.Message.Author.Username,
-                                          DateTime.UtcNow.AddMinutes(30));
+                                          DateTime.UtcNow.AddMinutes(1)); //todo change back to 30 minutes (maybe add to config)
 
                     if (chnl == null)
                     {
@@ -134,6 +136,7 @@ namespace SeymourBot.AutoModeration
                 else if (warnCount > (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) / 2)) //more than half the warn thresold
                 {
                     await DiscordContextSeymour.AddRole(DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted), target.Id);
+                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted");
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
                                           target.Id,
                                           $"User has been warned {warnCount} times, exceeding half of the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold",

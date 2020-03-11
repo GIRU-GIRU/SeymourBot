@@ -1,4 +1,4 @@
-﻿ using Discord;
+﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using SeymourBot.Attributes;
@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Toolbox.Config;
+using Toolbox.DiscordUtilities;
 using Toolbox.Exceptions;
 using Toolbox.Resources;
 
@@ -39,7 +40,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     }
 
                     if (rolesToRemove.Count() > 0) await user.RemoveRolesAsync(rolesToRemove);
-
+                    await DiscordContextOverseer.LogModerationAction(user.Id, "Pardonned", Context.Message.Author.Id);
                     await Context.Channel.SendMessageAsync($"{user.Mention} has been pardoned for their crimes.");
                 }
                 else
@@ -79,6 +80,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                         }
 
                         if (rolesToRemove.Count() > 0) await user.RemoveRolesAsync(rolesToRemove);
+                        await DiscordContextOverseer.LogModerationAction(userID, "Pardonned", Context.Message.Author.Id);
                         await Context.Channel.SendMessageAsync($"{user.Mention} has been pardoned for their crimes");
                     }
                     else
@@ -89,7 +91,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 else
                 {
                     await Context.Channel.SendMessageAsync($"Unable to locate user");
-                }          
+                }
             }
             catch (Exception ex)
             {
