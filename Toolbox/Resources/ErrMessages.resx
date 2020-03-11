@@ -222,4 +222,7 @@
   <data name="UserVerifyException" xml:space="preserve">
     <value>Error in verifying user</value>
   </data>
+  <data name="RemoveRoleException" xml:space="preserve">
+    <value>Error in removing role from user</value>
+  </data>
 </root>

@@ -51,11 +51,12 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 bool existing = await TimedEventManager.CreateEvent(newEvent, newUser);
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, timeSpan, reason, user.Username, existing, Context.Message.Author.Username);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Muted", Context.Message.Author.Id);
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException(ErrMessages.MuteException, ex); 
+                ExceptionManager.HandleException(ErrMessages.MuteException, ex);
             }
         }
 
@@ -95,7 +96,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 };
 
                 bool existing = await TimedEventManager.CreateEvent(newEvent, newUser);
-
+                await DiscordContextOverseer.LogModerationAction(userID, "Muted", Context.Message.Author.Id);
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, timeSpan, reason, user.Username, existing);
                 await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
             }
@@ -135,6 +136,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, new TimeSpan(), reason, user.Username, existing, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Muted", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -179,6 +181,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, new TimeSpan(), reason, user.Username, existing);
                 await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(userID, "Muted", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -218,6 +221,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, timeSpan, reason, user.Username, existing, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Limited", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -264,6 +268,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, timeSpan, reason, user.Username, existing);
                 await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(userID, "Limited", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -301,6 +306,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, new TimeSpan(), reason, user.Username, existing, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Limited", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -345,6 +351,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, new TimeSpan(), reason, user.Username, existing);
                 await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(userID, "Limited", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -379,6 +386,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 await Context.Channel.SendMessageAsync("", false, embed);
 
                 await StorageManager.RemoveDisciplinaryEventAsync(userID, DisciplinaryEventEnum.LimitedUserEvent);
+                await DiscordContextOverseer.LogModerationAction(userID, "Unlimited", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -406,6 +414,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 await Context.Channel.SendMessageAsync("", false, embed);
 
                 await StorageManager.RemoveDisciplinaryEventAsync(user.Id, DisciplinaryEventEnum.LimitedUserEvent);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Unlimited", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -439,7 +448,8 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unmuted", user.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
 
-                await StorageManager.RemoveDisciplinaryEventAsync(userID, DisciplinaryEventEnum.BanEvent);
+                await StorageManager.RemoveDisciplinaryEventAsync(userID, DisciplinaryEventEnum.MuteEvent);
+                await DiscordContextOverseer.LogModerationAction(userID, "Unmuted", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -467,6 +477,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 await Context.Channel.SendMessageAsync("", false, embed);
 
                 await StorageManager.RemoveDisciplinaryEventAsync(user.Id, DisciplinaryEventEnum.MuteEvent);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Unmuted", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -488,15 +499,16 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 var roleToApply = Context.Guild.GetRole(peasantRoleID);
                 var rolesToRemove = user.Roles.Where(x => x.IsEveryone == false);
 
-                
+
                 var embed = new EmbedBuilder();
-             
+
                 embed.WithTitle($"{user.Username} has been stripped of their lands and titles, and banished to the gate {DiscordContextSeymour.GetEmoteReee()}");
                 embed.WithColor(new Color(255, 0, 0));
                 await Context.Channel.SendMessageAsync("", false, embed.Build());
 
                 await user.RemoveRolesAsync(rolesToRemove);
-                await user.AddRoleAsync(roleToApply);   
+                await user.AddRoleAsync(roleToApply);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Exiled", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -527,6 +539,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 await user.RemoveRolesAsync(rolesToRemove);
                 await user.AddRoleAsync(roleToApply);
+                await DiscordContextOverseer.LogModerationAction(userID, "Exiled", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {

@@ -6,6 +6,7 @@ using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
 using System;
 using System.Collections.Generic;
+using System.Resources;
 using System.Threading.Tasks;
 using Toolbox.DiscordUtilities;
 using Toolbox.Exceptions;
@@ -113,7 +114,7 @@ namespace SeymourBot.Modules
                     }
                     else
                     {
-                        await Context.Channel.SendMessageAsync("Unable to find that command");
+                        await Context.Channel.SendMessageAsync(BotDialogs.CommandNotFoundMessage);
                     }
                 }
             }
@@ -146,7 +147,7 @@ namespace SeymourBot.Modules
                     }
                     else
                     {
-                        await Context.Channel.SendMessageAsync("Unable to find that command");
+                        await Context.Channel.SendMessageAsync(BotDialogs.CommandNotFoundMessage);
                     }
                 }
             }

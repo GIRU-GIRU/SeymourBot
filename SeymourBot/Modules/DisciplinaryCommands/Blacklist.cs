@@ -41,6 +41,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildBlacklistEmbed(timeSpan, user.Username, existing, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -79,6 +80,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildBlacklistEmbed(timeSpan, user.Username, existing);
                 await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -116,6 +118,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildBlacklistEmbed(new TimeSpan(), user.Username, existing);
                 await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -147,6 +150,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildBlacklistEmbed(new TimeSpan(), user.Username, existing, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -170,7 +174,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     await Context.Channel.SendMessageAsync("Could not find that user within the blacklist");
                 }
-
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Unblacklisted", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {
@@ -201,7 +205,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     await Context.Channel.SendMessageAsync("Could not find that user within the blacklist");
                 }
-
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Unblacklisted", Context.Message.Author.Id);
             }
             catch (Exception ex)
             {

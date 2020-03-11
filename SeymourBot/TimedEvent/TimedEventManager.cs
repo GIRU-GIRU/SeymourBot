@@ -126,6 +126,7 @@ namespace SeymourBot.TimedEvent
                         ActiveEvents.Remove(activeEvent);
                         //todo
                         await DiscordContextSeymour.RemoveRoleAsync(activeEvent.UserId, ConfigManager.GetUlongProperty(PropertyItem.Role_Muted));
+                        await DiscordContextOverseer.LogModerationAction(activeEvent.UserId, "unmuted");
                         await StorageManager.ArchiveTimedEventAsync(activeEvent.DisciplinaryEventId);
                         break;
                     case Storage.User.DisciplinaryEventEnum.WarnEvent:

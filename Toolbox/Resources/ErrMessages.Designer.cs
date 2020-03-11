@@ -268,6 +268,15 @@ namespace Toolbox.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Error in removing role from user.
+        /// </summary>
+        public static string RemoveRoleException {
+            get {
+                return ResourceManager.GetString("RemoveRoleException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Error in returnban comamnd.
         /// </summary>
         public static string ReturnbanException {
