@@ -16,16 +16,37 @@ namespace SeymourBot.AutoModeration
         {
             try
             {
-                var noobGateChannel = DiscordContextSeymour.GetNoobGateChannel();
+                bool clientNotProperlyConnected = true;
+                int failedToGetNoobGateCount = 0;
 
-                var msgs = await noobGateChannel.GetMessagesAsync(100).FlattenAsync();
-                await noobGateChannel.DeleteMessagesAsync(msgs);
+                while (clientNotProperlyConnected)
+                {
+                    Task.Delay(1000).Wait();
 
-                string welcome = ConfigManager.GetProperty(PropertyItem.NoobGateMessage);
-                var noobGateWelcomeMessage = await noobGateChannel.SendMessageAsync(welcome);
-                DiscordContextSeymour.ReAssignNoobGateWelcome(noobGateWelcomeMessage);
+                    var noobGateChannel = DiscordContextSeymour.GetNoobGateChannel();
 
-                await noobGateWelcomeMessage.AddReactionAsync(DiscordContextSeymour.GetEmotePommel() as IEmote);
+                    if (noobGateChannel != null)
+                    {
+                        var msgs = await noobGateChannel.GetMessagesAsync(100).FlattenAsync();
+                        await noobGateChannel.DeleteMessagesAsync(msgs);
+
+                        string welcome = ConfigManager.GetProperty(PropertyItem.NoobGateMessage);
+                        var noobGateWelcomeMessage = await noobGateChannel.SendMessageAsync(welcome);
+                        DiscordContextSeymour.ReAssignNoobGateWelcome(noobGateWelcomeMessage);
+
+                        await noobGateWelcomeMessage.AddReactionAsync(DiscordContextSeymour.GetEmotePommel() as IEmote);
+                        clientNotProperlyConnected = false;
+
+                        if (failedToGetNoobGateCount > 0)
+                        {
+                            var logChannel = DiscordContextSeymour.GetLoggingChannel();
+                            await logChannel.SendMessageAsync($"Failed to get NoobGate {failedToGetNoobGateCount} times on startup");
+                        }                 
+                    }
+
+                    failedToGetNoobGateCount++;
+                }
+
 
             }
             catch (Exception ex)

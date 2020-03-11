@@ -87,7 +87,9 @@ namespace Toolbox.DiscordUtilities
         {
             try
             {
-                return MordhauGuild.GetTextChannel(ConfigManager.GetUlongProperty(PropertyItem.Channel_NoobGate));
+                var noobGateID = ConfigManager.GetUlongProperty(PropertyItem.Channel_NoobGate);
+                var noobGateChannel = MordhauGuild.GetTextChannel(noobGateID);
+                return noobGateChannel;
             }
             catch (Exception ex)
             {
