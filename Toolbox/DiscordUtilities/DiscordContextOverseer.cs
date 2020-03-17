@@ -39,29 +39,48 @@ namespace Toolbox.DiscordUtilities
             return MordhauGuild;
         }
 
-        public static async Task LogModerationAction(ulong userId, string moderationAction)
+        public static async Task LogModerationAction(ulong userId, string moderationAction, string reason)
         {
-            await LogModerationAction(userId, moderationAction, false, 0);
+            await LogModerationAction(userId, moderationAction, true, 0, reason);
         }
 
-        public static async Task LogModerationAction(ulong userId, string moderationAction, ulong moderatorId)
+        public static async Task LogModerationAction(ulong userId, string moderationAction, ulong moderatorId, string reason)
         {
-            await LogModerationAction(userId, moderationAction, true, moderatorId);
+            await LogModerationAction(userId, moderationAction, false, moderatorId, reason);
         }
 
-        private static async Task LogModerationAction(ulong userId, string moderationAction, bool automated, ulong moderatorId)
+        private static async Task LogModerationAction(ulong userId, string moderationAction, bool automated, ulong moderatorId, string reason)
         {
             try
             {
                 var embed = new EmbedBuilder();
-                embed.WithTitle($"User {moderationAction}"); //usage : user unmuted / user banned / user warned
-                embed.WithColor(automated ? new Color(0, 51, 204) : new Color(51, 204, 51));
-                embed.WithDescription($"User {MordhauGuild.GetUser(userId).Nickname} was {moderationAction} {(automated ? "automatically" : $"by {MordhauGuild.GetUser(moderatorId).Nickname}")}");
-                await GetLoggingChannel().SendMessageAsync("", false, embed.Build());
+                if (MordhauGuild.GetUser(userId) != null && MordhauGuild.GetUser(moderatorId) != null)
+                {
+                    embed.WithTitle($"User {userId} was {moderationAction} at {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}"); //usage : user unmuted / user banned / user warned
+                    embed.WithColor(automated ? new Color(0, 51, 204) : new Color(51, 204, 51));
+                    embed.WithDescription($"User {MordhauGuild.GetUser(userId).Username}#{MordhauGuild.GetUser(userId).Discriminator} was {moderationAction} {(automated ? "automatically" : $"by {MordhauGuild.GetUser(moderatorId).Username}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
+                }
+                else
+                {
+                    if (MordhauGuild.GetUser(moderatorId) != null)
+                    {
+                        embed.WithTitle($"User {userId} was {moderationAction} at {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
+                        embed.WithColor(automated ? new Color(0, 51, 204) : new Color(51, 204, 51));
+                        embed.WithDescription($"User {userId} was {moderationAction} {(automated ? "automatically" : $"by {MordhauGuild.GetUser(moderatorId).Username}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
+                    }
+                    else
+                    {
+
+                    }
+                    embed.WithTitle($"User {userId} was {moderationAction} at {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
+                    embed.WithColor(automated ? new Color(0, 51, 204) : new Color(51, 204, 51));
+                    embed.WithDescription($"User {userId} was {moderationAction} {(automated ? "automatically" : $"by {moderatorId}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
+                }
+                await GetDeletedMessageLog().SendMessageAsync("", false, embed.Build());
             }
             catch (Exception ex)
             {
-                throw ex;//todo
+                ExceptionManager.HandleException(ErrMessages.ModerationActionException, ex);
             }
         }
 

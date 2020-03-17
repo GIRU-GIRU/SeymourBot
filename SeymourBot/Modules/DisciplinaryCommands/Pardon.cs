@@ -40,7 +40,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     }
 
                     if (rolesToRemove.Count() > 0) await user.RemoveRolesAsync(rolesToRemove);
-                    await DiscordContextOverseer.LogModerationAction(user.Id, "Pardonned", Context.Message.Author.Id);
+                    await DiscordContextOverseer.LogModerationAction(user.Id, "Pardonned", Context.Message.Author.Id, "");
                     await Context.Channel.SendMessageAsync($"{user.Mention} has been pardoned for their crimes.");
                 }
                 else
@@ -80,7 +80,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                         }
 
                         if (rolesToRemove.Count() > 0) await user.RemoveRolesAsync(rolesToRemove);
-                        await DiscordContextOverseer.LogModerationAction(userID, "Pardonned", Context.Message.Author.Id);
+                        await DiscordContextOverseer.LogModerationAction(userID, "Pardonned", Context.Message.Author.Id, "");
                         await Context.Channel.SendMessageAsync($"{user.Mention} has been pardoned for their crimes");
                     }
                     else

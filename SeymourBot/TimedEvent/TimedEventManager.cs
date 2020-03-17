@@ -106,6 +106,7 @@ namespace SeymourBot.TimedEvent
                 ActiveEvents.Add(newActiveEvent);
                 var result = await StorageManager.StoreTimedEventAsync(newEvent, newUser);
                 newActiveEvent.DisciplinaryEventId = result.Key;
+                newActiveEvent.Reason = newEvent.Reason;
 
                 return result.Value;
             }
@@ -126,7 +127,7 @@ namespace SeymourBot.TimedEvent
                         ActiveEvents.Remove(activeEvent);
                         //todo
                         await DiscordContextSeymour.RemoveRoleAsync(activeEvent.UserId, ConfigManager.GetUlongProperty(PropertyItem.Role_Muted));
-                        await DiscordContextOverseer.LogModerationAction(activeEvent.UserId, "unmuted");
+                        await DiscordContextOverseer.LogModerationAction(activeEvent.UserId, "unmuted", activeEvent.Reason);
                         await StorageManager.ArchiveTimedEventAsync(activeEvent.DisciplinaryEventId);
                         break;
                     case Storage.User.DisciplinaryEventEnum.WarnEvent:

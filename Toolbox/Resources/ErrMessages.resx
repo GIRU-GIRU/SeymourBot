@@ -225,4 +225,10 @@
   <data name="RemoveRoleException" xml:space="preserve">
     <value>Error in removing role from user</value>
   </data>
+  <data name="ModerationActionException" xml:space="preserve">
+    <value>Error in logging moderation action</value>
+  </data>
+  <data name="CheckForWarnThresoldException" xml:space="preserve">
+    <value>Error in checking for warn thresold</value>
+  </data>
 </root>
