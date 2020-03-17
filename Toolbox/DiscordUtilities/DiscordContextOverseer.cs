@@ -39,17 +39,17 @@ namespace Toolbox.DiscordUtilities
             return MordhauGuild;
         }
 
-        public static async Task LogModerationAction(ulong userId, string moderationAction, string reason)
+        public static async Task LogModerationAction(ulong userId, string moderationAction, string reason, string duration)
         {
-            await LogModerationAction(userId, moderationAction, true, 0, reason);
+            await LogModerationAction(userId, moderationAction, true, 0, reason, duration);
         }
 
-        public static async Task LogModerationAction(ulong userId, string moderationAction, ulong moderatorId, string reason)
+        public static async Task LogModerationAction(ulong userId, string moderationAction, ulong moderatorId, string reason, string duration)
         {
-            await LogModerationAction(userId, moderationAction, false, moderatorId, reason);
+            await LogModerationAction(userId, moderationAction, false, moderatorId, reason, duration);
         }
 
-        private static async Task LogModerationAction(ulong userId, string moderationAction, bool automated, ulong moderatorId, string reason)
+        private static async Task LogModerationAction(ulong userId, string moderationAction, bool automated, ulong moderatorId, string reason, string duration)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Toolbox.DiscordUtilities
                     {
                         embed.WithTitle($"User {userId} was {moderationAction} at {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
                         embed.WithColor(automated ? new Color(0, 51, 204) : new Color(51, 204, 51));
-                        embed.WithDescription($"User {userId} was {moderationAction} {(automated ? "automatically" : $"by {MordhauGuild.GetUser(moderatorId).Username}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
+                        embed.WithDescription($"User {userId} was {moderationAction} {(string.IsNullOrEmpty(duration) ? "" : "for " + duration)} {(automated ? "automatically" : $"by {MordhauGuild.GetUser(moderatorId).Username}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
                     }
                     else
                     {
@@ -74,7 +74,7 @@ namespace Toolbox.DiscordUtilities
                     }
                     embed.WithTitle($"User {userId} was {moderationAction} at {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
                     embed.WithColor(automated ? new Color(0, 51, 204) : new Color(51, 204, 51));
-                    embed.WithDescription($"User {userId} was {moderationAction} {(automated ? "automatically" : $"by {moderatorId}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
+                    embed.WithDescription($"User {userId} was {moderationAction} {(string.IsNullOrEmpty(duration) ? "" : "for " + duration)} {(automated ? "automatically" : $"by {moderatorId}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
                 }
                 await GetDeletedMessageLog().SendMessageAsync("", false, embed.Build());
             }

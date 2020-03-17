@@ -213,6 +213,60 @@ namespace SeymourBot.Modules
             }
         }
 
+        [Command("disciplinaries")]
+        [DevOrAdmin]
+        private async Task GetUserDisciplinariesAsync(SocketGuildUser user, TimeSpan time)
+        {
+            try
+            {
+                var disciplinaries = await StorageManager.GetDisciplinariesAsync(user, time);
+                var linesPerEmbed = 10;
+                EmbedBuilder embed;
+
+                if (disciplinaries.Keys.Count > linesPerEmbed)
+                {
+                    List<Dictionary<string, string>> result = new List<Dictionary<string, string>>();
+                    int i = 0;
+                    while (i < disciplinaries.Keys.Count)
+                    {
+                        result.Add(new Dictionary<string, string>());
+                        for (int n = 0; n < linesPerEmbed && i < disciplinaries.Keys.Count; n++, i++)
+                        {
+                            result[i / linesPerEmbed].Add(disciplinaries.Keys.ElementAt(i), disciplinaries[disciplinaries.Keys.ElementAt(i)]);
+                        }
+                    }
+                    i = 1;
+                    foreach (Dictionary<string, string> temp in result)
+                    {
+                        embed = new EmbedBuilder();
+                        embed.WithTitle($"Disciplinaries for \"{user.Username}#{user.Discriminator}\" page {i}/{result.Count}");
+                        embed.AddField("Date", String.Join("\n", temp.Keys), true);
+                        embed.AddField("Type and Reason: ", String.Join("\n", temp.Values), true);
+
+                        await Context.Channel.SendMessageAsync("", false, embed.Build());
+                        i++;
+                    }
+                }
+                else if (disciplinaries.Keys.Count > 0)
+                {
+                    embed = new EmbedBuilder();
+                    embed.WithTitle($"Disciplinaries for \"{user.Username}#{user.Discriminator}\" ");
+                    embed.AddField("Date", String.Join("\n", disciplinaries.Keys), true);
+                    embed.AddField("Type and Reason: ", String.Join("\n", disciplinaries.Values), true);
+
+                    await Context.Channel.SendMessageAsync("", false, embed.Build());
+                }
+                else
+                {
+                    await Context.Channel.SendMessageAsync("Could not find any disciplinaries for this user");
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.DisciplinariesException, ex);
+            }
+        }
+
         [Command("peasantry")]
         [Ratelimit(3, 10, Measure.Minutes)]
         private async Task GetUsersWithPeasantRoleAsync()

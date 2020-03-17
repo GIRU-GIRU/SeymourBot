@@ -115,7 +115,7 @@ namespace SeymourBot.AutoModeration
                 if (warnCount >= (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns))) //more or equal the warn thresold
                 {
                     await DiscordContextSeymour.AddRole(DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted), target.Id);
-                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted", $"User has been warned {warnCount} times, exceeding the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold");
+                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted", $"User has been warned {warnCount} times, exceeding the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold", (new TimeSpan(1, 0, 0, 0)).ToString());
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
                                           context.Message.Author.Id,
                                           $"User has been warned {warnCount} times, exceeding the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold",
@@ -136,7 +136,7 @@ namespace SeymourBot.AutoModeration
                 else if (warnCount > (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) / 2)) //more than half the warn thresold
                 {
                     await DiscordContextSeymour.AddRole(DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted), target.Id);
-                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted", $"User has been warned {warnCount} times, exceeding half of the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold");
+                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted", $"User has been warned {warnCount} times, exceeding half of the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold", (new TimeSpan(0, 30, 0)).ToString());
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
                                           context.Message.Author.Id,
                                           $"User has been warned {warnCount} times, exceeding half of the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold",
