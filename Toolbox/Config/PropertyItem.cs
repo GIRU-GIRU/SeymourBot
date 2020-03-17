@@ -27,6 +27,7 @@
         Channel_Main,
         Channel_Logging,
         Channel_DeletedMessageLog,
+        Channel_ModerationLog,
         Channel_NoobGate,
         Channel_ServerShowcase,
         NoobGateMessage,

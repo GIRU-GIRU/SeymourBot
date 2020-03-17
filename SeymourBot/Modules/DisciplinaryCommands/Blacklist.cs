@@ -118,7 +118,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildBlacklistEmbed(new TimeSpan(), user.Username, existing);
                 await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
-                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id, "", "");
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id, "", DateTime.UtcNow.AddMonths(1).Subtract(DateTime.UtcNow).ToString());
             }
             catch (Exception ex)
             {

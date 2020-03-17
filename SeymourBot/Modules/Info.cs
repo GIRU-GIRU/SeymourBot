@@ -24,6 +24,7 @@ namespace SeymourBot.Modules
         {
             try
             {
+                var currentMuteTime = await StorageManager.GetActiveMuteAsync(user);
                 string userAvatarURL = user.GetAvatarUrl(png, 1024);
                 string userStatus = user.Status.ToString();
                 var userCreatedAtString = user.CreatedAt.ToString("yyyy/MM/dd hh:mm");
@@ -42,6 +43,7 @@ namespace SeymourBot.Modules
                 embed.AddField("User ID: ", user.Id, false);
                 embed.AddField("Currently playing ", userActivity, true);
                 embed.AddField("Status: ", userStatus, true);
+                embed.AddField("Muted: ", (string.IsNullOrEmpty(currentMuteTime) ? "Not Currently Muted" : $"Currently muted for {currentMuteTime}"), true);
                 embed.WithThumbnailUrl(userAvatarURL);
                 embed.WithColor(new Color(0, 204, 255));
                 await Context.Channel.SendMessageAsync("", false, embed.Build());
@@ -66,7 +68,7 @@ namespace SeymourBot.Modules
                     await Context.Channel.SendMessageAsync("Unable to locate that user");
                     return;
                 }
-
+                var currentMuteTime = await StorageManager.GetActiveMuteAsync(user);
                 string userAvatarURL = user.GetAvatarUrl(png, 1024);
                 string userStatus = user.Status.ToString();
                 var userCreatedAtString = user.CreatedAt.ToString("yyyy/MM/dd hh:mm");
@@ -85,6 +87,7 @@ namespace SeymourBot.Modules
                 embed.AddField("User ID: ", user.Id, false);
                 embed.AddField("Currently playing ", userActivity, true);
                 embed.AddField("Status: ", userStatus, true);
+                embed.AddField("Muted: ", (string.IsNullOrEmpty(currentMuteTime) ? "Not Currently Muted" : $"Currently muted for {currentMuteTime}"), true);
                 embed.WithThumbnailUrl(userAvatarURL);
                 embed.WithColor(new Color(0, 204, 255));
                 await Context.Channel.SendMessageAsync("", false, embed.Build());
@@ -106,6 +109,7 @@ namespace SeymourBot.Modules
 
                 string userAvatarURL = user.GetAvatarUrl(png, 1024);
                 string userStatus = user.Status.ToString();
+                var currentMuteTime = await StorageManager.GetActiveMuteAsync(user);
                 var userCreatedAtString = user.CreatedAt.ToString("yyyy/MM/dd hh:mm");
                 string userJoinedAtString = "ERR";
                 if (user.JoinedAt.HasValue) //todo attempt to fix the date issue, seems to be similar to this https://stackoverflow.com/questions/1896185/nullable-object-must-have-a-value
@@ -120,8 +124,9 @@ namespace SeymourBot.Modules
                 embed.AddField("Account Created: ", userCreatedAtString, true);
                 embed.AddField("Joined Mordhau Guild: ", userJoinedAtString, true);
                 embed.AddField("User ID: ", user.Id, false);
-                embed.AddField("Currently playing ", userActivity, true);
+                embed.AddField("Currently playing: ", userActivity, true);
                 embed.AddField("Status: ", userStatus, true);
+                embed.AddField("Muted: ", (string.IsNullOrEmpty(currentMuteTime) ? "Not Currently Muted" : $"Currently muted for {currentMuteTime}"), true);
                 embed.WithThumbnailUrl(userAvatarURL);
                 embed.WithColor(new Color(0, 204, 255));
                 await Context.Channel.SendMessageAsync("", false, embed.Build());

@@ -58,7 +58,7 @@ namespace Toolbox.DiscordUtilities
                 {
                     embed.WithTitle($"User {userId} was {moderationAction} at {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}"); //usage : user unmuted / user banned / user warned
                     embed.WithColor(automated ? new Color(0, 51, 204) : new Color(51, 204, 51));
-                    embed.WithDescription($"User {MordhauGuild.GetUser(userId).Username}#{MordhauGuild.GetUser(userId).Discriminator} was {moderationAction} {(automated ? "automatically" : $"by {MordhauGuild.GetUser(moderatorId).Username}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
+                    embed.WithDescription($"User {MordhauGuild.GetUser(userId).Username}#{MordhauGuild.GetUser(userId).Discriminator} was {moderationAction} {(string.IsNullOrEmpty(duration) ? "" : "for " + duration)} {(automated ? "automatically" : $"by {MordhauGuild.GetUser(moderatorId).Username}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
                 }
                 else
                 {
@@ -76,7 +76,7 @@ namespace Toolbox.DiscordUtilities
                     embed.WithColor(automated ? new Color(0, 51, 204) : new Color(51, 204, 51));
                     embed.WithDescription($"User {userId} was {moderationAction} {(string.IsNullOrEmpty(duration) ? "" : "for " + duration)} {(automated ? "automatically" : $"by {moderatorId}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
                 }
-                await GetDeletedMessageLog().SendMessageAsync("", false, embed.Build());
+                await GetModerationLog().SendMessageAsync("", false, embed.Build());
             }
             catch (Exception ex)
             {
@@ -133,6 +133,18 @@ namespace Toolbox.DiscordUtilities
             try
             {
                 return MordhauGuild.GetTextChannel(ConfigManager.GetUlongProperty(PropertyItem.Channel_DeletedMessageLog));
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
+        public static ITextChannel GetModerationLog()
+        {
+            try
+            {
+                return MordhauGuild.GetTextChannel(ConfigManager.GetUlongProperty(PropertyItem.Channel_ModerationLog));
             }
             catch (Exception ex)
             {

@@ -208,6 +208,28 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
+        public static async Task<string> GetActiveMuteAsync(SocketGuildUser user)
+        {
+            using (var db = new UserContext())
+            {
+                var activeMuteEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == user.Id && x.DiscipinaryEventType == DisciplinaryEventEnum.MuteEvent).ToListAsync();
+                string result = "";
+                DateTime longestMute = DateTime.UtcNow;
+                if (activeMuteEvents.Count() != 0)
+                {
+                    foreach (var item in activeMuteEvents)
+                    {
+                        if (DateTime.Compare(item.DateToRemove, longestMute) > 0)
+                        {
+                            longestMute = item.DateToRemove;
+                        }
+                    }
+                    result = longestMute.Subtract(DateTime.UtcNow).ToString();
+                }
+                return result;
+            }
+        }
+
         public static async Task<Dictionary<string, string>> GetDisciplinariesAsync(SocketGuildUser user, TimeSpan time)
         {
             try
