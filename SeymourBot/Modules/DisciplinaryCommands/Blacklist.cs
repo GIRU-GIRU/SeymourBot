@@ -33,11 +33,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     DateToRemove = (DateTimeOffset.UtcNow + timeSpan).DateTime,
                     UserID = user.Id
                 },
-                    new UserStorage()
-                    {
-                        UserID = user.Id,
-                        UserName = user.Username,
-                    });
+                new UserStorage()
+                {
+                    UserID = user.Id,
+                    UserName = user.Username,
+                });
 
                 var embed = Utilities.BuildBlacklistEmbed(timeSpan, user.Username, existing, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);

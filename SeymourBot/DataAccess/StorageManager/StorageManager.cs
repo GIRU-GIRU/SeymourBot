@@ -208,12 +208,12 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
-        public static async Task<string> GetActiveMuteAsync(SocketGuildUser user)
+        public static async Task<TimeSpan> GetActiveMuteAsync(SocketGuildUser user)
         {
             using (var db = new UserContext())
             {
                 var activeMuteEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == user.Id && x.DiscipinaryEventType == DisciplinaryEventEnum.MuteEvent).ToListAsync();
-                string result = "";
+                TimeSpan result = new TimeSpan(0);
                 DateTime longestMute = DateTime.UtcNow;
                 if (activeMuteEvents.Count() != 0)
                 {
@@ -224,7 +224,7 @@ namespace SeymourBot.DataAccess.StorageManager
                             longestMute = item.DateToRemove;
                         }
                     }
-                    result = longestMute.Subtract(DateTime.UtcNow).ToString();
+                    result = longestMute.Subtract(DateTime.UtcNow);
                 }
                 return result;
             }

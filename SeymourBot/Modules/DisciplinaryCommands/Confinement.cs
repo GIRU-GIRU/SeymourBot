@@ -51,7 +51,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 bool existing = await TimedEventManager.CreateEvent(newEvent, newUser);
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, timeSpan, reason, user.Username, existing, Context.Message.Author.Username);
-                await DiscordContextOverseer.LogModerationAction(user.Id, "Muted", Context.Message.Author.Id, reason, timeSpan.ToString());
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Muted", Context.Message.Author.Id, reason, Utilities.ShortTimeSpanFormatting(timeSpan));
                 await Context.Channel.SendMessageAsync("", false, embed);
             }
             catch (Exception ex)
@@ -96,7 +96,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 };
 
                 bool existing = await TimedEventManager.CreateEvent(newEvent, newUser);
-                await DiscordContextOverseer.LogModerationAction(userID, "Muted", Context.Message.Author.Id, reason, timeSpan.ToString());
+                await DiscordContextOverseer.LogModerationAction(userID, "Muted", Context.Message.Author.Id, reason, Utilities.ShortTimeSpanFormatting(timeSpan));
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.MuteEvent, timeSpan, reason, user.Username, existing);
                 await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
             }
@@ -221,7 +221,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, timeSpan, reason, user.Username, existing, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
-                await DiscordContextOverseer.LogModerationAction(user.Id, "Limited", Context.Message.Author.Id, reason, timeSpan.ToString());
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Limited", Context.Message.Author.Id, reason, Utilities.ShortTimeSpanFormatting(timeSpan));
             }
             catch (Exception ex)
             {
@@ -268,7 +268,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.LimitedUserEvent, timeSpan, reason, user.Username, existing);
                 await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
-                await DiscordContextOverseer.LogModerationAction(userID, "Limited", Context.Message.Author.Id, reason, timeSpan.ToString());
+                await DiscordContextOverseer.LogModerationAction(userID, "Limited", Context.Message.Author.Id, reason, Utilities.ShortTimeSpanFormatting(timeSpan));
             }
             catch (Exception ex)
             {
@@ -360,7 +360,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         }
 
         [Command("unlimit")]
-        [RequireBotPermission(GuildPermission.BanMembers)]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
         [DevOrAdmin]
         private async Task UnlimitUserAsync(ulong userID)
         {
@@ -395,7 +395,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
         }
 
         [Command("unlimit")]
-        [RequireBotPermission(GuildPermission.BanMembers)]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
         [DevOrAdmin]
         private async Task UnlimitUserAsync(SocketGuildUser user)
         {
@@ -422,8 +422,243 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
         }
 
+        //
+
+        [Command("restrict")]
+        [DevOrAdmin]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        [Priority(1)]
+        private async Task RestrictUserAsync(SocketGuildUser user, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        {
+            try
+            {
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
+
+                var limitedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Restricted);
+                await user.AddRoleAsync(limitedRole);
+
+                UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
+                {
+                    DateInserted = DateTime.UtcNow,
+                    DateToRemove = (DateTimeOffset.UtcNow + timeSpan).DateTime,
+                    DiscipinaryEventType = DisciplinaryEventEnum.RestrictedUserEvent,
+                    ModeratorID = Context.Message.Author.Id,
+                    Reason = reason,
+                    UserID = user.Id
+                };
+                UserStorage newUser = new UserStorage()
+                {
+                    UserID = user.Id,
+                    UserName = user.Username
+                };
+
+                bool existing = await TimedEventManager.CreateEvent(newEvent, newUser);
+
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.RestrictedUserEvent, timeSpan, reason, user.Username, existing, Context.Message.Author.Username);
+                await Context.Channel.SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Restricted", Context.Message.Author.Id, reason, Utilities.ShortTimeSpanFormatting(timeSpan));
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.LimitException, ex);
+            }
+        }
+
+        [Command("restrict")]
+        [DevOrAdmin]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        [Priority(2)]
+        private async Task RestrictUserAsync(ulong userID, TimeSpan timeSpan, [Remainder]string reason = "no reason specified")
+        {
+            try
+            {
+                SocketGuildUser user = Context.Guild.GetUser(userID);
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
+                    return;
+                }
+
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
+
+                var limitedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Restricted);
+                await user.AddRoleAsync(limitedRole);
+
+                UserDisciplinaryEventStorage newEvent = new UserDisciplinaryEventStorage()
+                {
+                    DateInserted = DateTime.UtcNow,
+                    DateToRemove = (DateTimeOffset.UtcNow + timeSpan).DateTime,
+                    DiscipinaryEventType = DisciplinaryEventEnum.RestrictedUserEvent,
+                    ModeratorID = Context.Message.Author.Id,
+                    Reason = reason,
+                    UserID = user.Id
+                };
+                UserStorage newUser = new UserStorage()
+                {
+                    UserID = user.Id,
+                    UserName = user.Username
+                };
+
+                bool existing = await TimedEventManager.CreateEvent(newEvent, newUser);
+
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.RestrictedUserEvent, timeSpan, reason, user.Username, existing);
+                await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(userID, "Restricted", Context.Message.Author.Id, reason, Utilities.ShortTimeSpanFormatting(timeSpan));
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.LimitException, ex);
+            }
+        }
+
+        [Command("restrict")]
+        [DevOrAdmin]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        private async Task PermaRestrictUserAsync(SocketGuildUser user, [Remainder]string reason = "no reason specified")
+        {
+            try
+            {
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
+
+                var limitedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Restricted);
+                await user.AddRoleAsync(limitedRole);
+
+                UserDisciplinaryPermanentStorage newEvent = new UserDisciplinaryPermanentStorage()
+                {
+                    DateInserted = DateTime.UtcNow,
+                    DiscipinaryEventType = DisciplinaryEventEnum.RestrictedUserEvent,
+                    ModeratorID = Context.Message.Author.Id,
+                    Reason = reason,
+                    UserID = user.Id
+                };
+                UserStorage newUser = new UserStorage()
+                {
+                    UserID = user.Id,
+                    UserName = user.Username
+                };
+
+                bool existing = await StorageManager.StoreDisciplinaryPermanentEventAsync(newEvent, newUser);
+
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.RestrictedUserEvent, new TimeSpan(), reason, user.Username, existing, Context.Message.Author.Username);
+                await Context.Channel.SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Restricted", Context.Message.Author.Id, reason, "");
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.LimitException, ex);
+            }
+        }
+
+        [Command("restrict")]
+        [DevOrAdmin]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        private async Task PermaRestrictUserAsync(ulong userID, [Remainder]string reason = "no reason specified")
+        {
+            try
+            {
+                SocketGuildUser user = Context.Guild.GetUser(userID);
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
+                    return;
+                }
+
+                if (await DiscordContextSeymour.IsUserDevOrAdminAsync(user as SocketGuildUser)) return;
+
+                var limitedRole = DiscordContextSeymour.GrabRole(MordhauRoleEnum.Restricted);
+                await user.AddRoleAsync(limitedRole);
+
+                UserDisciplinaryPermanentStorage newEvent = new UserDisciplinaryPermanentStorage()
+                {
+                    DateInserted = DateTime.UtcNow,
+                    DiscipinaryEventType = DisciplinaryEventEnum.RestrictedUserEvent,
+                    ModeratorID = Context.Message.Author.Id,
+                    Reason = reason,
+                    UserID = user.Id
+                };
+                UserStorage newUser = new UserStorage()
+                {
+                    UserID = user.Id,
+                    UserName = user.Username
+                };
+
+                bool existing = await StorageManager.StoreDisciplinaryPermanentEventAsync(newEvent, newUser);
+
+                var embed = Utilities.BuildDefaultEmbed(DisciplinaryEventEnum.RestrictedUserEvent, new TimeSpan(), reason, user.Username, existing);
+                await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
+                await DiscordContextOverseer.LogModerationAction(userID, "Restricted", Context.Message.Author.Id, reason, "");
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.LimitException, ex);
+            }
+        }
+
+        [Command("unrestrict")]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        [DevOrAdmin]
+        private async Task UnrestrictUserAsync(ulong userID)
+        {
+            try
+            {
+                SocketGuildUser user = Context.Guild.GetUser(userID);
+                if (user == null)
+                {
+                    await Context.Channel.SendMessageAsync($"Unable to locate user {DiscordContextSeymour.GetEmoteAyySeymour()}");
+                    return;
+                }
+
+                var role = user.Roles.FirstOrDefault(x => x.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Restricted));
+
+                if (role != null)
+                {
+                    await Context.Channel.SendMessageAsync("Cannot see restricted role on that user");
+                    return;
+                }
+
+                await user.RemoveRoleAsync(role);
+                var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unrestricted", user.Username);
+                await Context.Channel.SendMessageAsync("", false, embed);
+
+                await StorageManager.RemoveDisciplinaryEventAsync(userID, DisciplinaryEventEnum.RestrictedUserEvent);
+                await DiscordContextOverseer.LogModerationAction(userID, "Unrestricted", Context.Message.Author.Id, "", "");
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.UnlimitException, ex);
+            }
+        }
+
+        [Command("unrestrict")]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
+        [DevOrAdmin]
+        private async Task UnrestrictUserAsync(SocketGuildUser user)
+        {
+            try
+            {
+                var role = user.Roles.FirstOrDefault(x => x.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Restricted));
+
+                if (role == null)
+                {
+                    await Context.Channel.SendMessageAsync("Cannot see restricted role on that user");
+                    return;
+                }
+
+                await user.RemoveRoleAsync(role);
+                var embed = Utilities.BuildRemoveDisciplinaryEmbed($"Successfully unrestricted", user.Username);
+                await Context.Channel.SendMessageAsync("", false, embed);
+
+                await StorageManager.RemoveDisciplinaryEventAsync(user.Id, DisciplinaryEventEnum.RestrictedUserEvent);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Unrestricted", Context.Message.Author.Id, "", "");
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
         [Command("unmute")]
-        [RequireBotPermission(GuildPermission.BanMembers)]
+        [RequireBotPermission(GuildPermission.ManageRoles)]
         [DevOrAdmin]
         private async Task UnmuteUserAsync(ulong userID)
         {

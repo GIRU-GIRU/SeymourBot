@@ -24,6 +24,7 @@
         Role_Moderator,
         Role_Developer,
         Role_Peasant,
+        Role_Restricted,
         Channel_Main,
         Channel_Logging,
         Channel_DeletedMessageLog,

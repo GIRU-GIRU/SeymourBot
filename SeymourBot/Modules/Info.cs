@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Toolbox.Config;
 using Toolbox.Exceptions;
 using Toolbox.Resources;
+using Toolbox.Utils;
 
 namespace SeymourBot.Modules
 {
@@ -43,7 +44,7 @@ namespace SeymourBot.Modules
                 embed.AddField("User ID: ", user.Id, false);
                 embed.AddField("Currently playing ", userActivity, true);
                 embed.AddField("Status: ", userStatus, true);
-                embed.AddField("Muted: ", (string.IsNullOrEmpty(currentMuteTime) ? "Not Currently Muted" : $"Currently muted for {currentMuteTime}"), true);
+                embed.AddField("Muted: ", currentMuteTime.TotalMilliseconds == 0 ? "Not Currently Muted" : $"Currently muted for {Utilities.ShortTimeSpanFormatting(currentMuteTime)}", true);
                 embed.WithThumbnailUrl(userAvatarURL);
                 embed.WithColor(new Color(0, 204, 255));
                 await Context.Channel.SendMessageAsync("", false, embed.Build());
@@ -87,7 +88,7 @@ namespace SeymourBot.Modules
                 embed.AddField("User ID: ", user.Id, false);
                 embed.AddField("Currently playing ", userActivity, true);
                 embed.AddField("Status: ", userStatus, true);
-                embed.AddField("Muted: ", (string.IsNullOrEmpty(currentMuteTime) ? "Not Currently Muted" : $"Currently muted for {currentMuteTime}"), true);
+                embed.AddField("Muted: ", currentMuteTime.TotalMilliseconds == 0 ? "Not Currently Muted" : $"Currently muted for {Utilities.ShortTimeSpanFormatting(currentMuteTime)}", true);
                 embed.WithThumbnailUrl(userAvatarURL);
                 embed.WithColor(new Color(0, 204, 255));
                 await Context.Channel.SendMessageAsync("", false, embed.Build());
@@ -126,7 +127,7 @@ namespace SeymourBot.Modules
                 embed.AddField("User ID: ", user.Id, false);
                 embed.AddField("Currently playing: ", userActivity, true);
                 embed.AddField("Status: ", userStatus, true);
-                embed.AddField("Muted: ", (string.IsNullOrEmpty(currentMuteTime) ? "Not Currently Muted" : $"Currently muted for {currentMuteTime}"), true);
+                embed.AddField("Muted: ", currentMuteTime.TotalMilliseconds == 0 ? "Not Currently Muted" : $"Currently muted for {Utilities.ShortTimeSpanFormatting(currentMuteTime)}", true);
                 embed.WithThumbnailUrl(userAvatarURL);
                 embed.WithColor(new Color(0, 204, 255));
                 await Context.Channel.SendMessageAsync("", false, embed.Build());

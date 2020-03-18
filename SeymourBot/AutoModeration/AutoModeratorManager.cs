@@ -14,6 +14,7 @@ using Toolbox.Config;
 using Toolbox.DiscordUtilities;
 using Toolbox.Exceptions;
 using Toolbox.Resources;
+using Toolbox.Utils;
 
 namespace SeymourBot.AutoModeration
 {
@@ -30,6 +31,7 @@ namespace SeymourBot.AutoModeration
 
         public static async Task FilterMessage(SocketCommandContext context)
         {
+            var splitContent = context.Message.Content.ToLower().Split();
             if (bannedRegex.Count > 0)
             {
                 foreach (ModeratedElement element in bannedRegex)
@@ -55,7 +57,7 @@ namespace SeymourBot.AutoModeration
             }
             foreach (ModeratedElement element in bannedWords)
             {
-                if (context.Message.Content.ToLower().Contains(element.Pattern.Trim()))
+                if (splitContent.Contains(element.Pattern.Trim()))
                 {
                     string reason;
                     if (element.Dialog.Length == 0)
@@ -115,7 +117,7 @@ namespace SeymourBot.AutoModeration
                 if (warnCount >= (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns))) //more or equal the warn thresold
                 {
                     await DiscordContextSeymour.AddRole(DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted), target.Id);
-                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted", $"User has been warned {warnCount} times, exceeding the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold", (new TimeSpan(1, 0, 0, 0)).ToString());
+                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted", $"User has been warned {warnCount} times, exceeding the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold", Utilities.ShortTimeSpanFormatting(new TimeSpan(1, 0, 0, 0)));
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
                                           context.Client.CurrentUser.Id,
                                           $"User has been warned {warnCount} times, exceeding the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold",
@@ -136,7 +138,7 @@ namespace SeymourBot.AutoModeration
                 else if (warnCount > (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) / 2)) //more than half the warn thresold
                 {
                     await DiscordContextSeymour.AddRole(DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted), target.Id);
-                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted", $"User has been warned {warnCount} times, exceeding half of the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold", (new TimeSpan(0, 30, 0)).ToString());
+                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted", $"User has been warned {warnCount} times, exceeding half of the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold", Utilities.ShortTimeSpanFormatting(new TimeSpan(0, 30, 0)));
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
                                           context.Client.CurrentUser.Id,
                                           $"User has been warned {warnCount} times, exceeding half of the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold",

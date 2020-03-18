@@ -123,18 +123,31 @@ namespace SeymourBot.TimedEvent
             {
                 switch (activeEvent.DisciplinaryEvent)
                 {
-                    case Storage.User.DisciplinaryEventEnum.MuteEvent:
+                    case DisciplinaryEventEnum.MuteEvent:
                         ActiveEvents.Remove(activeEvent);
-                        //todo
                         await DiscordContextSeymour.RemoveRoleAsync(activeEvent.UserId, ConfigManager.GetUlongProperty(PropertyItem.Role_Muted));
-                        await DiscordContextOverseer.LogModerationAction(activeEvent.UserId, "unmuted", activeEvent.Reason, "");
+                        await DiscordContextOverseer.LogModerationAction(activeEvent.UserId, "Unmuted", activeEvent.Reason, "");
                         await StorageManager.ArchiveTimedEventAsync(activeEvent.DisciplinaryEventId);
                         break;
-                    case Storage.User.DisciplinaryEventEnum.WarnEvent:
+                    case DisciplinaryEventEnum.WarnEvent:
                         ActiveEvents.Remove(activeEvent);
+                        await StorageManager.ArchiveTimedEventAsync(activeEvent.DisciplinaryEventId);
+                        break;
+                    case DisciplinaryEventEnum.LimitedUserEvent:
+                        ActiveEvents.Remove(activeEvent);
+                        await DiscordContextSeymour.RemoveRoleAsync(activeEvent.UserId, ConfigManager.GetUlongProperty(PropertyItem.Role_LimitedUser));
+                        await DiscordContextOverseer.LogModerationAction(activeEvent.UserId, "Unlimited", activeEvent.Reason, "");
+                        await StorageManager.ArchiveTimedEventAsync(activeEvent.DisciplinaryEventId);
+                        break;
+                    case DisciplinaryEventEnum.RestrictedUserEvent:
+                        ActiveEvents.Remove(activeEvent);
+                        await DiscordContextSeymour.RemoveRoleAsync(activeEvent.UserId, ConfigManager.GetUlongProperty(PropertyItem.Role_Restricted));
+                        await DiscordContextOverseer.LogModerationAction(activeEvent.UserId, "Unrestricted", activeEvent.Reason, "");
                         await StorageManager.ArchiveTimedEventAsync(activeEvent.DisciplinaryEventId);
                         break;
                     default:
+                        ActiveEvents.Remove(activeEvent);
+                        await DiscordContextOverseer.LogModerationAction(activeEvent.UserId, $"Err : {activeEvent.DisciplinaryEvent.ToString()}", activeEvent.Reason, "");
                         break;
                 }
             }

@@ -70,11 +70,10 @@ namespace Toolbox.DiscordUtilities
                     }
                     else
                     {
-
+                        embed.WithTitle($"User {userId} was {moderationAction} at {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
+                        embed.WithColor(automated ? new Color(0, 51, 204) : new Color(51, 204, 51));
+                        embed.WithDescription($"User {userId} was {moderationAction} {(string.IsNullOrEmpty(duration) ? "" : "for " + duration)} {(automated ? "automatically" : $"by {moderatorId}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
                     }
-                    embed.WithTitle($"User {userId} was {moderationAction} at {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
-                    embed.WithColor(automated ? new Color(0, 51, 204) : new Color(51, 204, 51));
-                    embed.WithDescription($"User {userId} was {moderationAction} {(string.IsNullOrEmpty(duration) ? "" : "for " + duration)} {(automated ? "automatically" : $"by {moderatorId}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
                 }
                 await GetModerationLog().SendMessageAsync("", false, embed.Build());
             }
