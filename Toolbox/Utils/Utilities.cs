@@ -190,15 +190,15 @@ namespace Toolbox.Utils
         {
             string result = "";
 
-            if (timeSpan.TotalDays > 1)
+            if (timeSpan.TotalDays >= 1)
             {
                 result = $"{timeSpan.Days} days";
             }
-            else if (timeSpan.TotalHours > 1)
+            else if (timeSpan.TotalHours >= 1)
             {
                 result = $"{timeSpan.Hours} hours";
             }
-            else if (timeSpan.TotalMinutes > 1)
+            else if (timeSpan.TotalMinutes >= 1)
             {
                 result = $"{timeSpan.Minutes} minutes";
             }
@@ -206,7 +206,6 @@ namespace Toolbox.Utils
             {
                 result = $"{timeSpan.Seconds} seconds";
             }
-
             return result;
         }
 

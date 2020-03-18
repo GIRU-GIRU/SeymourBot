@@ -29,6 +29,52 @@ namespace SeymourBot.AutoModeration
             bannedRegex = StorageManager.GetModeratedRegex();
         }
 
+        public static async Task MassMentionCheck(SocketCommandContext context)
+        {
+            try
+            {
+                if (context.Message.MentionedUsers.Count > 8)
+                {
+                    SocketUser target = context.Message.Author;
+                    await context.Message.DeleteAsync();
+                    await DiscordContextSeymour.AddRole(DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted), target.Id);
+                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted", "excessive pinging", Utilities.ShortTimeSpanFormatting(new TimeSpan(3, 0, 0, 0)));
+                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
+                                          context.Client.CurrentUser.Id,
+                                          "excessive pinging",
+                                          target.Id,
+                                          target.Username,
+                                          (DateTimeOffset.UtcNow + new TimeSpan(0, 30, 0)).DateTime);
+                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : excessive pinging", target.Id, target.Username, DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
+                    if (context.Channel != null)
+                    {
+                        await DiscordContextOverseer.GetChannel(context.Channel.Id).SendMessageAsync($"{context.Message.Author.Mention}, Thou shall not say thy noble's names in vain. {DiscordContextSeymour.GetEmoteAyySeymour()}");
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
+        public static async Task EnforceRestricted(SocketCommandContext context)
+        {
+            try
+            {
+                if (new Regex(@"(http(s)?:\/\/)?([a-z][-\w]+(?:\.\w+)+(?:\S+)?)", RegexOptions.IgnoreCase | RegexOptions.Compiled).IsMatch(context.Message.Content))
+                {
+                    await context.Message.DeleteAsync();
+                    await DiscordContextOverseer.LogModerationAction(context.Message.Author.Id, "Blocked from posting a link", $"posting links while restricted in message id : {context.Message.Id}", "");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
         public static async Task FilterMessage(SocketCommandContext context)
         {
             var splitContent = context.Message.Content.ToLower().Split();
