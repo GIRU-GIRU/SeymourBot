@@ -96,7 +96,7 @@ namespace OverseerBot.UserMessageLogging
                     {
                         if (filesData != null)
                         {
-                            embed.WithTitle($"🗑 {message.Author.Username}#{message.Author.Discriminator} deleted message containing {filesData.Count} image{((filesData.Count > 1) ? "" : "s") } in {message.Channel.Name}. UserID = {message.Author.Id}");
+                            embed.WithTitle($"🗑 {message.Author.Username}#{message.Author.Discriminator} deleted message containing {filesData.Count} image{((filesData.Count > 1) ? "s" : "") } in {message.Channel.Name}. UserID = {message.Author.Id}");
                         }
                         else
                         {
@@ -106,7 +106,7 @@ namespace OverseerBot.UserMessageLogging
                     else //it's just a message
                     {
 
-                        embed.WithTitle($"🗑 {message.Author.Username}#{message.Author.Discriminator} deleted message in {message.Channel.Name}. UserID = {message.Author.Id}");
+                        embed.WithTitle($"🗑 {message.Author.Username}#{message.Author.Discriminator} deleted message messageID {message.Id} in {message.Channel.Name}. UserID = {message.Author.Id}");
                     }
 
                     //check for other types of embeds
