@@ -33,15 +33,15 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                     DateToRemove = (DateTimeOffset.UtcNow + timeSpan).DateTime,
                     UserID = user.Id
                 },
-                    new UserStorage()
-                    {
-                        UserID = user.Id,
-                        UserName = user.Username,
-                    });
+                new UserStorage()
+                {
+                    UserID = user.Id,
+                    UserName = user.Username,
+                });
 
                 var embed = Utilities.BuildBlacklistEmbed(timeSpan, user.Username, existing, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
-                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id, "", timeSpan.ToString());
             }
             catch (Exception ex)
             {
@@ -80,7 +80,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildBlacklistEmbed(timeSpan, user.Username, existing);
                 await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
-                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id, "", timeSpan.ToString());
             }
             catch (Exception ex)
             {
@@ -118,7 +118,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildBlacklistEmbed(new TimeSpan(), user.Username, existing);
                 await DiscordContextSeymour.GetMainChannel().SendMessageAsync("", false, embed);
-                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id, "", DateTime.UtcNow.AddMonths(1).Subtract(DateTime.UtcNow).ToString());
             }
             catch (Exception ex)
             {
@@ -150,7 +150,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 
                 var embed = Utilities.BuildBlacklistEmbed(new TimeSpan(), user.Username, existing, Context.Message.Author.Username);
                 await Context.Channel.SendMessageAsync("", false, embed);
-                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Blacklisted", Context.Message.Author.Id, "", DateTime.UtcNow.AddMonths(1).Subtract(DateTime.UtcNow).ToString());
             }
             catch (Exception ex)
             {
@@ -174,7 +174,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     await Context.Channel.SendMessageAsync("Could not find that user within the blacklist");
                 }
-                await DiscordContextOverseer.LogModerationAction(user.Id, "Unblacklisted", Context.Message.Author.Id);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Unblacklisted", Context.Message.Author.Id, "", "");
             }
             catch (Exception ex)
             {
@@ -205,7 +205,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 {
                     await Context.Channel.SendMessageAsync("Could not find that user within the blacklist");
                 }
-                await DiscordContextOverseer.LogModerationAction(user.Id, "Unblacklisted", Context.Message.Author.Id);
+                await DiscordContextOverseer.LogModerationAction(user.Id, "Unblacklisted", Context.Message.Author.Id, "", "");
             }
             catch (Exception ex)
             {

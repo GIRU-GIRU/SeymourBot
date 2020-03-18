@@ -138,6 +138,24 @@ namespace Toolbox.DiscordUtilities
             }
         }
 
+        public static async Task<bool> IsUserRestrictedAsync(SocketGuildUser user)
+        {
+            try
+            {
+                if (user.Roles.Any(x => x.Id == ConfigManager.GetUlongProperty(PropertyItem.Role_Restricted)))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.DiscordContextException, ex);
+                throw;
+            }
+        }
+
         public static async Task AddRole(IRole role, ulong userId)
         {
             try

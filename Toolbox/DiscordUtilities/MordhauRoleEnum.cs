@@ -9,5 +9,6 @@
         Moderator,
         Developer,
         Peasant,
+        Restricted
     }
 }

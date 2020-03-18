@@ -14,6 +14,7 @@ using Toolbox.Config;
 using Toolbox.DiscordUtilities;
 using Toolbox.Exceptions;
 using Toolbox.Resources;
+using Toolbox.Utils;
 
 namespace SeymourBot.AutoModeration
 {
@@ -28,8 +29,55 @@ namespace SeymourBot.AutoModeration
             bannedRegex = StorageManager.GetModeratedRegex();
         }
 
+        public static async Task MassMentionCheck(SocketCommandContext context)
+        {
+            try
+            {
+                if (context.Message.MentionedUsers.Count > 8)
+                {
+                    SocketUser target = context.Message.Author;
+                    await context.Message.DeleteAsync();
+                    await DiscordContextSeymour.AddRole(DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted), target.Id);
+                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted", "excessive pinging", Utilities.ShortTimeSpanFormatting(new TimeSpan(3, 0, 0, 0)));
+                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
+                                          context.Client.CurrentUser.Id,
+                                          "excessive pinging",
+                                          target.Id,
+                                          target.Username,
+                                          (DateTimeOffset.UtcNow + new TimeSpan(0, 30, 0)).DateTime);
+                    await TimedEventManager.CreateEvent(DisciplinaryEventEnum.WarnEvent, context.Client.CurrentUser.Id, "AutoWarn : excessive pinging", target.Id, target.Username, DateTime.UtcNow.AddDays(ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration)));
+                    if (context.Channel != null)
+                    {
+                        await DiscordContextOverseer.GetChannel(context.Channel.Id).SendMessageAsync($"{context.Message.Author.Mention}, Thou shall not say thy noble's names in vain. {DiscordContextSeymour.GetEmoteAyySeymour()}");
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
+        public static async Task EnforceRestricted(SocketCommandContext context)
+        {
+            try
+            {
+                if (new Regex(@"(http(s)?:\/\/)?([a-z][-\w]+(?:\.\w+)+(?:\S+)?)", RegexOptions.IgnoreCase | RegexOptions.Compiled).IsMatch(context.Message.Content))
+                {
+                    await context.Message.DeleteAsync();
+                    await DiscordContextOverseer.LogModerationAction(context.Message.Author.Id, "Blocked from posting a link", $"posting links while restricted in message id : {context.Message.Id}", "");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex; //todo
+            }
+        }
+
         public static async Task FilterMessage(SocketCommandContext context)
         {
+            var splitContent = context.Message.Content.ToLower().Split();
             if (bannedRegex.Count > 0)
             {
                 foreach (ModeratedElement element in bannedRegex)
@@ -55,7 +103,7 @@ namespace SeymourBot.AutoModeration
             }
             foreach (ModeratedElement element in bannedWords)
             {
-                if (context.Message.Content.ToLower().Contains(element.Pattern.Trim()))
+                if (splitContent.Contains(element.Pattern.Trim()))
                 {
                     string reason;
                     if (element.Dialog.Length == 0)
@@ -115,13 +163,13 @@ namespace SeymourBot.AutoModeration
                 if (warnCount >= (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns))) //more or equal the warn thresold
                 {
                     await DiscordContextSeymour.AddRole(DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted), target.Id);
-                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted");
+                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted", $"User has been warned {warnCount} times, exceeding the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold", Utilities.ShortTimeSpanFormatting(new TimeSpan(1, 0, 0, 0)));
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
-                                          target.Id,
+                                          context.Client.CurrentUser.Id,
                                           $"User has been warned {warnCount} times, exceeding the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold",
-                                          context.Message.Author.Id,
-                                          context.Message.Author.Username,
-                                          DateTime.UtcNow.AddMinutes(1)); //todo change back to 30 minutes (maybe add to config)
+                                          target.Id,
+                                          target.Username,
+                                          (DateTimeOffset.UtcNow + new TimeSpan(1, 0, 0, 0)).DateTime);
 
                     if (chnl == null)
                     {
@@ -136,13 +184,13 @@ namespace SeymourBot.AutoModeration
                 else if (warnCount > (ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns) / 2)) //more than half the warn thresold
                 {
                     await DiscordContextSeymour.AddRole(DiscordContextSeymour.GrabRole(MordhauRoleEnum.Muted), target.Id);
-                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted");
+                    await DiscordContextOverseer.LogModerationAction(target.Id, "Muted", $"User has been warned {warnCount} times, exceeding half of the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold", Utilities.ShortTimeSpanFormatting(new TimeSpan(0, 30, 0)));
                     await TimedEventManager.CreateEvent(DisciplinaryEventEnum.MuteEvent,
-                                          target.Id,
+                                          context.Client.CurrentUser.Id,
                                           $"User has been warned {warnCount} times, exceeding half of the {ConfigManager.GetIntegerProperty(PropertyItem.MaxWarns)} warn threshold",
-                                          context.Message.Author.Id,
-                                          context.Message.Author.Username,
-                                          DateTime.UtcNow.AddDays(1));
+                                          target.Id,
+                                          target.Username,
+                                          (DateTimeOffset.UtcNow + new TimeSpan(0, 30, 0)).DateTime);
 
 
                     if (chnl == null) //channel specified check
@@ -159,7 +207,7 @@ namespace SeymourBot.AutoModeration
             }
             catch (Exception ex)
             {
-                throw ex;//todo
+                ExceptionManager.HandleException(ErrMessages.CheckForWarnThresoldException, ex);
             }
         }
     }

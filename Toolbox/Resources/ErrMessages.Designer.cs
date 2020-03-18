@@ -97,6 +97,15 @@ namespace Toolbox.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Error in checking for warn thresold.
+        /// </summary>
+        public static string CheckForWarnThresoldException {
+            get {
+                return ResourceManager.GetString("CheckForWarnThresoldException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Error in cleanse command.
         /// </summary>
         public static string CleanseException {
@@ -219,6 +228,15 @@ namespace Toolbox.Resources {
         public static string LimitException {
             get {
                 return ResourceManager.GetString("LimitException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Error in logging moderation action.
+        /// </summary>
+        public static string ModerationActionException {
+            get {
+                return ResourceManager.GetString("ModerationActionException", resourceCulture);
             }
         }
         

@@ -208,6 +208,87 @@ namespace SeymourBot.DataAccess.StorageManager
             }
         }
 
+        public static async Task<TimeSpan> GetActiveMuteAsync(SocketGuildUser user)
+        {
+            using (var db = new UserContext())
+            {
+                var activeMuteEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == user.Id && x.DiscipinaryEventType == DisciplinaryEventEnum.MuteEvent).ToListAsync();
+                TimeSpan result = new TimeSpan(0);
+                DateTime longestMute = DateTime.UtcNow;
+                if (activeMuteEvents.Count() != 0)
+                {
+                    foreach (var item in activeMuteEvents)
+                    {
+                        if (DateTime.Compare(item.DateToRemove, longestMute) > 0)
+                        {
+                            longestMute = item.DateToRemove;
+                        }
+                    }
+                    result = longestMute.Subtract(DateTime.UtcNow);
+                }
+                return result;
+            }
+        }
+
+        public static async Task<Dictionary<string, string>> GetDisciplinariesAsync(SocketGuildUser user, TimeSpan time)
+        {
+            try
+            {
+                using (var db = new UserContext())
+                {
+                    DateTime dateToCompare = DateTime.Today.Subtract(time);
+                    var currentEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == user.Id && DateTime.Compare(x.DateInserted, dateToCompare) > 0).ToListAsync();
+                    var archivedEvents = await db.UserDisciplinaryEventArchiveTable.Where(x => x.UserID == user.Id && DateTime.Compare(x.DateInserted, dateToCompare) > 0).ToListAsync();
+                    var permaEvents = await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == user.Id && DateTime.Compare(x.DateInserted, dateToCompare) > 0).ToListAsync();
+
+                    var dict = new Dictionary<string, string>();
+                    int index = 0;
+                    string type = string.Empty;
+                    string reason = string.Empty;
+                    if (currentEvents != null)
+                    {
+                        foreach (var item in currentEvents)
+                        {
+                            type = item.DiscipinaryEventType.ToString().Replace("Event", String.Empty);
+                            if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
+
+                            dict.Add($"{index + 1}: {item.DateInserted.ToShortDateString()}", $"CURRENT - {type}{reason}");
+                            index++;
+                        }
+                    }
+                    if (archivedEvents != null)
+                    {
+                        foreach (var item in archivedEvents)
+                        {
+                            type = item.DisciplineType.ToString().Replace("Event", String.Empty);
+                            if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
+
+                            dict.Add($"{index + 1}: {item.DateInserted.ToShortDateString()}", $"ARCHIVED - {type}{reason}");
+                            index++;
+                        }
+                    }
+                    if (permaEvents != null)
+                    {
+                        foreach (var item in permaEvents)
+                        {
+                            type = item.DiscipinaryEventType.ToString().Replace("Event", String.Empty);
+                            if (!String.IsNullOrEmpty(item.Reason)) reason = $", {item.Reason}";
+
+                            dict.Add($"{index + 1}: {item.DateInserted.ToShortDateString()}", $"PERMA - {type}{reason}");
+                            index++;
+                        }
+                    }
+
+                    return dict;
+                }
+            }
+            catch (Exception ex)
+            {
+                //todo
+                throw ex;
+            }
+        }
+
         public static async Task ArchiveTimedEventAsync(ulong eventId)
         {
             try

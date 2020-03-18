@@ -43,7 +43,7 @@ namespace Toolbox.Utils
             }
         }
 
-        private static Embed GenerateDefaultEmbed(DisciplinaryEventEnum eventType,TimeSpan timeSpan, string reason, string targetName, bool existing, string author)
+        private static Embed GenerateDefaultEmbed(DisciplinaryEventEnum eventType, TimeSpan timeSpan, string reason, string targetName, bool existing, string author)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace Toolbox.Utils
                 }
                 else if (timeSpan.TotalHours >= 1)
                 {
-                    duration = $"{Math.Round(timeSpan.TotalHours , 2)} hour{SAppend(timeSpan.TotalHours)}.";
+                    duration = $"{Math.Round(timeSpan.TotalHours, 2)} hour{SAppend(timeSpan.TotalHours)}.";
                 }
                 else if (timeSpan.TotalMinutes >= 1)
                 {
@@ -184,6 +184,29 @@ namespace Toolbox.Utils
                 default:
                     return "disciplined";
             }
+        }
+
+        public static string ShortTimeSpanFormatting(TimeSpan timeSpan)
+        {
+            string result = "";
+
+            if (timeSpan.TotalDays >= 1)
+            {
+                result = $"{timeSpan.Days} days";
+            }
+            else if (timeSpan.TotalHours >= 1)
+            {
+                result = $"{timeSpan.Hours} hours";
+            }
+            else if (timeSpan.TotalMinutes >= 1)
+            {
+                result = $"{timeSpan.Minutes} minutes";
+            }
+            else
+            {
+                result = $"{timeSpan.Seconds} seconds";
+            }
+            return result;
         }
 
         private static bool IsDigitsOnly(string str)

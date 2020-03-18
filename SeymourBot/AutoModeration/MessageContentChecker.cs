@@ -1,6 +1,10 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
+using SeymourBot.Storage.User;
+using SeymourBot.TimedEvent;
+using System;
 using System.Threading.Tasks;
+using Toolbox.Config;
 using Toolbox.DiscordUtilities;
 
 namespace SeymourBot.AutoModeration
@@ -18,6 +22,11 @@ namespace SeymourBot.AutoModeration
         internal static async Task MessageContainsAsync(SocketCommandContext context)
         {
             await AutoModeratorManager.FilterMessage(context);
+            await AutoModeratorManager.MassMentionCheck(context);
+            if (await DiscordContextSeymour.IsUserRestrictedAsync(context.Message.Author as SocketGuildUser))
+            {
+                await AutoModeratorManager.EnforceRestricted(context);
+            }
         }
     }
 }
