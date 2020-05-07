@@ -28,7 +28,7 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (InfoCommandContext db = new InfoCommandContext())
                 {
-                    var cmd = await db.InfoCommandTable.Where(x => x.CommandName.ToLower() == name).FirstOrDefaultAsync();
+                    var cmd = await db.InfoCommandTable.AsQueryable().Where(x => x.CommandName.ToLower() == name).FirstOrDefaultAsync();
 
                     if (cmd != null)
                     {
@@ -56,7 +56,7 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (InfoCommandContext db = new InfoCommandContext())
                 {
-                    var cmd = await db.InfoCommandTable.FirstOrDefaultAsync(x => x.CommandName.ToLower() == command.CommandName.ToLower());
+                    var cmd = await db.InfoCommandTable.AsQueryable().FirstOrDefaultAsync(x => x.CommandName.ToLower() == command.CommandName.ToLower());
 
                     if (cmd == null)
                     {
@@ -95,7 +95,7 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (InfoCommandContext db = new InfoCommandContext())
                 {
-                    var result = await db.InfoCommandTable.Where(x =>
+                    var result = await db.InfoCommandTable.AsQueryable().Where(x =>
                                                         x.CommandName.ToLower() == command.CommandName.ToLower())
                                                            .FirstOrDefaultAsync();
 
@@ -128,7 +128,7 @@ namespace SeymourBot.DataAccess.StorageManager
                         await db.UserStorageTable.AddAsync(newUser);
                     }
 
-                    var existingDisciplinaryEvent = await db.UserDisciplinaryEventStorageTable.FirstOrDefaultAsync(x => x.UserID == newUser.UserID && x.DiscipinaryEventType == newEvent.DiscipinaryEventType);
+                    var existingDisciplinaryEvent = await db.UserDisciplinaryEventStorageTable.AsQueryable().FirstOrDefaultAsync(x => x.UserID == newUser.UserID && x.DiscipinaryEventType == newEvent.DiscipinaryEventType);
 
                     if (existingDisciplinaryEvent != null && newEvent.DiscipinaryEventType != DisciplinaryEventEnum.WarnEvent)
                     {
@@ -157,9 +157,9 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (var db = new UserContext())
                 {
-                    var currentEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == user.Id).ToListAsync();
-                    var archivedEvents = await db.UserDisciplinaryEventArchiveTable.Where(x => x.UserID == user.Id).ToListAsync();
-                    var permaEvents = await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == user.Id).ToListAsync();
+                    var currentEvents = await db.UserDisciplinaryEventStorageTable.AsQueryable().Where(x => x.UserID == user.Id).ToListAsync();
+                    var archivedEvents = await db.UserDisciplinaryEventArchiveTable.AsQueryable().Where(x => x.UserID == user.Id).ToListAsync();
+                    var permaEvents = await db.UserDisciplinaryPermanentStorageTable.AsQueryable().Where(x => x.UserID == user.Id).ToListAsync();
 
                     var dict = new Dictionary<string, string>();
                     int index = 0;
@@ -213,7 +213,7 @@ namespace SeymourBot.DataAccess.StorageManager
         {
             using (var db = new UserContext())
             {
-                var activeMuteEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == user.Id && x.DiscipinaryEventType == DisciplinaryEventEnum.MuteEvent).ToListAsync();
+                var activeMuteEvents = await db.UserDisciplinaryEventStorageTable.AsQueryable().Where(x => x.UserID == user.Id && x.DiscipinaryEventType == DisciplinaryEventEnum.MuteEvent).ToListAsync();
                 TimeSpan result = new TimeSpan(0);
                 DateTime longestMute = DateTime.UtcNow;
                 if (activeMuteEvents.Count() != 0)
@@ -238,9 +238,9 @@ namespace SeymourBot.DataAccess.StorageManager
                 using (var db = new UserContext())
                 {
                     DateTime dateToCompare = DateTime.Today.Subtract(time);
-                    var currentEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == user.Id && DateTime.Compare(x.DateInserted, dateToCompare) > 0).ToListAsync();
-                    var archivedEvents = await db.UserDisciplinaryEventArchiveTable.Where(x => x.UserID == user.Id && DateTime.Compare(x.DateInserted, dateToCompare) > 0).ToListAsync();
-                    var permaEvents = await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == user.Id && DateTime.Compare(x.DateInserted, dateToCompare) > 0).ToListAsync();
+                    var currentEvents = await db.UserDisciplinaryEventStorageTable.AsQueryable().Where(x => x.UserID == user.Id && DateTime.Compare(x.DateInserted, dateToCompare) > 0).ToListAsync();
+                    var archivedEvents = await db.UserDisciplinaryEventArchiveTable.AsQueryable().Where(x => x.UserID == user.Id && DateTime.Compare(x.DateInserted, dateToCompare) > 0).ToListAsync();
+                    var permaEvents = await db.UserDisciplinaryPermanentStorageTable.AsQueryable().Where(x => x.UserID == user.Id && DateTime.Compare(x.DateInserted, dateToCompare) > 0).ToListAsync();
 
                     var dict = new Dictionary<string, string>();
                     int index = 0;
@@ -328,11 +328,11 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (var db = new UserContext())
                 {
-                    var activeDisciplinaries = await db.UserDisciplinaryEventStorageTable.AnyAsync(x => x.UserID == userID);
+                    var activeDisciplinaries = await db.UserDisciplinaryEventStorageTable.AsQueryable().AnyAsync(x => x.UserID == userID);
 
                     if (activeDisciplinaries)
                     {
-                        var itemsToRemove = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == userID).ToListAsync();
+                        var itemsToRemove = await db.UserDisciplinaryEventStorageTable.AsQueryable().Where(x => x.UserID == userID).ToListAsync();
 
                         db.RemoveRange(itemsToRemove);
                         List<UserDisciplinaryEventArchive> eventsToArchive = new List<UserDisciplinaryEventArchive>();
@@ -381,11 +381,11 @@ namespace SeymourBot.DataAccess.StorageManager
 
                     if (type == DisciplinaryEventEnum.BanEvent)
                     {
-                        existingEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == userID).ToArrayAsync();
+                        existingEvents = await db.UserDisciplinaryEventStorageTable.AsQueryable().Where(x => x.UserID == userID).ToArrayAsync();
                     }
                     else
                     {
-                        existingEvents = await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == userID
+                        existingEvents = await db.UserDisciplinaryEventStorageTable.AsQueryable().Where(x => x.UserID == userID
                                                                                             && x.DiscipinaryEventType == type).ToArrayAsync();
                     }
 
@@ -415,11 +415,11 @@ namespace SeymourBot.DataAccess.StorageManager
 
                         if (type == DisciplinaryEventEnum.BanEvent)
                         {
-                            existingPermaEvents = await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == userID).ToArrayAsync();
+                            existingPermaEvents = await db.UserDisciplinaryPermanentStorageTable.AsQueryable().Where(x => x.UserID == userID).ToArrayAsync();
                         }
                         else
                         {
-                            existingPermaEvents = await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == userID
+                            existingPermaEvents = await db.UserDisciplinaryPermanentStorageTable.AsQueryable().Where(x => x.UserID == userID
                                                                                                 && x.DiscipinaryEventType == type).ToArrayAsync();
                         }
 
@@ -525,12 +525,12 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (UserContext db = new UserContext())
                 {
-                    if (!await db.UserStorageTable.AnyAsync(x => x.UserID == user.UserID))
+                    if (!await db.UserStorageTable.AsQueryable().AnyAsync(x => x.UserID == user.UserID))
                     {
                         await db.AddAsync(user);
                     }
 
-                    var existingBlacklist = await db.BlackListedTable.FirstOrDefaultAsync(x => x.UserID == user.UserID);
+                    var existingBlacklist = await db.BlackListedTable.AsQueryable().FirstOrDefaultAsync(x => x.UserID == user.UserID);
 
                     if (existingBlacklist != null)
                     {
@@ -559,7 +559,7 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (UserContext db = new UserContext())
                 {
-                    var blacklistedUser = await db.BlackListedTable.FirstOrDefaultAsync(x => x.UserID == userID);
+                    var blacklistedUser = await db.BlackListedTable.AsQueryable().FirstOrDefaultAsync(x => x.UserID == userID);
 
                     if (blacklistedUser != null)
                     {
@@ -584,7 +584,7 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (UserContext db = new UserContext())
                 {
-                    var existingBlacklist = await db.BlackListedTable.FirstOrDefaultAsync(x => x.UserID == user.Id);
+                    var existingBlacklist = await db.BlackListedTable.AsQueryable().FirstOrDefaultAsync(x => x.UserID == user.Id);
 
                     if (existingBlacklist == null)
                     {
@@ -614,13 +614,13 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (UserContext db = new UserContext())
                 {
-                    if (!await db.UserStorageTable.AnyAsync(x => x.UserID == user.UserID))
+                    if (!await db.UserStorageTable.AsQueryable().AnyAsync(x => x.UserID == user.UserID))
                     {
                         await db.AddAsync(user);
                     }
 
 
-                    var existingEvent = await db.UserDisciplinaryPermanentStorageTable.FirstOrDefaultAsync(x => x.UserID == user.UserID);
+                    var existingEvent = await db.UserDisciplinaryPermanentStorageTable.AsQueryable().FirstOrDefaultAsync(x => x.UserID == user.UserID);
 
                     if (existingEvent != null)
                     {
@@ -650,7 +650,7 @@ namespace SeymourBot.DataAccess.StorageManager
                 using (UserContext db = new UserContext())
                 {
                     var warnDuration = ConfigManager.GetIntegerProperty(PropertyItem.WarnDuration);
-                    int warnCount = await db.UserDisciplinaryEventStorageTable.Where(x => x.DiscipinaryEventType == DisciplinaryEventEnum.WarnEvent)
+                    int warnCount = await db.UserDisciplinaryEventStorageTable.AsQueryable().Where(x => x.DiscipinaryEventType == DisciplinaryEventEnum.WarnEvent)
                                                                                 .Where(x => x.UserID == userID)
                                                                                         .CountAsync();
                     return warnCount;
@@ -692,7 +692,7 @@ namespace SeymourBot.DataAccess.StorageManager
             {
                 using (FilterContext db = new FilterContext())
                 {
-                    var itemToRemove = await db.filterTables.FirstOrDefaultAsync(x => x.FilterPattern.ToLower() == name.ToLower()
+                    var itemToRemove = await db.filterTables.AsQueryable().FirstOrDefaultAsync(x => x.FilterPattern.ToLower() == name.ToLower()
                                                                                                                 & x.FilterType == type);
                     if (itemToRemove != null)
                     {
@@ -715,7 +715,7 @@ namespace SeymourBot.DataAccess.StorageManager
                 List<ModeratedElement> result = new List<ModeratedElement>();
                 using (FilterContext db = new FilterContext())
                 {
-                    foreach (FilterTable filter in db.filterTables.Where(x => x.FilterType == FilterTypeEnum.ContainFilter))
+                    foreach (FilterTable filter in db.filterTables.AsQueryable().Where(x => x.FilterType == FilterTypeEnum.ContainFilter))
                     {
                         result.Add(new ModeratedElement()
                         {
@@ -742,7 +742,7 @@ namespace SeymourBot.DataAccess.StorageManager
                 List<ModeratedElement> result = new List<ModeratedElement>();
                 using (FilterContext db = new FilterContext())
                 {
-                    foreach (FilterTable filter in db.filterTables.Where(x => x.FilterType == FilterTypeEnum.RegexFilter))
+                    foreach (FilterTable filter in db.filterTables.AsQueryable().Where(x => x.FilterType == FilterTypeEnum.RegexFilter))
                     {
                         result.Add(new ModeratedElement()
                         {
@@ -767,12 +767,12 @@ namespace SeymourBot.DataAccess.StorageManager
                 var list = new List<DisciplinaryEventEnum>();
                 using (var db = new UserContext())
                 {
-                    if (await db.UserStorageTable.AnyAsync(x => x.UserID == User.Id))
+                    if (await db.UserStorageTable.AsQueryable().AnyAsync(x => x.UserID == User.Id))
                     {
-                        list.AddRange(await db.UserDisciplinaryEventStorageTable.Where(x => x.UserID == User.Id).Select(x => x.DiscipinaryEventType).ToListAsync());
+                        list.AddRange(await db.UserDisciplinaryEventStorageTable.AsQueryable().Where(x => x.UserID == User.Id).Select(x => x.DiscipinaryEventType).ToListAsync());
                         if (list.Count > 0)
                         {
-                            list.AddRange(await db.UserDisciplinaryPermanentStorageTable.Where(x => x.UserID == User.Id).Select(x => x.DiscipinaryEventType).ToListAsync());
+                            list.AddRange(await db.UserDisciplinaryPermanentStorageTable.AsQueryable().Where(x => x.UserID == User.Id).Select(x => x.DiscipinaryEventType).ToListAsync());
                         }
                     }
                 }

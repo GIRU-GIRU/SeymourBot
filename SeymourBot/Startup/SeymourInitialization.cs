@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.Rest;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using SeymourBot.AutoModeration;
@@ -88,6 +89,8 @@ namespace SeymourBot.Startup
             var message = arg as SocketUserMessage;
             if (message.Author.IsBot) return;
             var context = new SocketCommandContext(_client, message);
+
+     
 
             await MessageContentChecker.AutoModerateMessage(context);
 
