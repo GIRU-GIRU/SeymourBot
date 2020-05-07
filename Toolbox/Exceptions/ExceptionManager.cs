@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Toolbox.DiscordUtilities;
@@ -38,9 +39,25 @@ namespace Toolbox.Exceptions
             HandleExceptionHelper(new Exception(), message);
         }
 
-        public static void HandleException(string message, Exception ex)
+
+        public static void HandleExceptionOld(string message, Exception ex)
         {
             HandleExceptionHelper(ex, message);
+        }
+        public static void HandleException(string message, Exception ex)
+        {
+            try
+            {
+                var innermostExceptionMessage = GetInnermostException(ex).Message;
+
+                DiscordContextSeymour.GetLoggingChannel().SendMessageAsync($"Error in {message} - {innermostExceptionMessage}");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+           
         }
 
         public static void HandleException(string message, Exception ex, params string[] extraParameters)
@@ -71,20 +88,35 @@ namespace Toolbox.Exceptions
             }
         }
 
-        private static Exception GetInnermostException(Exception ex)
-        {
-            Exception result = ex;
+        //private static Exception GetInnermostException(Exception ex)
+        //{
+        //    Exception result = ex;
 
-            for (int i = 0; i < 10; i++)
+        //    for (int i = 0; i < 10; i++)
+        //    {
+        //        if (result.InnerException != null)
+        //        {
+        //            result = result.InnerException;
+        //        }
+        //    }
+
+        //    return result;
+
+        //}
+
+        //format (GetType().FullName, ExceptionHandler.GetAsyncMethodName(), ex)
+
+        public static Exception GetInnermostException(Exception ex)
+        {
+
+            while (ex.InnerException != null)
             {
-                if (result.InnerException != null)
-                {
-                    result = result.InnerException;
-                }
+                ex = ex.InnerException;
             }
 
-            return result;
-
+            return ex;
         }
+        public static string GetAsyncMethodName([CallerMemberName]string name = "unknown") => name;
+
     }
 }

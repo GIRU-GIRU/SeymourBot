@@ -44,7 +44,8 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(StorageManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
 
         }
@@ -203,7 +204,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                //todo
+                ExceptionManager.HandleException($"{typeof(StorageManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
                 throw ex;
             }
         }
@@ -284,7 +285,7 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                //todo
+                ExceptionManager.HandleException($"{typeof(StorageManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
                 throw ex;
             }
         }
@@ -364,7 +365,8 @@ namespace SeymourBot.DataAccess.StorageManager
             catch (Exception ex)
             {
 
-                throw ex;//todo
+                ExceptionManager.HandleException($"{typeof(StorageManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw ex;
             }
         }
 
@@ -445,7 +447,8 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(StorageManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw ex;
             }
         }
 
@@ -600,7 +603,8 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(StorageManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw ex;
             }
         }
 
@@ -778,7 +782,8 @@ namespace SeymourBot.DataAccess.StorageManager
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(StorageManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw ex;
             }
         }
 

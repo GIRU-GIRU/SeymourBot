@@ -55,7 +55,7 @@ namespace SeymourBot.AutoModeration
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(AutoModeratorManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
         }
 
@@ -71,7 +71,7 @@ namespace SeymourBot.AutoModeration
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(AutoModeratorManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
         }
 

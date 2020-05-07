@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using Toolbox.DiscordUtilities;
+using Toolbox.Exceptions;
 
 namespace OverseerBot.UserJoinedServer
 {
@@ -15,7 +16,7 @@ namespace OverseerBot.UserJoinedServer
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(RoleApplication).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
         }
     }

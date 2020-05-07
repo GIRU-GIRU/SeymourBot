@@ -3,6 +3,7 @@ using SeymourBot.DataAccess.StorageManager;
 using SeymourBot.Modules.CommandUtils;
 using System;
 using System.Threading.Tasks;
+using Toolbox.Exceptions;
 
 namespace SeymourBot.AutoModeration
 {
@@ -21,7 +22,7 @@ namespace SeymourBot.AutoModeration
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(UserJoinedChecker).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
         }
     }
