@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using OverseerBot.UserJoinedServer;
@@ -28,7 +29,10 @@ namespace OverseerBot.Startup
         {
             DiscordSocketConfig botConfig = new DiscordSocketConfig()
             {
-                MessageCacheSize = ConfigManager.GetIntegerProperty(PropertyItem.MessageCacheSize)
+                MessageCacheSize = ConfigManager.GetIntegerProperty(PropertyItem.MessageCacheSize),
+                AlwaysDownloadUsers = true,
+                DefaultRetryMode = RetryMode.AlwaysRetry,
+                LargeThreshold = 250,
             };
 
             var CommandServiceConfig = new CommandServiceConfig()

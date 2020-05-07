@@ -30,12 +30,17 @@ namespace SeymourBot.Startup
         {
             DiscordSocketConfig botConfig = new DiscordSocketConfig()
             {
-                MessageCacheSize = ConfigManager.GetIntegerProperty(PropertyItem.MessageCacheSize)
+                MessageCacheSize = ConfigManager.GetIntegerProperty(PropertyItem.MessageCacheSize),
+                AlwaysDownloadUsers = true,
+                DefaultRetryMode = RetryMode.AlwaysRetry,
+                LargeThreshold = 250,
+                
             };
 
             var CommandServiceConfig = new CommandServiceConfig()
             {
-                DefaultRunMode = RunMode.Async
+                DefaultRunMode = RunMode.Async,
+             
             };
 
             _client = new DiscordSocketClient(botConfig);
