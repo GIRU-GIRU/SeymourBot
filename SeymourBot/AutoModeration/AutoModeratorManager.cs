@@ -207,7 +207,7 @@ namespace SeymourBot.AutoModeration
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException(ErrMessages.CheckForWarnThresoldException, ex);
+                ExceptionManager.HandleException(ErrMessages.CheckForWarnThresholdException, ex);
             }
         }
     }

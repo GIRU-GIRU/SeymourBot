@@ -99,7 +99,7 @@ namespace Toolbox.Resources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Error in checking for warn thresold.
         /// </summary>
-        public static string CheckForWarnThresoldException {
+        public static string CheckForWarnThresholdException {
             get {
                 return ResourceManager.GetString("CheckForWarnThresoldException", resourceCulture);
             }

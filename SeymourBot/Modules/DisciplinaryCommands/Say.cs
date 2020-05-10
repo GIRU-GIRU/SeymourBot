@@ -19,6 +19,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
     public class Say : ModuleBase<SocketCommandContext>
     {
         [Command("ssay")]
+        [Alias("say")]
         [DevOrAdmin]
         private async Task SeymourSayCustomMessage([Remainder]string input)
         {
