@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.Rest;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using SeymourBot.AutoModeration;
@@ -30,12 +31,17 @@ namespace SeymourBot.Startup
         {
             DiscordSocketConfig botConfig = new DiscordSocketConfig()
             {
-                MessageCacheSize = ConfigManager.GetIntegerProperty(PropertyItem.MessageCacheSize)
+                MessageCacheSize = ConfigManager.GetIntegerProperty(PropertyItem.MessageCacheSize),
+                AlwaysDownloadUsers = true,
+                DefaultRetryMode = RetryMode.AlwaysRetry,
+                LargeThreshold = 250,
+                
             };
 
             var CommandServiceConfig = new CommandServiceConfig()
             {
-                DefaultRunMode = RunMode.Async
+                DefaultRunMode = RunMode.Async,
+             
             };
 
             _client = new DiscordSocketClient(botConfig);
@@ -83,6 +89,8 @@ namespace SeymourBot.Startup
             var message = arg as SocketUserMessage;
             if (message.Author.IsBot) return;
             var context = new SocketCommandContext(_client, message);
+
+     
 
             await MessageContentChecker.AutoModerateMessage(context);
 

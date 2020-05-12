@@ -67,7 +67,7 @@ namespace OverseerBot.UserMessageLogging
             }
             catch (System.Exception ex)
             {
-                await ExceptionManager.LogExceptionAsync(ErrMessages.EditedMessageException);
+                ExceptionManager.HandleException($"{typeof(MessageLogger).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
         }
 
@@ -182,7 +182,8 @@ namespace OverseerBot.UserMessageLogging
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(MessageLogger).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
         }
 
@@ -194,7 +195,8 @@ namespace OverseerBot.UserMessageLogging
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(MessageLogger).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                return false;
             }
 
         }

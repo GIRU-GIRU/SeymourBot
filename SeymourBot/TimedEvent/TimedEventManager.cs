@@ -48,7 +48,7 @@ namespace SeymourBot.TimedEvent
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(TimedEventManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
 
         }

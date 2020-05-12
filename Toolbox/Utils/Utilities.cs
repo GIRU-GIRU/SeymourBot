@@ -3,6 +3,7 @@ using Discord.Commands;
 using SeymourBot.Storage.User;
 using System;
 using Toolbox.DiscordUtilities;
+using Toolbox.Exceptions;
 
 namespace Toolbox.Utils
 {
@@ -39,7 +40,8 @@ namespace Toolbox.Utils
             }
             catch (Exception ex)
             {
-                throw ex; // todo
+                ExceptionManager.HandleException($"{typeof(Utilities).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
         }
 
@@ -84,7 +86,8 @@ namespace Toolbox.Utils
             }
             catch (Exception ex)
             {
-                throw ex; // todo
+                ExceptionManager.HandleException($"{typeof(Utilities).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
         }
         public static Embed BuildBlacklistEmbed(TimeSpan timeSpan, string username, bool existing, string author = "SeymourBot")
@@ -124,7 +127,8 @@ namespace Toolbox.Utils
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(Utilities).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
         }
 
@@ -143,7 +147,8 @@ namespace Toolbox.Utils
             }
             catch (Exception ex)
             {
-                throw ex;  //todo
+                ExceptionManager.HandleException($"{typeof(Utilities).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
         }
 
@@ -161,7 +166,8 @@ namespace Toolbox.Utils
             }
             catch (Exception ex)
             {
-                throw ex;  //todo
+                ExceptionManager.HandleException($"{typeof(Utilities).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
         }
 

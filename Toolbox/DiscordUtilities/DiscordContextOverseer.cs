@@ -81,7 +81,7 @@ namespace Toolbox.DiscordUtilities
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException(ErrMessages.ModerationActionException, ex);
+                ExceptionManager.HandleException($"{typeof(DiscordContextOverseer).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
         }
 
@@ -99,7 +99,7 @@ namespace Toolbox.DiscordUtilities
             }
             catch (Exception ex)
             {
-                throw ex;//todo
+                ExceptionManager.HandleException($"{typeof(DiscordContextOverseer).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
         }
 
@@ -111,8 +111,8 @@ namespace Toolbox.DiscordUtilities
             }
             catch (Exception ex)
             {
-
-                throw ex;//todo
+                ExceptionManager.HandleException($"{typeof(DiscordContextOverseer).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
         }
 
@@ -137,7 +137,8 @@ namespace Toolbox.DiscordUtilities
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(DiscordContextOverseer).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
         }
 
@@ -149,7 +150,8 @@ namespace Toolbox.DiscordUtilities
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(DiscordContextOverseer).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
         }
 
@@ -161,7 +163,8 @@ namespace Toolbox.DiscordUtilities
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(DiscordContextOverseer).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
         }
 
@@ -214,7 +217,7 @@ namespace Toolbox.DiscordUtilities
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(DiscordContextOverseer).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
 
         }

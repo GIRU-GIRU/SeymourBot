@@ -18,7 +18,8 @@ namespace SeymourBot.Modules.DisciplinaryCommands
 {
     public class Say : ModuleBase<SocketCommandContext>
     {
-        [Command("say")]
+        [Command("ssay")]
+        [Alias("say")]
         [DevOrAdmin]
         private async Task SeymourSayCustomMessage([Remainder]string input)
         {
@@ -41,5 +42,32 @@ namespace SeymourBot.Modules.DisciplinaryCommands
                 ExceptionManager.HandleException(ErrMessages.SayException, ex);
             }
         }
+
+        [Command("osay")]
+        [DevOrAdmin]
+        private async Task OverseerSayCustomMessage([Remainder]string input)
+        {
+            try
+            {
+                if (Context.Message.MentionedChannels.Count == 0)
+                {
+                    await Context.Channel.SendMessageAsync("You must mention the channel: (#channel_name)");
+                    return;
+                }
+
+                var targetChannel = Context.Message.MentionedChannels.FirstOrDefault() as ITextChannel;
+                var targetChannelAsString = $"<#{targetChannel.Id}>";
+                var sanitizedInput = input.Replace(targetChannelAsString, string.Empty);
+
+               var overseerTargetChannel = DiscordContextOverseer.GetChannel(targetChannel.Id);
+
+                await overseerTargetChannel.SendMessageAsync(sanitizedInput);
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.HandleException(ErrMessages.SayException, ex);
+            }
+        }
+
     }
 }

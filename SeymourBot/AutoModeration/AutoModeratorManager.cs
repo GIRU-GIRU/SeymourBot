@@ -55,7 +55,7 @@ namespace SeymourBot.AutoModeration
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(AutoModeratorManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
         }
 
@@ -71,7 +71,7 @@ namespace SeymourBot.AutoModeration
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(AutoModeratorManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
         }
 
@@ -207,7 +207,7 @@ namespace SeymourBot.AutoModeration
             }
             catch (Exception ex)
             {
-                ExceptionManager.HandleException(ErrMessages.CheckForWarnThresoldException, ex);
+                ExceptionManager.HandleException(ErrMessages.CheckForWarnThresholdException, ex);
             }
         }
     }

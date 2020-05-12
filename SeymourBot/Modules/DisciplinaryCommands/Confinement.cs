@@ -418,11 +418,11 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(StorageManager).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
         }
 
-        //
+  
 
         [Command("restrict")]
         [DevOrAdmin]
@@ -653,7 +653,7 @@ namespace SeymourBot.Modules.DisciplinaryCommands
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(Confinement).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
             }
         }
 

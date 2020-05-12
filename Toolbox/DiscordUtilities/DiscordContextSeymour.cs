@@ -80,7 +80,8 @@ namespace Toolbox.DiscordUtilities
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(DiscordContextSeymour).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
         }
 
@@ -94,7 +95,8 @@ namespace Toolbox.DiscordUtilities
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(DiscordContextSeymour).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
         }
 
@@ -165,7 +167,8 @@ namespace Toolbox.DiscordUtilities
             }
             catch (Exception ex)
             {
-                throw ex; //todo
+                ExceptionManager.HandleException($"{typeof(DiscordContextSeymour).GetType().FullName}: {ExceptionManager.GetAsyncMethodName()}", ex);
+                throw;
             }
 
         }
