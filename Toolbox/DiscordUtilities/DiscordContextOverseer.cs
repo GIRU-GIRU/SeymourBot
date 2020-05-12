@@ -54,19 +54,21 @@ namespace Toolbox.DiscordUtilities
             try
             {
                 var embed = new EmbedBuilder();
-                if (MordhauGuild.GetUser(userId) != null && MordhauGuild.GetUser(moderatorId) != null)
+                var user = MordhauGuild.GetUser(userId);
+                var moderator = MordhauGuild.GetUser(moderatorId);
+                if (user != null && moderator != null)
                 {
                     embed.WithTitle($"User {userId} was {moderationAction} at {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}"); //usage : user unmuted / user banned / user warned
                     embed.WithColor(automated ? new Color(0, 51, 204) : new Color(51, 204, 51));
-                    embed.WithDescription($"User {MordhauGuild.GetUser(userId).Username}#{MordhauGuild.GetUser(userId).Discriminator} was {moderationAction} {(string.IsNullOrEmpty(duration) ? "" : "for " + duration)} {(automated ? "automatically" : $"by {MordhauGuild.GetUser(moderatorId).Username}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
+                    embed.WithDescription($"User {user.Username}#{user.Discriminator} was {moderationAction} {(string.IsNullOrEmpty(duration) ? "" : "for " + duration)} {(automated ? "automatically" : $"by {moderator.Username}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
                 }
                 else
                 {
-                    if (MordhauGuild.GetUser(moderatorId) != null)
+                    if (moderator != null)
                     {
                         embed.WithTitle($"User {userId} was {moderationAction} at {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
                         embed.WithColor(automated ? new Color(0, 51, 204) : new Color(51, 204, 51));
-                        embed.WithDescription($"User {userId} was {moderationAction} {(string.IsNullOrEmpty(duration) ? "" : "for " + duration)} {(automated ? "automatically" : $"by {MordhauGuild.GetUser(moderatorId).Username}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
+                        embed.WithDescription($"User {userId} was {moderationAction} {(string.IsNullOrEmpty(duration) ? "" : "for " + duration)} {(automated ? "automatically" : $"by {moderator.Username}")} {(string.IsNullOrEmpty(reason) ? "" : "for " + reason) }");
                     }
                     else
                     {

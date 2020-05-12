@@ -50,7 +50,7 @@ namespace SeymourBot.Modules.ConfigurationCommands
                 {
                     await Context.Channel.SendMessageAsync($"Use {ConfigManager.GetProperty(PropertyItem.CommandPrefix)}addfilter for single filters.");
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -145,12 +145,32 @@ namespace SeymourBot.Modules.ConfigurationCommands
             try
             {
                 List<string> filters = StorageManager.GetFilters();
-                var embed = new EmbedBuilder();
-                embed.WithTitle("Currently Active Filters");
-                
-                embed.AddField("Banned word", string.Join("\n", filters), false);
-                
-                await Context.Channel.SendMessageAsync("", false, embed.Build());
+                EmbedBuilder embed;
+                int linesPerEmbed = 25;
+                List<string> filtersPerEmbed;
+
+                if (filters.Count > linesPerEmbed)
+                {
+                    for (int p = 0; p <= filters.Count / linesPerEmbed; p++)
+                    {
+                        filtersPerEmbed = new List<string>();
+                        embed = new EmbedBuilder();
+                        for (int i = 0; i + p * linesPerEmbed < filters.Count && i < linesPerEmbed; i++)
+                        {
+                            filtersPerEmbed.Add(filters[i + p * linesPerEmbed]);
+                        }
+                        embed.WithTitle($"Currently Active Filters page {p + 1}/{filters.Count / linesPerEmbed + 1}");
+                        embed.AddField("Banned words", string.Join("\n", filtersPerEmbed), false);
+                        await Context.Channel.SendMessageAsync("", false, embed.Build());
+                    }
+                }
+                else
+                {
+                    embed = new EmbedBuilder();
+                    embed.WithTitle("Currently Active Filters");
+                    embed.AddField("Banned words", string.Join("\n", filters), false);
+                    await Context.Channel.SendMessageAsync("", false, embed.Build());
+                }
             }
             catch (Exception ex)
             {
